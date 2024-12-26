@@ -1,0 +1,45 @@
+---
+import "../styles/variables.scss";
+import "../styles/global.scss";
+
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import Spacer from "../components/Spacer.astro";
+
+interface Props {
+	title: string;
+	description?: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="x-ua-compatible" content="ie=edge" />
+
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1, shrink-to-fit=no"
+		/>
+
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		{description && <meta name="description" content={description} />}
+
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+		<title>{title}</title>
+	</head>
+
+	<body>
+		<Header />
+
+		<slot />
+
+		<Spacer />
+		<Footer />
+	</body>
+</html>

@@ -1,0 +1,48 @@
+---
+import { Image } from "astro:assets";
+import Logo from "../assets/logo.png";
+
+const pages = [
+  ["Home", "/"],
+  ["About", "/about"],
+  ["Writeups", "/writeups"],
+  ["Rankings", "/rankings"],
+];
+---
+
+<section>
+  <Image class="logo" src={Logo} alt="" />
+  <div class="links">
+    {pages.map((page) => <a href={page[1]}>{page[0]}</a>)}
+  </div>
+</section>
+
+<style lang="scss">
+  @use "../styles/variables" as *;
+
+  section {
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
+    display: flex;
+  }
+
+  .logo {
+    width: 64px;
+    height: 96px;
+  }
+
+  .links {
+    display: flex;
+    padding: 0px;
+    gap: 16px;
+  }
+
+  .links a {
+    color: $foreground-color;
+  }
+
+  .links a:first-child {
+    font-weight: 700;
+  }
+</style>

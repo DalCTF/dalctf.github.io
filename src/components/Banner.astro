@@ -1,0 +1,66 @@
+---
+import { Image } from "astro:assets";
+import { Icon } from "astro-icon/components";
+
+import Discord from "../assets/discord.svg";
+
+interface Props {
+  text: string;
+  url: string;
+}
+
+const { text, url } = Astro.props;
+---
+
+<section>
+  <a href={url}>
+    <div class="left">
+      <Image class="icon" src={Discord} alt="" />
+      <p>{text}</p>
+    </div>
+    <div class="right">
+      <Icon name="chevron" />
+    </div>
+  </a>
+</section>
+
+<style lang="scss">
+  @use "../styles/variables" as *;
+
+  section {
+    display: block;
+  }
+
+  .icon {
+    width: 64px;
+    height: 64px;
+  }
+
+  a {
+    background: $background-secondary-color;
+    justify-content: space-between;
+    border-radius: $radius;
+    flex-direction: row;
+    align-items: center;
+    padding: 16px;
+    display: flex;
+
+    color: inherit;
+  }
+
+  a:hover .right {
+    margin-right: 16px;
+  }
+
+  div {
+    flex-direction: row;
+    align-items: center;
+    display: flex;
+    gap: 16px;
+  }
+
+  .right {
+    margin-right: 24px;
+    transition: 0.1s;
+  }
+</style>

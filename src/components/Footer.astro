@@ -1,0 +1,20 @@
+---
+const year = new Date().getFullYear();
+---
+
+<section>
+  <p>
+    Last Updated in {year}<br />
+    Halifax, NS<br />
+    Canada
+  </p>
+</section>
+
+<style lang="scss">
+  @use "../styles/variables.scss" as *;
+
+  p {
+    text-align: center;
+    color: $foreground-secondary-color;
+  }
+</style>

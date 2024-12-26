@@ -1,0 +1,39 @@
+---
+import Link from "./Link.astro";
+
+interface Props {
+  title: string;
+  url: string;
+  link?: string;
+}
+
+const { title, url, link } = Astro.props;
+---
+
+<section>
+  <h3>{title}</h3>
+  <div>
+    <slot />
+  </div>
+  <div class="link">
+    <Link url={url} text={link || "View All"} />
+  </div>
+</section>
+
+<style lang="scss">
+  @use "../styles/variables" as *;
+
+  section {
+    display: block;
+  }
+
+  h3 {
+    margin-bottom: 24px;
+  }
+
+  .link {
+    margin: 32px auto 0 auto;
+    text-align: center;
+    display: block;
+  }
+</style>

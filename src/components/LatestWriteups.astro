@@ -1,0 +1,58 @@
+---
+import Card from "./Card.astro";
+import Preview from "./Preview.astro";
+import Writeup from "./Writeup.astro";
+
+const writeups = [
+  {
+    date: "January 2025",
+    title: "Guessy CTF Solver",
+    snippet:
+      "This is a snippet of the problem at hand. This will be used to preview the contents of the writeup with a little more content to make up the height",
+  },
+  {
+    date: "November 2024",
+    title: "Pieces",
+    snippet:
+      "This is a snippet of the problem at hand. This will be used to preview the contents of the writeup with a little more content to make up the height",
+  },
+  {
+    date: "July 2024",
+    title: "I've got all your crypto challenges with me",
+    snippet:
+      "This is a snippet of the problem at hand. This will be used to preview the contents of the writeup with a little more content to make up the height",
+  },
+  {
+    date: "January 2024",
+    title: "PWN-it",
+    snippet:
+      "This is a snippet of the problem at hand. This will be used to preview the contents of the writeup with a little more content to make up the height",
+  },
+];
+---
+
+<Preview title="Latest Writeups" url="#">
+  <div>
+    {
+      writeups.map((writeup) => (
+        <Card>
+          <Writeup
+            upper={writeup.date}
+            title={writeup.title}
+            snippet={writeup.snippet}
+          />
+        </Card>
+      ))
+    }
+  </div>
+</Preview>
+
+<style lang="scss">
+  @use "../styles/variables" as *;
+
+  div {
+    grid-template-columns: 50% 50%;
+    display: grid;
+    gap: 16px;
+  }
+</style>

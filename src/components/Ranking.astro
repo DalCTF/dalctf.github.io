@@ -1,0 +1,63 @@
+---
+interface Props {
+  competition: string;
+  total: number;
+  position: number;
+}
+
+const { competition, total, position } = Astro.props;
+
+function ordinal(n: number) {
+  var s = ["th", "st", "nd", "rd"];
+  var v = n % 100;
+  return n + (s[(v - 20) % 10] || s[v] || s[0]);
+}
+---
+
+<a href="#">
+  <div class="left">
+    <p>{competition}</p>
+  </div>
+  <div class="right">
+    <p class="position">{ordinal(position)}</p>
+    <p>/</p>
+    <p class="total">{total}</p>
+  </div>
+</a>
+
+<style lang="scss">
+  @use "../styles/variables" as *;
+
+  a {
+    background: $background-secondary-color;
+    justify-content: space-between;
+    border-radius: $radius;
+    flex-direction: row;
+    align-items: center;
+    padding: 16px;
+    display: flex;
+
+    color: inherit;
+  }
+
+  div {
+    flex-direction: row;
+    align-items: center;
+    display: flex;
+  }
+
+  p {
+    color: $foreground-secondary-color;
+    font-weight: $font-weight-semibold;
+  }
+
+  .position {
+    font-size: 1.5rem;
+    margin-right: 16px;
+    color: $foreground-color;
+  }
+
+  .total {
+    margin-left: 8px;
+  }
+</style>

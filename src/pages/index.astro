@@ -1,0 +1,26 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+import Banner from "../components/Banner.astro";
+import Hero from "../components/Hero.astro";
+import Spacer from "../components/Spacer.astro";
+import LatestWriteups from "../components/LatestWriteups.astro";
+import Ranking from "../components/Ranking.astro";
+import Preview from "../components/Preview.astro";
+import LatestRankings from "../components/LatestRankings.astro";
+---
+
+<Layout title="Status 418" description="">
+	<!-- Hero -->
+	<Hero title="Status 418 is Dalhousie University's CTF team" />
+
+	<!-- Banner -->
+	<Banner text="Join us on Discord!" url="#" />
+	<Spacer />
+
+	<!-- Writeups -->
+	<LatestWriteups />
+
+	<!-- Rankings -->
+	<LatestRankings />
+</Layout>

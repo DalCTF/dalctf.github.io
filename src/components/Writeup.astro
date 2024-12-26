@@ -1,0 +1,35 @@
+---
+interface Props {
+  title: string;
+  upper: string;
+  snippet: string;
+}
+
+const { title, upper, snippet } = Astro.props;
+---
+
+<>
+  <span>{upper}</span>
+  <h2>{title}</h2>
+  <p>{snippet}</p>
+</>
+
+<style lang="scss">
+  @use "../styles/variables" as *;
+
+  span {
+    color: $foreground-secondary-color;
+  }
+
+  h2 {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 100%;
+    display: block;
+  }
+
+  p {
+    margin-top: 16px;
+  }
+</style>

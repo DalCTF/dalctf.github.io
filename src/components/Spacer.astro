@@ -1,0 +1,9 @@
+---
+interface Props {
+  height?: number;
+}
+
+const { height } = Astro.props;
+---
+
+<span style={"display: block; height: " + (height || 96) + "px"}></span>

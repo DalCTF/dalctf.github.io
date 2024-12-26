@@ -1,0 +1,40 @@
+---
+import { Icon } from "astro-icon/components";
+
+interface Props {
+  text: string;
+  url: string;
+}
+
+const { text, url } = Astro.props;
+---
+
+<a href={url}>
+  <span>{text}</span>
+  <Icon name="chevron" />
+</a>
+
+<style lang="scss">
+  @use "../styles/variables" as *;
+
+  a {
+    color: $accent-color-light;
+  }
+
+  a * {
+    vertical-align: middle;
+    transition: 0.1s;
+  }
+
+  [data-icon] {
+    margin-left: 8px;
+  }
+
+  a:hover span {
+    margin-left: 4px;
+  }
+
+  a:hover [data-icon] {
+    margin-left: 12px;
+  }
+</style>
