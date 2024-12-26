@@ -3,11 +3,9 @@ import Layout from "../layouts/Layout.astro";
 
 import Banner from "../components/Banner.astro";
 import Hero from "../components/Hero.astro";
-import Spacer from "../components/Spacer.astro";
-import LatestWriteups from "../components/LatestWriteups.astro";
-import Ranking from "../components/Ranking.astro";
-import Preview from "../components/Preview.astro";
 import LatestRankings from "../components/LatestRankings.astro";
+import LatestWriteups from "../components/LatestWriteups.astro";
+import Spacer from "../components/Spacer.astro";
 ---
 
 <Layout title="Status 418" description="">
@@ -20,7 +18,9 @@ import LatestRankings from "../components/LatestRankings.astro";
 
 	<!-- Writeups -->
 	<LatestWriteups />
+	<Spacer />
 
 	<!-- Rankings -->
 	<LatestRankings />
+	<Spacer />
 </Layout>

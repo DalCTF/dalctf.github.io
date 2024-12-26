@@ -1,8 +1,5 @@
 ---
-import { Image } from "astro:assets";
 import { Icon } from "astro-icon/components";
-
-import Discord from "../assets/discord.svg";
 
 interface Props {
   text: string;
@@ -15,8 +12,8 @@ const { text, url } = Astro.props;
 <section>
   <a href={url}>
     <div class="left">
-      <Image class="icon" src={Discord} alt="" />
-      <p>{text}</p>
+      <Icon name="discord" />
+      <p class="emphasis">{text}</p>
     </div>
     <div class="right">
       <Icon name="chevron" />
@@ -31,9 +28,10 @@ const { text, url } = Astro.props;
     display: block;
   }
 
-  .icon {
+  [data-icon="discord"] {
     width: 64px;
     height: 64px;
+    fill: $foreground-color;
   }
 
   a {

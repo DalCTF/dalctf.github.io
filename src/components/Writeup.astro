@@ -1,16 +1,22 @@
 ---
+import Tag from "./Tag.astro";
+
 interface Props {
   title: string;
   upper: string;
   snippet: string;
+  tags: string[];
 }
 
-const { title, upper, snippet } = Astro.props;
+const { title, upper, snippet, tags } = Astro.props;
 ---
 
 <>
   <span>{upper}</span>
   <h2>{title}</h2>
+  <div>
+    {tags.map((tag) => <Tag text={tag} color="green" type="border" />)}
+  </div>
   <p>{snippet}</p>
 </>
 
@@ -27,6 +33,10 @@ const { title, upper, snippet } = Astro.props;
     overflow: hidden;
     max-width: 100%;
     display: block;
+  }
+
+  div {
+    margin-top: 8px;
   }
 
   p {

@@ -15,11 +15,8 @@ body {
     background: $background-color;
 
     font-family: $font-family;
-    color: $foreground-color;
     font-optical-sizing: auto;
-    letter-spacing: 0.5%;
-    font-style: normal;
-    font-size: 1rem;
+    color: $foreground-color;
 }
 
 h1 {
@@ -50,21 +47,31 @@ h3 {
     font-optical-sizing: auto;
     letter-spacing: 0.5%;
     font-style: normal;
-    font-size: 1.5rem;
+    font-size: 2rem;
 
     margin: 0px;
 }
 
-.code {
+p.code {
     font-weight: $font-weight-medium;
-    font-optical-sizing: auto;
     font-family: $code-font;
     letter-spacing: 0.5%;
-    font-style: normal;
     font-size: 1rem;
 }
 
+p.emphasis {
+    font-weight: $font-weight-medium;
+    color: $foreground-color;
+    font-size: 1.25rem;
+}
+
 p {
+    font-weight: $font-weight-regular;
+    font-optical-sizing: auto;
+    line-height: 1.75rem;
+    color: $text-color;
+    font-style: normal;
+    font-size: 1rem;
     margin: 0;
 }
 

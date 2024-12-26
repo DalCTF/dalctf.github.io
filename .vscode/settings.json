@@ -2,5 +2,9 @@
     "files.exclude": {
         "**/.astro": true,
         "**/node_modules": true
+    },
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": "explicit",
+        "source.fixAll.eslint": "explicit"
     }
 }
