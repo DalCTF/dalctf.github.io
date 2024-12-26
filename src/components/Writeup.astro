@@ -1,4 +1,5 @@
 ---
+import { tagFor } from "../util/tags";
 import Tag from "./Tag.astro";
 
 interface Props {
@@ -6,16 +7,23 @@ interface Props {
   upper: string;
   snippet: string;
   tags: string[];
+  preview: boolean;
 }
 
-const { title, upper, snippet, tags } = Astro.props;
+const { title, upper, snippet, preview } = Astro.props;
+
+const tags = Astro.props.tags.map((tag) => tagFor(tag, "border", !preview));
 ---
 
 <>
   <span>{upper}</span>
   <h2>{title}</h2>
   <div>
-    {tags.map((tag) => <Tag text={tag} color="green" type="border" />)}
+    {
+      tags.map((tag) => (
+        <Tag text={tag.text} color={tag.color} type={tag.type} url={tag.url} />
+      ))
+    }
   </div>
   <p>{snippet}</p>
 </>
@@ -36,6 +44,9 @@ const { title, upper, snippet, tags } = Astro.props;
   }
 
   div {
+    flex-direction: row;
+    display: flex;
+    gap: 8px;
     margin-top: 8px;
   }
 

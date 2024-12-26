@@ -1,43 +1,36 @@
 ---
+import type { TagType } from "../util/tags";
+
 interface Props {
-  type: "fill" | "border";
-  color: "red" | "green" | "blue" | "orange" | "yellow";
+  type: TagType;
+  color: string;
   text: string;
   url?: string;
 }
 
 const { type, color, text, url } = Astro.props;
-
-const colorMap = {
-  red: "#E01A00",
-  blue: "#0090FF",
-  green: "#058F00",
-  orange: "#FF9000",
-  yellow: "#D1B800",
-};
-
-const tagColor = colorMap[color];
-const textColor = type == "border" ? tagColor : "inherit";
-const background = type == "border" ? "transparent" : tagColor;
+const textColor = type == "border" ? color : "inherit";
+const background = type == "border" ? "transparent" : color;
 ---
 
-<a href={url}>
-  <p>{text}</p>
-</a>
+{
+  (url && (
+    <a class="wrapper" href={url}>
+      {text}
+    </a>
+  )) || <p class="wrapper">{text}</p>
+}
 
-<style lang="scss" define:vars={{ tagColor, textColor, background }}>
+<style lang="scss" define:vars={{ color, textColor, background }}>
   @use "../styles/variables" as *;
 
-  a {
-    border: 2px solid var(--tagColor);
+  .wrapper {
+    border: 2px solid var(--color);
     background: var(--background);
     display: inline-block;
     border-radius: 16px;
     padding: 0 8px;
-    color: inherit;
-  }
 
-  p {
     font-weight: $font-weight-medium;
     color: var(--textColor);
     line-height: 1.5rem;

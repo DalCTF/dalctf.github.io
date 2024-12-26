@@ -36,17 +36,20 @@ const writeups = [
 ---
 
 <Preview title="Latest Writeups" url="#">
-  <div>
+  <div class="grid">
     {
       writeups.map((writeup) => (
-        <Card>
-          <Writeup
-            upper={writeup.date}
-            title={writeup.title}
-            tags={writeup.tags}
-            snippet={writeup.snippet}
-          />
-        </Card>
+        <div>
+          <Card>
+            <Writeup
+              upper={writeup.date}
+              title={writeup.title}
+              tags={writeup.tags}
+              snippet={writeup.snippet}
+              preview={true}
+            />
+          </Card>
+        </div>
       ))
     }
   </div>
@@ -55,9 +58,15 @@ const writeups = [
 <style lang="scss">
   @use "../styles/variables" as *;
 
-  div {
-    grid-template-columns: 50% 50%;
+  .grid {
+    grid-template-columns: 1fr 50%;
+    box-sizing: border-box;
     display: grid;
     gap: 16px;
+  }
+
+  .grid div {
+    max-width: 100%;
+    min-width: 0;
   }
 </style>

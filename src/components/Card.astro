@@ -1,18 +1,30 @@
 ---
+interface Props {
+  url?: string;
+}
 
+const { url } = Astro.props;
 ---
 
-<div>
+<a class="card" href={url}>
   <slot />
-</div>
+</a>
 
 <style lang="scss">
   @use "../styles/variables" as *;
 
-  div {
+  .card {
     border: 3px solid $accent-color-dark;
     border-radius: $radius;
+    display: block;
     max-width: 100%;
     padding: 16px;
+
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  .card:hover {
+    border-color: $accent-color-light;
   }
 </style>
