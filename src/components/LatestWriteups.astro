@@ -1,38 +1,11 @@
 ---
+import { getCollection } from "astro:content";
+
 import Card from "./Card.astro";
 import Preview from "./Preview.astro";
 import Writeup from "./Writeup.astro";
 
-const writeups = [
-  {
-    date: "January 2025",
-    title: "Guessy CTF Solver",
-    tags: ["Web", "Crypto"],
-    snippet:
-      "This is a snippet of the problem at hand. This will be used to preview the contents of the writeup with a little more content to make up the height",
-  },
-  {
-    date: "November 2024",
-    title: "Pieces",
-    tags: ["Crypto"],
-    snippet:
-      "This is a snippet of the problem at hand. This will be used to preview the contents of the writeup with a little more content to make up the height",
-  },
-  {
-    date: "July 2024",
-    title: "I've got all your crypto challenges with me",
-    tags: ["Pwn", "Linux", "Misc"],
-    snippet:
-      "This is a snippet of the problem at hand. This will be used to preview the contents of the writeup with a little more content to make up the height",
-  },
-  {
-    date: "January 2024",
-    title: "PWN-it",
-    tags: ["Pwn", "Web"],
-    snippet:
-      "This is a snippet of the problem at hand. This will be used to preview the contents of the writeup with a little more content to make up the height",
-  },
-];
+const writeups = (await getCollection("writeups")).slice(0, 4);
 ---
 
 <Preview title="Latest Writeups" url="#">
@@ -42,10 +15,10 @@ const writeups = [
         <div>
           <Card>
             <Writeup
-              upper={writeup.date}
-              title={writeup.title}
-              tags={writeup.tags}
-              snippet={writeup.snippet}
+              upper={writeup.data.repo.name}
+              title={writeup.data.problem.name}
+              tags={[writeup.data.category.name]}
+              snippet={writeup.data.summary}
               preview={true}
             />
           </Card>

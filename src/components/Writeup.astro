@@ -25,7 +25,7 @@ const tags = Astro.props.tags.map((tag) => tagFor(tag, "border", !preview));
       ))
     }
   </div>
-  <p>{snippet}</p>
+  <p set:html={snippet} />
 </>
 
 <style lang="scss">
@@ -52,5 +52,9 @@ const tags = Astro.props.tags.map((tag) => tagFor(tag, "border", !preview));
 
   p {
     margin-top: 16px;
+
+    :global(span) {
+      color: $accent-color-light;
+    }
   }
 </style>

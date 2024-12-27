@@ -12,7 +12,7 @@ const pages = [
 ---
 
 <section>
-  <Image class="logo" src={Logo} alt="" />
+  <Image class="logo" src={Logo} alt="" loading={"eager"} />
   <div class="links">
     {pages.map((page) => <a href={page[1]}>{page[0]}</a>)}
     <Button text="Join us!" type="border" />
