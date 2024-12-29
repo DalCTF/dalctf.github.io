@@ -1,10 +1,9 @@
 ---
-import "../styles/variables.scss";
 import "../styles/global.scss";
+import "../styles/variables.scss";
 
 import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
-import Spacer from "../components/Spacer.astro";
 
 interface Props {
 	title: string;
@@ -39,7 +38,6 @@ const { title, description } = Astro.props;
 
 		<slot />
 
-		<Spacer />
 		<Footer />
 	</body>
 </html>

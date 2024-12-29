@@ -2,7 +2,6 @@
 import type { GetStaticPaths, Page } from "astro";
 import { getCollection, type CollectionEntry } from "astro:content";
 
-import { undefined } from "astro:schema";
 import Legend from "../../components/Competitions/Legend.astro";
 import Hero from "../../components/Hero.astro";
 import Pagination from "../../components/Pagination.astro";
@@ -26,12 +25,12 @@ type Props = {
 
 const { page } = Astro.props;
 
+const formatter = new Intl.DateTimeFormat("en-US", {
+    month: "long",
+    year: "numeric",
+});
 const competitionGroups = Object.groupBy(page.data, (competition) =>
-    competition.data.date_start.toLocaleDateString("en-us", {
-        month: "long",
-        year: "numeric",
-        day: undefined,
-    }),
+    formatter.format(competition.data.date_start),
 );
 ---
 

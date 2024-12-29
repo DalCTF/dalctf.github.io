@@ -2,18 +2,19 @@
 import type { TagType } from "../util/tags";
 
 interface Props {
+  target?: string;
   type?: TagType;
   text: string;
   url?: string;
 }
 
-const { type = "fill", text, url } = Astro.props;
+const { type = "fill", text, url, target } = Astro.props;
 const textColor = type == "border" ? "#4985C1" : "inherit";
 const borderColor = type == "border" ? "#4985C1" : "transparent";
 const backgroundColor = type == "border" ? "transparent" : "#1E3D5C";
 ---
 
-<a class="wrapper" href={url}>
+<a class="wrapper" href={url} target={target}>
   {text}
 </a>
 

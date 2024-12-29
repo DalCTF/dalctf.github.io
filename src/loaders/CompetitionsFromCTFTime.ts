@@ -222,8 +222,6 @@ export class CompetitionsFromCTFTimeLoader implements Loader {
         context.store.clear();
 
         const placements = await this.getPlacements();
-        console.log(placements);
-
         const competitions = await this.getCompetitions(placements);
 
         for (var competition of competitions) {

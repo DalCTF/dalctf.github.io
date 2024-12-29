@@ -5,7 +5,7 @@ import Button from "./Button.astro";
 
 const pages = [
   // ["Home", "/"],
-  ["About", "/about"],
+  // ["About", "/about"],
   ["Writeups", "/writeups"],
   ["Competitions", "/competitions"],
 ];
@@ -17,7 +17,12 @@ const pages = [
   </a>
   <div class="links">
     {pages.map((page) => <a href={page[1]}>{page[0]}</a>)}
-    <Button text="Join us!" type="border" url="https://discord.gg/4vEJJF6CQg" />
+    <Button
+      url="https://discord.gg/4vEJJF6CQg"
+      target="_blank"
+      text="Join us!"
+      type="border"
+    />
   </div>
 </section>
 
