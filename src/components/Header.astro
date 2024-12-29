@@ -12,10 +12,12 @@ const pages = [
 ---
 
 <section>
-  <Image class="logo" src={Logo} alt="" loading={"eager"} />
+  <a class="logo" href="/">
+    <Image src={Logo} alt="" loading={"eager"} />
+  </a>
   <div class="links">
     {pages.map((page) => <a href={page[1]}>{page[0]}</a>)}
-    <Button text="Join us!" type="border" />
+    <Button text="Join us!" type="border" url="https://discord.gg/4vEJJF6CQg" />
   </div>
 </section>
 
@@ -34,6 +36,11 @@ const pages = [
     height: 96px;
   }
 
+  .logo * {
+    width: 100%;
+    height: 100%;
+  }
+
   .links {
     align-items: center;
     display: flex;
@@ -43,9 +50,5 @@ const pages = [
 
   .links a {
     color: $foreground-color;
-  }
-
-  .links a:first-child {
-    font-weight: 700;
   }
 </style>
