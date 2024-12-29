@@ -1,5 +1,66 @@
 import MarkdownIt from 'markdown-it';
 
+export function process(content: string) {
+    const md = new MarkdownIt();
+    const tokens = md.parse(content, {});
+
+    let title: string = '';
+    let text: string = '';
+
+    let isHeading: boolean = false;
+
+    for (const token of tokens) {
+        if (token.type == 'heading_open') {
+            if (title == '' && token.tag == 'h1') {
+                isHeading = true;
+            } else {
+                text += token.markup + ' ';
+            }
+
+            continue;
+        }
+
+        if (token.type == "heading_close") {
+            if (isHeading && token.tag == 'h1') {
+                isHeading = false;
+            } else {
+                text += "\n";
+            }
+
+            continue
+        }
+
+        if (token.type == "paragraph_close") {
+            text += "\n";
+
+            continue;
+        }
+
+        if (token.type == "inline") {
+            if (isHeading) {
+                title = token.content;
+            } else {
+                text += token.content + ' ';
+            }
+
+            continue
+        }
+
+        if (token.type == 'fence') {
+            text += token.markup + token.info + '\n';
+            text += token.content + '\n';
+            text += token.markup + '\n';
+
+            continue;
+        }
+
+        text += token.content;
+    }
+
+    text = text.trim()
+    return { title, text };
+}
+
 export function summary(content: string, max: number = 140): string {
 
     const md = new MarkdownIt();

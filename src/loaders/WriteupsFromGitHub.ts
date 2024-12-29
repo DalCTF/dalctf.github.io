@@ -1,6 +1,7 @@
 import { type Loader, type LoaderContext } from 'astro/loaders';
 import { Octokit } from 'octokit';
 import { Writeup } from '../model/Writeup';
+import { process } from '../util/markdown';
 
 export interface WriteupsFromGitHubLoaderOptions {
     githubToken: string;
@@ -109,7 +110,7 @@ export class WriteupsFromGitHubLoader implements Loader {
         return content.data;
     }
 
-    private async getMarkdown(repo: string, text: string) {
+    private async renderMarkdown(repo: string, text: string) {
         try {
             var content = await this.OCTOKIT.rest.markdown.render({
                 context: `${this.org}/${repo}`,
@@ -131,18 +132,20 @@ export class WriteupsFromGitHubLoader implements Loader {
             const categoryFolders = await this.getCategoryFolders(repo.name);
 
             for (var category of categoryFolders) {
-                const categoryProblems = await this.getCategoryProblems(repo.name, category.name);
+                const problemFolders = await this.getCategoryProblems(repo.name, category.name);
 
-                for (var problem of categoryProblems) {
+                for (var problem of problemFolders) {
                     const content = await this.getWriteup(repo.name, category.name, problem.name);
                     if (!content) {
                         continue;
                     }
 
-                    const text = atob(content.content);
-                    const html = await this.getMarkdown(repo.name, text || "");
+                    const decoded = atob(content.content);
+                    let { title, text } = process(decoded);
 
-                    let writeup = new Writeup(problem.name, [category.name]);
+                    const html = await this.renderMarkdown(repo.name, text || "");
+
+                    let writeup = new Writeup(title, problem.name, [category.name]);
                     writeup.category = category.name;
                     writeup.competition = repo.name;
                     writeup.rendered = html;
@@ -162,8 +165,8 @@ export class WriteupsFromGitHubLoader implements Loader {
     }
 
     async load(context: LoaderContext): Promise<void> {
+        context.store.clear();
         const writeups = await this.getAllWriteups();
-        this.DEVELOPMENT && context.store.clear();
 
         for (var writeup of writeups) {
             context.store.set({ id: writeup.id, data: writeup });

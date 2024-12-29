@@ -8,14 +8,12 @@ import Layout from "../../layouts/Layout.astro";
 import { tagFor } from "../../util/tags";
 
 export const getStaticPaths: GetStaticPaths = async () => {
-    const writeups = await getCollection("writeups");
-
-    return writeups.map((writeup) => ({
-        params: {
-            slug: writeup.data.slug,
-        },
-        props: { writeup },
-    }));
+    return (await getCollection("writeups")).map((writeup) => {
+        return {
+            params: { slug: writeup.data.slug },
+            props: { writeup },
+        };
+    });
 };
 
 type Props = {

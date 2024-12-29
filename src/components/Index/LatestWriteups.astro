@@ -13,7 +13,7 @@ const writeups = (await getCollection("writeups")).slice(0, 4);
   <div class="grid">
     {
       writeups.map((writeup) => (
-        <Card>
+        <Card url={"/writeups/" + writeup.data.slug}>
           <Writeup
             upper={writeup.data.competition}
             title={writeup.data.title}

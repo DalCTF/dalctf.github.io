@@ -4,6 +4,7 @@ export class Writeup {
 
     competition?: string;
     category?: string;
+    folder: string;
     tags: string[];
     title: string;
     content?: string;
@@ -15,6 +16,7 @@ export class Writeup {
             "category": z.string(),
             "tags": z.array(z.string()),
             "title": z.string(),
+            "folder": z.string(),
             "content": z.string(),
             "rendered": z.string(),
             "slug": z.string(),
@@ -23,7 +25,7 @@ export class Writeup {
     }
 
     public get id(): string {
-        return `${this.competition}-${this.category}-${this.title}`
+        return `${this.competition}-${this.category}-${this.folder}`
     }
 
     public get slug(): string {
@@ -39,11 +41,13 @@ export class Writeup {
             "tags": this.tags,
             "title": this.title,
             "content": this.content,
-            "rendered": this.rendered
+            "rendered": this.rendered,
+            "folder": this.folder,
         }
     }
 
-    constructor(title: string, tags: string[] = []) {
+    constructor(title: string, folder: string, tags: string[] = []) {
+        this.folder = folder;
         this.title = title;
         this.tags = tags;
     }

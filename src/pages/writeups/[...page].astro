@@ -14,7 +14,7 @@ export const getStaticPaths: GetStaticPaths = async ({ paginate }) => {
     const writeups = await getCollection("writeups");
 
     return paginate(writeups, {
-        pageSize: 1,
+        pageSize: 5,
     });
 };
 
