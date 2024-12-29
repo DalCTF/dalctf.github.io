@@ -26,6 +26,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.PRIVILEGED_GITHUB_TOKEN }}
 
+      - name: Add .nojekyll file
+        run: touch dist/.nojekyll
+
       - name: Deploy to GitHub Pages
         uses: crazy-max/ghaction-github-pages@v4
         with:
