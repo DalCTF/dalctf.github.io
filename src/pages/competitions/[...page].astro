@@ -3,6 +3,7 @@ import type { GetStaticPaths, Page } from "astro";
 import { getCollection, type CollectionEntry } from "astro:content";
 
 import { undefined } from "astro:schema";
+import Legend from "../../components/Competitions/Legend.astro";
 import Hero from "../../components/Hero.astro";
 import Pagination from "../../components/Pagination.astro";
 import Placement from "../../components/Placement.astro";
@@ -36,7 +37,9 @@ const competitionGroups = Object.groupBy(page.data, (competition) =>
 
 <Layout title="Competitions | Status 418" description="">
     <!-- Hero -->
-    <Hero title="Competitions" />
+    <Hero title="Competitions">
+        <Legend />
+    </Hero>
 
     <!-- List of writeups -->
     <section>

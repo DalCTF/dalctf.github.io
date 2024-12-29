@@ -1,0 +1,37 @@
+---
+import { Icon } from "astro-icon/components";
+---
+
+<>
+  <div>
+    <Icon name="top-5" />
+    <p>Top 5%</p>
+  </div>
+  <div>
+    <Icon name="top-10" />
+    <p>Top 10%</p>
+  </div>
+</>
+
+<style lang="scss">
+  @use "../../styles/variables" as *;
+
+  p {
+    vertical-align: middle;
+    display: inline-block;
+    font-weight: $font-weight-medium;
+  }
+
+  div {
+    margin-bottom: 8px;
+  }
+
+  [data-icon] {
+    color: $accent-color-light;
+    vertical-align: middle;
+    display: inline-block;
+    margin-right: 16px;
+    height: 24px;
+    width: 24px;
+  }
+</style>
