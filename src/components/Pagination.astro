@@ -1,0 +1,86 @@
+---
+import type { Page } from "astro";
+import { Icon } from "astro-icon/components";
+import type { CollectionKey } from "astro:content";
+import { type CollectionEntry } from "astro:content";
+
+type Props = {
+    page: Page<CollectionEntry<CollectionKey>>;
+};
+
+const { page } = Astro.props;
+---
+
+<section>
+    {
+        page.url.prev && (
+            <a href={page.url.prev} class="prev">
+                <Icon name="chevron" />
+            </a>
+        )
+    }
+    {page.currentPage > 1 && <a href={page.url.first}>{1}</a>}
+    {page.currentPage > 2 && <div>...</div>}
+    <div class="current">{page.currentPage}</div>
+    {page.currentPage < page.lastPage - 1 && <div>...</div>}
+    {
+        page.currentPage < page.lastPage && (
+            <a href={page.url.last}>{page.lastPage}</a>
+        )
+    }
+    {
+        page.url.next && (
+            <a href={page.url.next} class="next">
+                <Icon name="chevron" />
+            </a>
+        )
+    }
+</section>
+
+<style lang="scss">
+    @use "../styles/variables" as *;
+
+    section {
+        text-align: center;
+    }
+
+    a {
+        color: inherit;
+        display: inline-block;
+        text-align: center;
+        vertical-align: middle;
+        line-height: 32px;
+        width: 32px;
+        height: 32px;
+
+        margin: 0 8px;
+    }
+
+    a.prev,
+    a.next {
+        background: $accent-color-dark;
+        border-radius: 4px;
+    }
+
+    a [data-icon] {
+        margin: 8px auto;
+    }
+
+    .prev [data-icon] {
+        rotate: 180deg;
+    }
+
+    div {
+        vertical-align: middle;
+        display: inline-block;
+        text-align: center;
+        line-height: 32px;
+        height: 32px;
+        width: 32px;
+    }
+
+    .current {
+        font-weight: $font-weight-semibold;
+        border-bottom: 1px solid $accent-color-light;
+    }
+</style>

@@ -1,6 +1,6 @@
 import MarkdownIt from 'markdown-it';
 
-export function summary(content: string): string {
+export function summary(content: string, max: number = 140): string {
 
     const md = new MarkdownIt();
     const tokens = md.parse(content, {});
@@ -32,12 +32,12 @@ export function summary(content: string): string {
             }
         }
 
-        if (accumulatedText.length >= 140) break;
+        if (accumulatedText.length >= max) break;
     }
 
     accumulatedText = accumulatedText
         .trim()
-        .slice(0, 140)
+        .slice(0, max)
         .replace(/\s\S*$/, ''); // Remove the trailing partial word if present
 
     if (!accumulatedText.endsWith(".")) {

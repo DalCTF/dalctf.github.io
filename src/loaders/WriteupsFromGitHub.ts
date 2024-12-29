@@ -1,6 +1,6 @@
 import { type Loader, type LoaderContext } from 'astro/loaders';
 import { Octokit } from 'octokit';
-import { summary as mdSummary } from '../util/markdown';
+import { Writeup } from '../model/Writeup';
 
 export interface WriteupsFromGitHubLoaderOptions {
     githubToken: string;
@@ -134,26 +134,24 @@ export class WriteupsFromGitHubLoader implements Loader {
                 const categoryProblems = await this.getCategoryProblems(repo.name, category.name);
 
                 for (var problem of categoryProblems) {
-                    const writeup = await this.getWriteup(repo.name, category.name, problem.name);
-                    if (!writeup) {
+                    const content = await this.getWriteup(repo.name, category.name, problem.name);
+                    if (!content) {
                         continue;
                     }
 
-                    const text = atob(writeup.content);
-
-                    const summary = mdSummary(text);
+                    const text = atob(content.content);
                     const html = await this.getMarkdown(repo.name, text || "");
 
-                    writeups.push({
-                        repo,
-                        category,
-                        problem,
-                        summary,
-                        writeup: html,
-                    });
+                    let writeup = new Writeup(problem.name, [category.name]);
+                    writeup.category = category.name;
+                    writeup.competition = repo.name;
+                    writeup.rendered = html;
+                    writeup.content = text;
+
+                    writeups.push(writeup.raw());
 
                     // Return less items in case of development
-                    if (this.DEVELOPMENT && writeups.length >= 2) {
+                    if (this.DEVELOPMENT && writeups.length >= 4) {
                         return writeups;
                     }
                 }
@@ -168,9 +166,12 @@ export class WriteupsFromGitHubLoader implements Loader {
         this.DEVELOPMENT && context.store.clear();
 
         for (var writeup of writeups) {
-            const id = `${writeup.repo.name}/${writeup.category.name}/${writeup.problem.name}`;
-            context.store.set({ id, data: writeup });
+            context.store.set({ id: writeup.id, data: writeup });
         }
+    }
+
+    async schema() {
+        return Writeup.schema();
     }
 
     constructor(githubToken: string, development: boolean = false) {

@@ -2,26 +2,27 @@
 import type { TagType } from "../util/tags";
 
 interface Props {
-  type: TagType;
+  type?: TagType;
   text: string;
   url?: string;
 }
 
-const { type, text, url } = Astro.props;
+const { type = "fill", text, url } = Astro.props;
 const textColor = type == "border" ? "#4985C1" : "inherit";
-const background = type == "border" ? "transparent" : "#4985C1";
+const borderColor = type == "border" ? "#4985C1" : "transparent";
+const backgroundColor = type == "border" ? "transparent" : "#1E3D5C";
 ---
 
 <a class="wrapper" href={url}>
   {text}
 </a>
 
-<style lang="scss" define:vars={{ textColor, background }}>
+<style lang="scss" define:vars={{ textColor, borderColor, backgroundColor }}>
   @use "../styles/variables" as *;
 
   .wrapper {
-    border: 3px solid $accent-color-light;
-    background: var(--background);
+    border: 3px solid var(--borderColor);
+    background: var(--backgroundColor);
     display: inline-block;
     border-radius: 8px;
     padding: 12px 16px;

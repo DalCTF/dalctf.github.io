@@ -12,6 +12,13 @@ const { upper, title, subtitle } = Astro.props;
   {upper && <h3>{upper}</h3>}
   <h1>{title}</h1>
   {subtitle && <h3>{subtitle}</h3>}
+  {
+    !!Astro.slots.default && (
+      <div>
+        <slot />
+      </div>
+    )
+  }
 </section>
 
 <style lang="scss">
@@ -31,6 +38,10 @@ const { upper, title, subtitle } = Astro.props;
   }
 
   h3 {
-    color: var(--foreground-secondary-color);
+    color: $foreground-secondary-color;
+  }
+
+  div {
+    margin-top: 16px;
   }
 </style>

@@ -52,7 +52,8 @@ h3 {
     margin: 0px;
 }
 
-p.code {
+code,
+pre {
     font-weight: $font-weight-medium;
     font-family: $code-font;
     letter-spacing: 0.5%;

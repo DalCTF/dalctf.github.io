@@ -1,6 +1,6 @@
 ---
-import Preview from "./Preview.astro";
-import Ranking from "./Ranking.astro";
+import Preview from "../Preview.astro";
+import Ranking from "../Ranking.astro";
 
 const rankings = [
   {
@@ -36,7 +36,7 @@ const rankings = [
 </Preview>
 
 <style lang="scss">
-  @use "../styles/variables" as *;
+  @use "../../styles/variables" as *;
 
   div {
     flex-direction: column;

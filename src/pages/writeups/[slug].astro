@@ -1,0 +1,97 @@
+---
+import type { GetStaticPaths } from "astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+
+import Hero from "../../components/Hero.astro";
+import Tag from "../../components/Tag.astro";
+import Layout from "../../layouts/Layout.astro";
+import { tagFor } from "../../util/tags";
+
+export const getStaticPaths: GetStaticPaths = async () => {
+    const writeups = await getCollection("writeups");
+
+    return writeups.map((writeup) => ({
+        params: {
+            slug: writeup.data.slug,
+        },
+        props: { writeup },
+    }));
+};
+
+type Props = {
+    writeup: CollectionEntry<"writeups">;
+};
+
+const { writeup } = Astro.props;
+
+const tags = (writeup.data.tags || []).map((tag) =>
+    tagFor(tag, "border", false),
+);
+
+// To-do: Sanitize HTML and Markdown from writeup
+---
+
+<Layout title="Writeups | Status 418" description="">
+    <!-- Hero -->
+    <Hero title={writeup.data.title} upper={writeup.data.competition}>
+        <div class="tags">
+            {
+                tags.map((tag) => (
+                    <Tag
+                        text={tag.text}
+                        color={tag.color}
+                        type={tag.type}
+                        url={tag.url}
+                    />
+                ))
+            }
+        </div>
+    </Hero>
+
+    <!-- Content -->
+    <section class="content">
+        <div set:html={writeup.data.rendered} />
+    </section>
+</Layout>
+
+<style lang="scss">
+    @use "../../styles/variables" as *;
+
+    .content {
+        :global(a) {
+            color: $accent-color-light;
+        }
+
+        :global(p) {
+            margin-bottom: 24px;
+        }
+
+        :global(h2) {
+            margin-bottom: 24px;
+        }
+
+        // Target an h2 inside a .markdown-heading that comes
+        // after something that is not a .markdown-heading
+        :global(:not(.markdown-heading) + .markdown-heading h2) {
+            margin-top: 48px;
+        }
+
+        :global(code) {
+            background: $background-secondary-color;
+            display: inline-block;
+            border-radius: 6px;
+            margin-bottom: 2px;
+            padding: 0px 8px;
+            margin-top: 2px;
+        }
+
+        :global(pre) {
+            background: $background-secondary-color;
+            display: block;
+            border-radius: 8px;
+            margin-bottom: 2px;
+            padding: 16px;
+            margin: 24px 0px;
+        }
+    }
+</style>

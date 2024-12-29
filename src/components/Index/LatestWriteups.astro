@@ -1,0 +1,40 @@
+---
+import { getCollection } from "astro:content";
+import { summary } from "../../util/markdown";
+
+import Card from "../Card.astro";
+import Preview from "../Preview.astro";
+import Writeup from "../Writeup.astro";
+
+const writeups = (await getCollection("writeups")).slice(0, 4);
+---
+
+<Preview title="Latest Writeups" url="/writeups">
+  <div class="grid">
+    {
+      writeups.map((writeup) => (
+        <Card>
+          <Writeup
+            upper={writeup.data.competition}
+            title={writeup.data.title}
+            tags={writeup.data.tags}
+            snippet={summary(writeup.data.content)}
+            preview={true}
+          />
+        </Card>
+      ))
+    }
+  </div>
+</Preview>
+
+<style lang="scss">
+  @use "../../styles/variables" as *;
+
+  .grid {
+    grid-template-columns: 1fr 50%;
+    box-sizing: border-box;
+    grid-auto-rows: 1fr;
+    display: grid;
+    gap: 16px;
+  }
+</style>

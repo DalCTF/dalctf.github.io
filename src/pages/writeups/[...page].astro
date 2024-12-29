@@ -1,0 +1,63 @@
+---
+import type { GetStaticPaths, Page } from "astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+import { summary } from "../../util/markdown";
+
+import Button from "../../components/Button.astro";
+import Hero from "../../components/Hero.astro";
+import Pagination from "../../components/Pagination.astro";
+import Spacer from "../../components/Spacer.astro";
+import Writeup from "../../components/Writeup.astro";
+import Layout from "../../layouts/Layout.astro";
+
+export const getStaticPaths: GetStaticPaths = async ({ paginate }) => {
+    const writeups = await getCollection("writeups");
+
+    return paginate(writeups, {
+        pageSize: 1,
+    });
+};
+
+type Props = {
+    page: Page<CollectionEntry<"writeups">>;
+};
+
+const { page } = Astro.props;
+---
+
+<Layout title="Writeups | Status 418" description="">
+    <!-- Hero -->
+    <Hero title="Writeups" />
+
+    <!-- List of writeups -->
+    <section>
+        {
+            page.data.map((writeup) => (
+                <div>
+                    <Writeup
+                        title={writeup.data.title}
+                        upper={writeup.data.competition}
+                        tags={writeup.data.tags}
+                        snippet={summary(writeup.data.content, 300)}
+                    />
+                    <Spacer height={24} />
+                    <Button
+                        text="Read more"
+                        url={"writeups/" + writeup.data.slug}
+                    />
+                </div>
+            ))
+        }
+    </section>
+
+    <!-- Pagination controls -->
+    <Pagination page={page} />
+</Layout>
+
+<style lang="scss">
+    @use "../../styles/variables" as *;
+
+    div {
+        margin-bottom: 80px;
+    }
+</style>
