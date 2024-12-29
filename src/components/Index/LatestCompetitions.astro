@@ -1,0 +1,32 @@
+---
+import { getCollection } from "astro:content";
+import Preview from "../Preview.astro";
+import Ranking from "../Ranking.astro";
+
+const competitions = await getCollection("competitions");
+const latest = competitions.splice(0, 3);
+---
+
+<Preview title="Latest Rankings" url="#">
+  <div>
+    {
+      latest.map((competition) => (
+        <Ranking
+          competition={competition.data.name}
+          position={competition.data.place}
+          total={competition.data.total}
+        />
+      ))
+    }
+  </div>
+</Preview>
+
+<style lang="scss">
+  @use "../../styles/variables" as *;
+
+  div {
+    flex-direction: column;
+    display: flex;
+    gap: 16px;
+  }
+</style>

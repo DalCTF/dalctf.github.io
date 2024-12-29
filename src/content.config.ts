@@ -1,4 +1,6 @@
 import { defineCollection } from 'astro:content';
+
+import { CompetitionsFromCTFTimeLoader } from './loaders/CompetitionsFromCTFTime';
 import { WriteupsFromGitHubLoader } from './loaders/WriteupsFromGitHub';
 
 const writeups = defineCollection({
@@ -8,4 +10,11 @@ const writeups = defineCollection({
     })
 });
 
-export const collections = { writeups };
+const competitions = defineCollection({
+    loader: CompetitionsFromCTFTimeLoader.getLoader({
+        development: process.env.NODE_ENV === 'development',
+        teamCode: "361970",
+    })
+});
+
+export const collections = { writeups, competitions };
