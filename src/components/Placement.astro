@@ -3,11 +3,12 @@ import { Icon } from "astro-icon/components";
 
 interface Props {
   competition: string;
-  total: number;
   position: number;
+  total: number;
+  id: string;
 }
 
-const { competition, total, position } = Astro.props;
+const { id, competition, total, position } = Astro.props;
 
 function ordinal(n: number) {
   var s = ["th", "st", "nd", "rd"];
@@ -19,7 +20,7 @@ const showTop5 = position / total <= 0.05;
 const showTop10 = !showTop5 && position / total <= 0.1;
 ---
 
-<a href="#">
+<a href={"/competitions/" + id}>
   <div class="left">
     <p class="emphasis">{competition}</p>
   </div>

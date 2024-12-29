@@ -2,6 +2,7 @@ import { z } from 'astro:content';
 
 export class Competition {
 
+    id: string;
     url: string;
     name: string;
     place: number;
@@ -9,10 +10,6 @@ export class Competition {
     date_end: Date;
     date_start: Date;
     event_url: string;
-
-    get id(): string {
-        return this.event_url;
-    }
 
     static schema() {
         return z.object({
@@ -41,6 +38,7 @@ export class Competition {
     }
 
     constructor(
+        id: string,
         url: string,
         name: string,
         place: number,
@@ -49,6 +47,7 @@ export class Competition {
         date_start: Date,
         event_url: string,
     ) {
+        this.id = id;
         this.url = url;
         this.name = name;
         this.place = place;

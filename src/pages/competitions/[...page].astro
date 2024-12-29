@@ -1,0 +1,80 @@
+---
+import type { GetStaticPaths, Page } from "astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+
+import { undefined } from "astro:schema";
+import Hero from "../../components/Hero.astro";
+import Pagination from "../../components/Pagination.astro";
+import Placement from "../../components/Placement.astro";
+import Layout from "../../layouts/Layout.astro";
+
+export const getStaticPaths: GetStaticPaths = async ({ paginate }) => {
+    const competitions = await getCollection("competitions");
+    const sortedCompetitions = competitions.toSorted(
+        (a, b) => b.data.date_start.getTime() - a.data.date_start.getTime(),
+    );
+
+    return paginate(sortedCompetitions, {
+        pageSize: 5,
+    });
+};
+
+type Props = {
+    page: Page<CollectionEntry<"competitions">>;
+};
+
+const { page } = Astro.props;
+
+const competitionGroups = Object.groupBy(page.data, (competition) =>
+    competition.data.date_start.toLocaleDateString("en-us", {
+        month: "long",
+        year: "numeric",
+        day: undefined,
+    }),
+);
+---
+
+<Layout title="Competitions | Status 418" description="">
+    <!-- Hero -->
+    <Hero title="Competitions" />
+
+    <!-- List of writeups -->
+    <section>
+        {
+            Object.entries(competitionGroups).map(([key, competitions]) => (
+                <div>
+                    <h3>{key}</h3>
+                    {competitions?.map((competition) => (
+                        <div class="placement">
+                            <Placement
+                                competition={competition.data.name}
+                                position={competition.data.place}
+                                total={competition.data.total}
+                                id={competition.data.id}
+                            />
+                        </div>
+                    ))}
+                </div>
+            ))
+        }
+    </section>
+
+    <!-- Pagination controls -->
+    <Pagination page={page} />
+</Layout>
+
+<style lang="scss">
+    @use "../../styles/variables" as *;
+
+    h3 {
+        margin-bottom: 40px;
+    }
+
+    .placement {
+        margin-bottom: 16px;
+    }
+
+    .placement:last-child {
+        margin-bottom: 56px;
+    }
+</style>

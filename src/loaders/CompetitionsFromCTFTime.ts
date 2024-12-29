@@ -3,6 +3,7 @@ import { HTMLElement, parse } from 'node-html-parser';
 import { Competition } from '../model/Competition';
 
 interface Placement {
+    id: string;
     place: number;
     event_uri: string;
 }
@@ -147,8 +148,10 @@ export class CompetitionsFromCTFTimeLoader implements Loader {
         let name = this.getCompetitionName(content);
         let url = this.getCompetitionURL(details);
         let place = placement.place;
+        let id = placement.id;
 
         return new Competition(
+            id,
             url,
             name,
             place,
@@ -183,8 +186,9 @@ export class CompetitionsFromCTFTimeLoader implements Loader {
 
             let place = parseInt(columns[1].rawText);
             let event_uri = columns[2].firstElementChild?.getAttribute("href") || "";
+            let id = event_uri.split("/").pop() || "";
 
-            result.push({ place, event_uri });
+            result.push({ id, place, event_uri });
         }
 
         return result;
@@ -218,6 +222,8 @@ export class CompetitionsFromCTFTimeLoader implements Loader {
         context.store.clear();
 
         const placements = await this.getPlacements();
+        console.log(placements);
+
         const competitions = await this.getCompetitions(placements);
 
         for (var competition of competitions) {

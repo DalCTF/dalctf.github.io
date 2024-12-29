@@ -1,0 +1,54 @@
+---
+import type { GetStaticPaths } from "astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+
+import Button from "../../components/Button.astro";
+import Hero from "../../components/Hero.astro";
+import Placement from "../../components/Placement.astro";
+import Layout from "../../layouts/Layout.astro";
+
+export const getStaticPaths: GetStaticPaths = async () => {
+    return (await getCollection("competitions")).map((competition) => {
+        return {
+            params: { slug: competition.data.id },
+            props: { competition },
+        };
+    });
+};
+
+type Props = {
+    competition: CollectionEntry<"competitions">;
+};
+
+const { competition } = Astro.props;
+
+// To-do: Sanitize HTML and Markdown from writeup
+---
+
+<Layout title="Writeups | Status 418" description="">
+    <!-- Hero -->
+    <Hero
+        title={competition.data.name}
+        subtitle={competition.data.date_start.toLocaleDateString("en-us", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+        })}
+    >
+        <Button text="See on CTFTime" url={competition.data.event_url} />
+    </Hero>
+
+    <!-- Placement -->
+    <section>
+        <Placement
+            competition={competition.data.name}
+            position={competition.data.place}
+            total={competition.data.total}
+            id={competition.data.id}
+        />
+    </section>
+</Layout>
+
+<style lang="scss">
+    @use "../../styles/variables" as *;
+</style>
