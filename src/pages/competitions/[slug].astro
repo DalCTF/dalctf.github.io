@@ -25,7 +25,10 @@ const { competition } = Astro.props;
 // To-do: Sanitize HTML and Markdown from writeup
 ---
 
-<Layout title="Writeups | Status 418" description="">
+<Layout
+    title={`${competition.data.name} | Competitions | Status 418`}
+    description=""
+>
     <!-- Hero -->
     <Hero
         title={competition.data.name}
