@@ -4,8 +4,8 @@ import { Writeup } from '../model/Writeup';
 import { process } from '../util/markdown';
 
 export interface WriteupsFromGitHubLoaderOptions {
-    githubToken: string;
-    development: boolean;
+    githubToken?: string;
+    development?: boolean;
 }
 
 export class WriteupsFromGitHubLoader implements Loader {
@@ -19,7 +19,15 @@ export class WriteupsFromGitHubLoader implements Loader {
 
 
     static getLoader(options: WriteupsFromGitHubLoaderOptions): WriteupsFromGitHubLoader {
-        return new WriteupsFromGitHubLoader(options.githubToken, options.development);
+        if (options.githubToken == undefined || options.githubToken == "") {
+            throw new Error("[!] GitHub token must not be empty or undefined!");
+        }
+
+        if (options.development == undefined) {
+            options.development = false;
+        }
+
+        return new WriteupsFromGitHubLoader(options.githubToken, options.development || false);
     }
 
     private async getRepos() {
@@ -140,8 +148,11 @@ export class WriteupsFromGitHubLoader implements Loader {
                         continue;
                     }
 
-                    const decoded = atob(content.content);
-                    let { title, text } = process(decoded);
+                    const buffer = Buffer.from(content.content, "base64");
+                    const decoded = buffer.toString("utf-8");
+
+                    let { content: text, params } = process(decoded);
+                    let title = params.get("title") || problem.name;
 
                     const html = await this.renderMarkdown(repo.name, text || "");
 
