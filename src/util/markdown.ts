@@ -1,19 +1,112 @@
 import MarkdownIt from 'markdown-it';
 import type { Token } from 'markdown-it/index.js';
 
-type Partial = { content: string[], params: Map<string, any> }
-type Result = { content: string, params: Map<string, any> }
+type Result = { text: string, params: Map<string, any> }
+export type MarkdownProcessResult = Result;
+
+class Chip {
+    type: "text" | "separator" | "break" | "space";
+    value: string;
+
+    static separator(value: string): Chip {
+        return new Chip("separator", value);
+    }
+
+    static text(value: string): Chip {
+        return new Chip("text", value);
+    }
+
+    static break(): Chip {
+        return new Chip("break", "\n");
+    }
+
+    static space(): Chip {
+        return new Chip("space", " ");
+    }
+
+    private constructor(type: "text" | "separator" | "break" | "space", value: string) {
+        this.value = value;
+        this.type = type;
+    }
+}
+
+class Partial {
+    content: Chip[];
+    params: Map<string, any>;
+
+    get text(): string {
+        return this.content.map(x => "" + x.value + "").join('');
+    }
+
+    get debug(): string {
+        return this.content.map(x => "{" + x.value + "}").join('');
+    }
+
+    constructor(content: Chip[], params: Map<string, any>) {
+        this.content = content;
+        this.params = params;
+    }
+}
 
 class State {
     private _head?: Token;
     private _tail: Token[];
 
-    public content: string[];
+    public separator: string = "\n";
+
+    public content: Chip[];
     public params: Map<string, any>;
 
     // Content
-    pushContent(...content: string[]) {
-        this.content.push(...content);
+    private needsSpace(chip: Chip): boolean {
+        const starting_symbols = [" ", ". ", ",", ";", "! ", "? ", ")", "]", "}"];
+        if (starting_symbols.some(x => chip.value.startsWith(x))) return false;
+
+        const last = this.content.at(-1);
+        if (!last || last.type != "text") return false;
+
+        const ending_sybmols = ["(", "[", "{", "\"", "\'"];
+        if (ending_sybmols.some(x => last.value.endsWith(x))) return false;
+
+        return true;
+    }
+
+    private endsInBreak(): boolean {
+        if (this.content.length == 0) return true;
+        const last = this.content.at(-1)!;
+        return last.type == "break";
+    }
+
+    private pushChip(chip: Chip) {
+        if (this.needsSpace(chip)) {
+            this.content.push(Chip.space());
+        }
+
+        this.content.push(chip);
+    }
+
+    pushBlock(...content: string[]) {
+        if (!this.endsInBreak()) this.break();
+        this.push(...content);
+        this.separate();
+        this.break();
+    }
+
+    push(...content: string[]) {
+        for (let item of content) {
+            if (!item || item == "") continue;
+            item = item.trim();
+
+            this.pushChip(Chip.text(item));
+        }
+    }
+
+    separate() {
+        this.content.push(Chip.separator(this.separator));
+    }
+
+    break() {
+        this.content.push(Chip.break());
     }
 
     // Parameters
@@ -54,12 +147,16 @@ class State {
 
     // General
     merge(other: Partial) {
-        this.pushContent(...other.content);
         this.mergeParams(other.params);
+
+        for (let chip of other.content) {
+            if (chip.type == "text") { this.pushChip(chip); }
+            else { this.content.push(chip); }
+        }
     }
 
     build(): Partial {
-        return { content: this.content, params: this.params }
+        return new Partial(this.content, this.params);
     }
 
     constructor(tokens: Token[]) {
@@ -92,6 +189,33 @@ class Block {
 }
 
 class MarkdownProcessor {
+    options: MarkdownProcessOptions;
+
+    // Special Cases
+    private shouldClip(...tokenTypes: string[]): boolean {
+        return tokenTypes.some(x => this.options.clip.includes(x));
+    }
+
+    private shouldCollapse(...tokenTypes: string[]): boolean {
+        return tokenTypes.some(x => this.options.collapse.includes(x));
+    }
+
+    private handleSpecialCase(state: State, token: Token, identifiers: string[] = []): boolean {
+        identifiers.push(token.type, token.tag);
+
+        if (this.shouldClip(...identifiers)) {
+            return true;
+        }
+
+        if (this.shouldCollapse(...identifiers)) {
+            state.push("[...]");
+            state.separate();
+            return true;
+        }
+
+        return false;
+    }
+
     // Block Parsing
     private accumulateBlock(state: State, until: string): Block {
         let token: Token | undefined;
@@ -121,42 +245,72 @@ class MarkdownProcessor {
     // Token types
     private processParagraph(state: State) {
         let block = this.accumulateBlock(state, "paragraph_close");
-        let content = block.content;
+        if (this.handleSpecialCase(state, block.open)) return;
 
-        if (content.length == 0) {
-            console.log("[,] Paragraph block is empty. Skipping.");
-            return;
-        }
-
-        let result = this.processTokens(content);
+        let result = this.processTokens(block.content);
         state.merge(result);
+        state.separate();
 
-        state.pushContent("");
+        if (!this.options.compress) state.break();
     }
 
     private processHeading(state: State) {
         let block = this.accumulateBlock(state, "heading_close");
         let result = this.processTokens(block.content);
+        let text = result.text;
 
-        const text = result.content.join().trim();
-
-        if (!state.hasParam("title") && block.open.tag == "h1") {
+        if (this.options.extractTitle && !state.hasParam("title") && block.open.tag == "h1") {
             console.log(`> Extracted title '${text}'`);
             state.putParam("title", text);
-        } else {
-            const markup = `${block.open.markup} ${text}\n`;
-            state.pushContent(markup);
         }
+
+        if (this.handleSpecialCase(state, block.open, ["heading"])) return;
+        const markup = `${block.open.markup} ${text}`;
+        state.pushBlock(markup);
+    }
+
+    private processInline(state: State) {
+        const token = state.top();
+        if (!token.children) return;
+
+        let result = this.processTokens(token.children);
+        state.merge(result);
     }
 
     private processFence(state: State) {
         const token = state.top();
-        state.pushContent(`${token.markup}${token.info}\n${token.content.trim()}\n${token.markup}\n`);
+        if (this.handleSpecialCase(state, token)) return;
+        state.pushBlock(`${token.markup}${token.info}\n${token.content.trim()}\n${token.markup}`);
+    }
+
+    private processCode(state: State) {
+        const token = state.top();
+        if (this.handleSpecialCase(state, token)) return;
+        state.push(`${token.markup}${token.content.trim()}${token.markup}`);
+    }
+
+    private processLink(state: State) {
+        let block = this.accumulateBlock(state, "link_close");
+        if (this.handleSpecialCase(state, block.open)) return;
+
+        let result = this.processTokens(block.content);
+        let href = block.open.attrGet("href") || "";
+        let text = result.text;
+
+        if (this.options.stripLinks) {
+            state.push(text);
+        } else {
+            state.push(`[${text}](${href})`);
+        }
     }
 
     // General
     private processTokens(tokens: Token[]): Partial {
         let state = new State(tokens);
+
+        if (this.options.compress) {
+            state.separator = " ";
+        }
 
         do {
             let token = state.pop();
@@ -168,80 +322,88 @@ class MarkdownProcessor {
                 case "paragraph_open":
                     this.processParagraph(state);
                     break;
+                case "inline":
+                    this.processInline(state);
+                    break;
                 case "fence":
                     this.processFence(state);
                     break;
+                case "code_inline":
+                    this.processCode(state);
+                    break;
+                case "link_open":
+                    this.processLink(state);
+                    break;
                 default:
-                    state.pushContent(token.content);
+                    if (this.handleSpecialCase(state, token)) break;
+                    state.push(token.content);
             }
         } while (state.hasMore());
 
         return state.build();
     }
 
-    process(text: string): Result {
-        let tokens = (new MarkdownIt()).parse(text, {});
+    process(input: string): Result {
+        let tokens = (new MarkdownIt()).parse(input, {});
         let partial = this.processTokens(tokens);
+        let params = partial.params;
 
-        return {
-            content: partial.content.join("\n"),
-            params: partial.params
-        }
+        let text: string;
+        if (this.options.debug) text = partial.debug;
+        else text = partial.text;
+
+        return { params, text };
+    }
+
+    constructor(options?: MarkdownProcessOptions) {
+        this.options = options || new MarkdownProcessOptions();
     }
 }
 
-// ---
+export class MarkdownProcessOptions {
+    breakLineOnCollapse: boolean = true;
+    extractTitle: boolean = true;
+    stripLinks: boolean = false;
+    compress: boolean = false;
+    debug: boolean = false;
 
-export type MarkdownProcessResult = Result;
-
-export function process(text: string): MarkdownProcessResult {
-    const processor = new MarkdownProcessor();
-    return processor.process(text);
+    collapse: string[] = [];
+    clip: string[] = [];
 }
 
-export function summary(content: string, max: number = 140): string {
+export function summary(text: string, max: number = 140): MarkdownProcessResult {
 
-    const md = new MarkdownIt();
-    const tokens = md.parse(content, {});
+    let options = new MarkdownProcessOptions();
+    options.extractTitle = false;
+    options.collapse = ["fence"];
+    options.clip = ["heading"];
+    options.stripLinks = true;
+    options.compress = true;
 
-    let accumulatedText = '';
-    let is_header = false;
-    let is_link = false;
+    const processor = new MarkdownProcessor(options);
+    let result = processor.process(text);
+    text = result.text;
 
-    for (const token of tokens) {
-        if (token.type === 'heading_open') {
-            is_header = true;
-        } else if (token.type === 'heading_close') {
-            is_header = false;
-        } else if (token.type === 'inline' && !is_header) {
-            if (!token.children) {
-                accumulatedText += token.content + ' ';
-            } else {
-                for (let child of token.children) {
-                    if (child.type === 'link_open') {
-                        is_link = true;
-                    } else if (child.type === 'link_close') {
-                        is_link = false;
-                    } else if (is_link) {
-                        accumulatedText += "<span>" + child.content + '</span>';
-                    } else {
-                        accumulatedText += child.content;
-                    }
-                }
-            }
-        }
-
-        if (accumulatedText.length >= max) break;
-    }
-
-    accumulatedText = accumulatedText
+    text = text
         .trim()
         .slice(0, max)
         .replace(/\s\S*$/, ''); // Remove the trailing partial word if present
 
-    if (!accumulatedText.endsWith(".")) {
-        accumulatedText += "...";
+    if (!text.endsWith(".")) {
+        text += "...";
     }
 
-    return accumulatedText;
+    return { text, params: new Map<string, any>() };
+}
+
+export function process(text: string): MarkdownProcessResult {
+
+    let options = new MarkdownProcessOptions();
+    options.extractTitle = true;
+    options.compress = false;
+    options.collapse = [];
+    options.clip = ["h1"];
+
+    const processor = new MarkdownProcessor(options);
+    return processor.process(text);
 }

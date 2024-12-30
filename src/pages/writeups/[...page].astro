@@ -38,7 +38,7 @@ const { page } = Astro.props;
                         title={writeup.data.title}
                         upper={writeup.data.competition}
                         tags={writeup.data.tags}
-                        snippet={summary(writeup.data.content, 300)}
+                        snippet={summary(writeup.data.content, 300).text}
                     />
                     <Spacer height={24} />
                     <Button

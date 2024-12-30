@@ -151,7 +151,7 @@ export class WriteupsFromGitHubLoader implements Loader {
                     const buffer = Buffer.from(content.content, "base64");
                     const decoded = buffer.toString("utf-8");
 
-                    let { content: text, params } = process(decoded);
+                    let { text, params } = process(decoded);
                     let title = params.get("title") || problem.name;
 
                     const html = await this.renderMarkdown(repo.name, text || "");

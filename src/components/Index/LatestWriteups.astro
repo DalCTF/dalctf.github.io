@@ -18,7 +18,7 @@ const writeups = (await getCollection("writeups")).slice(0, 4);
             upper={writeup.data.competition}
             title={writeup.data.title}
             tags={writeup.data.tags}
-            snippet={summary(writeup.data.content)}
+            snippet={summary(writeup.data.content).text}
             preview={true}
           />
         </Card>
