@@ -5,10 +5,11 @@ interface Props {
   competition: string;
   position: number;
   total: number;
+  link?: boolean;
   id: string;
 }
 
-const { id, competition, total, position } = Astro.props;
+const { id, competition, total, position, link = true } = Astro.props;
 
 function ordinal(n: number) {
   var s = ["th", "st", "nd", "rd"];
@@ -20,7 +21,7 @@ const showTop5 = position / total <= 0.05;
 const showTop10 = !showTop5 && position / total <= 0.1;
 ---
 
-<a href={"/competitions/" + id}>
+<a href={link ? "/competitions/" + id : undefined}>
   <div class="left">
     <p class="emphasis">{competition}</p>
   </div>
