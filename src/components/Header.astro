@@ -56,4 +56,19 @@ const pages = [
   .links a {
     color: $foreground-color;
   }
+
+  @media screen and (max-width: $breakpoint-phone) {
+    :global(.grid a:nth-child(n + 3)) {
+      background: red;
+      display: none;
+    }
+
+    section {
+      flex-direction: column;
+    }
+
+    .links {
+      margin-top: 24px;
+    }
+  }
 </style>

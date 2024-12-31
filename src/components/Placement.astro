@@ -46,9 +46,10 @@ const showTop10 = !showTop5 && position / total <= 0.1;
     flex-direction: row;
     align-items: center;
     padding: 16px 32px;
+    min-height: 72px;
     display: flex;
-    height: 72px;
 
+    overflow: hidden;
     color: inherit;
   }
 
@@ -84,6 +85,21 @@ const showTop10 = !showTop5 && position / total <= 0.1;
       &.total {
         margin-left: 8px;
       }
+    }
+  }
+
+  @media screen and (max-width: $breakpoint-phone) {
+    a {
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .left p {
+      text-align: center;
+    }
+
+    .right div {
+      min-width: 0px;
     }
   }
 </style>

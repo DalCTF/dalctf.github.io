@@ -31,10 +31,20 @@ const writeups = (await getCollection("writeups")).slice(0, 4);
   @use "../../styles/variables" as *;
 
   .grid {
-    grid-template-columns: 1fr 50%;
+    grid-template-columns: 1fr 1fr;
     box-sizing: border-box;
     grid-auto-rows: 1fr;
     display: grid;
     gap: 16px;
+  }
+
+  @media screen and (max-width: $breakpoint-tablet) {
+    :global(.grid a:nth-child(n + 3)) {
+      display: none;
+    }
+
+    .grid {
+      grid-template-columns: 1fr;
+    }
   }
 </style>
