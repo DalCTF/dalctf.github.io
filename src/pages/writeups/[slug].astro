@@ -76,12 +76,18 @@ const tags = (writeup.data.tags || []).map((tag) =>
 
         :global(code) {
             background: $background-secondary-color;
-            display: inline-block;
+            padding: 0.2em 0.5em;
             border-radius: 6px;
-            margin-bottom: 2px;
-            padding: 0px 8px;
-            margin-top: 2px;
-            max-width: 100%;
+            font-size: 85%;
+            margin: 0;
+
+            //
+            // Solves issue where long lines would not break
+            //
+            white-space: pre-wrap; /* Allow wrapping of preformatted text */
+            word-wrap: break-word; /* Break words that are too long to fit */
+            word-break: break-word; /* Break lines at any word boundary */
+            overflow-wrap: anywhere; /* Force word breaks anywhere if necessary */
         }
 
         :global(pre) {
