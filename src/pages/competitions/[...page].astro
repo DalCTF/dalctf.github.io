@@ -11,7 +11,7 @@ import Layout from "../../layouts/Layout.astro";
 export const getStaticPaths: GetStaticPaths = async ({ paginate }) => {
     const competitions = await getCollection("competitions");
     const sortedCompetitions = competitions.toSorted(
-        (a, b) => b.data.date_start.getTime() - a.data.date_start.getTime(),
+        (a, b) => b.data.dateEnd.getTime() - a.data.dateStart.getTime(),
     );
 
     return paginate(sortedCompetitions, {
@@ -30,7 +30,7 @@ const formatter = new Intl.DateTimeFormat("en-US", {
     year: "numeric",
 });
 const competitionGroups = Object.groupBy(page.data, (competition) =>
-    formatter.format(competition.data.date_start),
+    formatter.format(competition.data.dateStart),
 );
 ---
 
@@ -50,7 +50,7 @@ const competitionGroups = Object.groupBy(page.data, (competition) =>
                         <div class="placement">
                             <Placement
                                 competition={competition.data.name}
-                                position={competition.data.place}
+                                position={competition.data.place!}
                                 total={competition.data.total}
                                 id={competition.data.id}
                             />

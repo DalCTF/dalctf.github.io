@@ -25,3 +25,4 @@ pnpm-debug.log*
 
 # folder for testing
 playground/
+_cache/
