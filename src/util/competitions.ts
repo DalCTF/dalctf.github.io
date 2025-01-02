@@ -198,7 +198,7 @@ export class Competitions {
 
     private async listPlacements(): Promise<Placement[]> {
         await this.loadPlacements();
-        return Array.from(this.placements.entries().map(([k, v]) => v));
+        return Array.from(this.placements.entries().map(([_, v]) => v));
     }
 
     private async getPlacement(id: string): Promise<Placement | undefined> {
@@ -219,7 +219,7 @@ export class Competitions {
 
         try {
             let url = `${this.CTFTIME_URL}/event/${id}`;
-            let text = await Downloader.shared.downloadPage(url);
+            let text = await Downloader.shared.downloadPage(url, this.cache);
 
             let parser = new CompetitionParser(text);
 

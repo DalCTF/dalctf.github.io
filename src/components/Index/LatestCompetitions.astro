@@ -13,7 +13,7 @@ const latest = competitions.splice(0, 3);
       latest.map((competition) => (
         <Placement
           competition={competition.data.name}
-          position={competition.data.place}
+          position={competition.data.place!}
           total={competition.data.total}
           id={competition.data.id}
         />
