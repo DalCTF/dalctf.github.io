@@ -153,6 +153,7 @@ export class Writeups {
 
             categoryFolders
                 .filter(x => x.type == "dir")
+                .filter(x => !x.name.startsWith("."))
                 .map(folder => { return { repo, name: folder.name } })
                 .forEach(folder => result.push(folder));
         }

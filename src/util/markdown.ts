@@ -261,7 +261,6 @@ class MarkdownProcessor {
         let text = result.text;
 
         if (this.options.extractTitle && !state.hasParam("title") && block.open.tag == "h1") {
-            console.log(`> Extracted title '${text}'`);
             state.putParam("title", text);
         }
 
@@ -347,7 +346,13 @@ class MarkdownProcessor {
     process(input: string): Result {
         const mdit = new MarkdownIt().use(highlightjs);
 
-        let tokens = mdit.parse(input, {});
+        let tokens;
+        try {
+            tokens = mdit.parse(input, {});
+        } catch (error) {
+            console.log(input);
+            throw new Error("Failed to parse MD", { cause: error });
+        }
         if (this.options.debug) console.log(tokens);
 
         let partial = this.processTokens(tokens);
@@ -382,6 +387,7 @@ export class MarkdownProcessOptions {
 }
 
 export function summary(text: string, max: number = 140): MarkdownProcessResult {
+    if (!text) return { text: "", params: new Map<string, any>() };
 
     let options = new MarkdownProcessOptions();
     options.extractTitle = false;

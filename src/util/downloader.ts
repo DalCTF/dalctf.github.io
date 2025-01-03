@@ -34,13 +34,9 @@ export class Downloader {
         // Only retrieve from cache if parameter allows so
         if (cache) {
             const cached = this.get(url);
-            if (cached) {
-                console.info(`Cache hit for url: ${url}`);
-                return cached;
-            }
+            if (cached) return cached;
         }
 
-        console.info(`Downloading url: ${url}`)
         let response = await fetch(url);
         let status = response.status;
 

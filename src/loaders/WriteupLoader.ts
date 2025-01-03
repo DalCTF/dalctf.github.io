@@ -30,6 +30,7 @@ export class WriteupLoader implements Loader {
 
     async load(context: LoaderContext): Promise<void> {
         const writeups = await this.WRITEUPS.writeups();
+        context.store.clear();
 
         for (var writeup of writeups) {
             context.store.set({ id: writeup.id, data: { ...writeup } });
