@@ -22,8 +22,6 @@ export class CompetitionLoader implements Loader {
     }
 
     async load(context: LoaderContext): Promise<void> {
-        context.store.clear();
-
         const competitions = await this.COMPETITIONS.list();
 
         for (var competition of competitions) {

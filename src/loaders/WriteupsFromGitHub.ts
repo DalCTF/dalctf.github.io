@@ -176,7 +176,6 @@ export class WriteupsFromGitHubLoader implements Loader {
     }
 
     async load(context: LoaderContext): Promise<void> {
-        context.store.clear();
         const writeups = await this.getAllWriteups();
 
         for (var writeup of writeups) {
