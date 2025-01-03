@@ -195,7 +195,7 @@ export class Writeups {
 
             let tags = [problem.category.name];
             let category = problem.category.name;
-            let competition = problem.category.repo.name;
+            let competition = problem.category.repo.ctftimeId || "";
 
             const writeup: Writeup = {
                 id: `${competition}-${category}-${problem.name}`.toLowerCase(),

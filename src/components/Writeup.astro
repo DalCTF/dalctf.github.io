@@ -1,16 +1,30 @@
 ---
+import { getEntry } from "astro:content";
 import { tagFor } from "../util/tags";
 import Tag from "./Tag.astro";
 
 interface Props {
   title: string;
-  upper?: string;
+  competitionId: string;
   tags?: string[];
   snippet?: string;
   preview?: boolean;
 }
 
-const { title, upper = "", snippet = "", preview = false } = Astro.props;
+const {
+  title,
+  competitionId = "",
+  snippet = "",
+  preview = false,
+} = Astro.props;
+
+const competition =
+  (
+    await getEntry({
+      collection: "competitions",
+      id: competitionId,
+    })
+  )?.data.name || "Other";
 
 const tags = (Astro.props.tags || []).map((tag) =>
   tagFor(tag, "border", !preview),
@@ -18,7 +32,7 @@ const tags = (Astro.props.tags || []).map((tag) =>
 ---
 
 <div>
-  <span>{upper}</span>
+  <span>{competition}</span>
   <h2>{title}</h2>
   <div class="tags">
     {

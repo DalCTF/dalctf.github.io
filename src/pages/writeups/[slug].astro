@@ -2,7 +2,7 @@
 import "highlight.js/styles/github-dark.css";
 
 import type { GetStaticPaths } from "astro";
-import { getCollection, type CollectionEntry } from "astro:content";
+import { getCollection, getEntry, type CollectionEntry } from "astro:content";
 
 import Hero from "../../components/Hero.astro";
 import Tag from "../../components/Tag.astro";
@@ -28,12 +28,20 @@ const tags = (writeup.data.tags || []).map((tag) =>
     tagFor(tag, "border", false),
 );
 
+const competition =
+    (
+        await getEntry({
+            collection: "competitions",
+            id: writeup.data.competition || "",
+        })
+    )?.data.name || "Other";
+
 // To-do: Sanitize HTML and Markdown from writeup
 ---
 
 <Layout title={`${writeup.data.title} | Writeups | Status 418`} description="">
     <!-- Hero -->
-    <Hero title={writeup.data.title} upper={writeup.data.competition}>
+    <Hero title={writeup.data.title} upper={competition}>
         <div class="tags">
             {
                 tags.map((tag) => (

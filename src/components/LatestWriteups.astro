@@ -16,7 +16,7 @@ const writeups = (await getCollection("writeups")).slice(0, 4);
         <Card url={"/writeups/" + writeup.data.id}>
           <Writeup
             snippet={summary(writeup.data.raw).text}
-            upper={writeup.data.competition}
+            competitionId={writeup.data.competition}
             title={writeup.data.title}
             tags={writeup.data.tags}
             preview={true}
