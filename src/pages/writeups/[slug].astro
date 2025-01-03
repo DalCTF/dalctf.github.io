@@ -100,6 +100,14 @@ const tags = (writeup.data.tags || []).map((tag) =>
             :global(code) {
                 padding: 0px;
             }
+
+            //
+            // Solves issue where long lines would not break
+            //
+            white-space: pre-wrap; /* Allow wrapping of preformatted text */
+            word-wrap: break-word; /* Break words that are too long to fit */
+            word-break: break-word; /* Break lines at any word boundary */
+            overflow-wrap: anywhere; /* Force word breaks anywhere if necessary */
         }
     }
 </style>
