@@ -1,10 +1,10 @@
 ---
 import { getCollection } from "astro:content";
-import { summary } from "../../util/markdown";
 
-import Card from "../Card.astro";
-import Preview from "../Preview.astro";
-import Writeup from "../Writeup.astro";
+import { summary } from "../util/markdown";
+import Card from "./Card.astro";
+import Preview from "./Preview.astro";
+import Writeup from "./Writeup.astro";
 
 const writeups = (await getCollection("writeups")).slice(0, 4);
 ---
@@ -13,12 +13,12 @@ const writeups = (await getCollection("writeups")).slice(0, 4);
   <div class="grid">
     {
       writeups.map((writeup) => (
-        <Card url={"/writeups/" + writeup.data.slug}>
+        <Card url={"/writeups/" + writeup.data.id}>
           <Writeup
+            snippet={summary(writeup.data.raw).text}
             upper={writeup.data.competition}
             title={writeup.data.title}
             tags={writeup.data.tags}
-            snippet={summary(writeup.data.content).text}
             preview={true}
           />
         </Card>
@@ -28,7 +28,7 @@ const writeups = (await getCollection("writeups")).slice(0, 4);
 </Preview>
 
 <style lang="scss">
-  @use "../../styles/variables" as *;
+  @use "../styles/variables" as *;
 
   .grid {
     grid-template-columns: 1fr 1fr;

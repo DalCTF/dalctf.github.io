@@ -1,12 +1,13 @@
 import { defineCollection } from 'astro:content';
 
 import { CompetitionLoader } from './loaders/CompetitionLoader';
-import { WriteupsFromGitHubLoader } from './loaders/WriteupsFromGitHub';
+import { WriteupLoader } from './loaders/WriteupLoader';
 
 const writeups = defineCollection({
-    loader: WriteupsFromGitHubLoader.getLoader({
+    loader: WriteupLoader.getLoader({
+        development: process.env.NODE_ENV === 'development',
         githubToken: process.env.GITHUB_TOKEN,
-        development: process.env.NODE_ENV === 'development'
+        org: 'dalctf',
     })
 });
 

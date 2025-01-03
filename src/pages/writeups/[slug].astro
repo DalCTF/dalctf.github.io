@@ -1,4 +1,6 @@
 ---
+import "highlight.js/styles/github-dark.css";
+
 import type { GetStaticPaths } from "astro";
 import { getCollection, type CollectionEntry } from "astro:content";
 
@@ -10,7 +12,7 @@ import { tagFor } from "../../util/tags";
 export const getStaticPaths: GetStaticPaths = async () => {
     return (await getCollection("writeups")).map((writeup) => {
         return {
-            params: { slug: writeup.data.slug },
+            params: { slug: writeup.data.id },
             props: { writeup },
         };
     });
@@ -66,12 +68,10 @@ const tags = (writeup.data.tags || []).map((tag) =>
 
         :global(h2) {
             margin-bottom: 24px;
-        }
 
-        // Target an h2 inside a .markdown-heading that comes
-        // after something that is not a .markdown-heading
-        :global(:not(.markdown-heading) + .markdown-heading h2) {
-            margin-top: 48px;
+            :global(:not(:first-of-type)) {
+                margin-top: 48px;
+            }
         }
 
         :global(code) {

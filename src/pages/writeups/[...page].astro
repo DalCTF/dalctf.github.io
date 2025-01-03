@@ -1,7 +1,6 @@
 ---
 import type { GetStaticPaths, Page } from "astro";
 import { getCollection, type CollectionEntry } from "astro:content";
-import { summary } from "../../util/markdown";
 
 import Button from "../../components/Button.astro";
 import Hero from "../../components/Hero.astro";
@@ -9,6 +8,7 @@ import Pagination from "../../components/Pagination.astro";
 import Spacer from "../../components/Spacer.astro";
 import Writeup from "../../components/Writeup.astro";
 import Layout from "../../layouts/Layout.astro";
+import { summary } from "../../util/markdown";
 
 export const getStaticPaths: GetStaticPaths = async ({ paginate }) => {
     const writeups = await getCollection("writeups");
@@ -35,15 +35,15 @@ const { page } = Astro.props;
             page.data.map((writeup) => (
                 <div>
                     <Writeup
-                        title={writeup.data.title}
+                        snippet={summary(writeup.data.raw, 300).text}
                         upper={writeup.data.competition}
+                        title={writeup.data.title}
                         tags={writeup.data.tags}
-                        snippet={summary(writeup.data.content, 300).text}
                     />
                     <Spacer height={24} />
                     <Button
                         text="Read more"
-                        url={"/writeups/" + writeup.data.slug}
+                        url={"/writeups/" + writeup.data.id}
                     />
                 </div>
             ))

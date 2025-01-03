@@ -1,4 +1,5 @@
 import MarkdownIt from 'markdown-it';
+import highlightjs from 'markdown-it-highlightjs';
 import type { Token } from 'markdown-it/index.js';
 
 type Result = { text: string, params: Map<string, any> }
@@ -344,13 +345,21 @@ class MarkdownProcessor {
     }
 
     process(input: string): Result {
-        let tokens = (new MarkdownIt()).parse(input, {});
+        const mdit = new MarkdownIt().use(highlightjs);
+
+        let tokens = mdit.parse(input, {});
+        if (this.options.debug) console.log(tokens);
+
         let partial = this.processTokens(tokens);
         let params = partial.params;
 
         let text: string;
         if (this.options.debug) text = partial.debug;
         else text = partial.text;
+
+        if (this.options.render) {
+            text = mdit.render(text);
+        }
 
         return { params, text };
     }
@@ -365,6 +374,7 @@ export class MarkdownProcessOptions {
     extractTitle: boolean = true;
     stripLinks: boolean = false;
     compress: boolean = false;
+    render: boolean = false;
     debug: boolean = false;
 
     collapse: string[] = [];
@@ -376,9 +386,10 @@ export function summary(text: string, max: number = 140): MarkdownProcessResult 
     let options = new MarkdownProcessOptions();
     options.extractTitle = false;
     options.collapse = ["fence"];
-    options.clip = ["heading"];
+    options.clip = ["h1", "h2"];
     options.stripLinks = true;
     options.compress = true;
+    options.render = false;
 
     const processor = new MarkdownProcessor(options);
     let result = processor.process(text);
@@ -402,6 +413,7 @@ export function process(text: string): MarkdownProcessResult {
     options.extractTitle = true;
     options.compress = false;
     options.collapse = [];
+    options.render = true;
     options.clip = ["h1"];
 
     const processor = new MarkdownProcessor(options);

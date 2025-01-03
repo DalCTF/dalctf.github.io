@@ -1,7 +1,7 @@
 ---
 import { getCollection } from "astro:content";
-import Placement from "../Placement.astro";
-import Preview from "../Preview.astro";
+import Placement from "./Placement.astro";
+import Preview from "./Preview.astro";
 
 const competitions = await getCollection("competitions");
 const latest = competitions.splice(0, 3);
@@ -23,7 +23,7 @@ const latest = competitions.splice(0, 3);
 </Preview>
 
 <style lang="scss">
-  @use "../../styles/variables" as *;
+  @use "../styles/variables" as *;
 
   div {
     flex-direction: column;
