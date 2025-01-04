@@ -1,11 +1,9 @@
 ---
 import type { Page } from "astro";
 import { Icon } from "astro-icon/components";
-import type { CollectionKey } from "astro:content";
-import { type CollectionEntry } from "astro:content";
 
 type Props = {
-    page: Page<CollectionEntry<CollectionKey>>;
+    page: Page<any>;
 };
 
 const { page } = Astro.props;

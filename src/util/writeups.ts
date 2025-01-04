@@ -1,3 +1,4 @@
+import * as fs from 'fs';
 import { Octokit, RequestError } from 'octokit';
 import { parse as parseYML } from 'yaml';
 import type { Writeup } from '../model/Writeup';
@@ -21,12 +22,40 @@ export interface Problem {
     path: string;
 }
 
+type GetContentResponse = Awaited<ReturnType<Octokit["rest"]["repos"]["getContent"]>>;
+type GetContentData = GetContentResponse["data"];
+
+type ListReposResponse = Awaited<ReturnType<Octokit["rest"]["repos"]["listForOrg"]>>;
+type ListReposData = ListReposResponse["data"];
+
 export class GitHub {
 
     OCTOKIT: Octokit;
+    CACHE: boolean;
     ORG: string;
 
-    private decodeContent(response: NonNullable<Awaited<ReturnType<typeof this.OCTOKIT.rest.repos.getContent>>>) {
+    private pathSafeName(name: string): string {
+        return name
+            .replace(/[<>:"/\\|?*\x00-\x1F]/g, '_')
+            .replace(/_+/g, '_');
+    }
+
+    private getCache(name: string): string | undefined {
+        const path = `cache/${this.pathSafeName(name)}.json`;
+        if (fs.existsSync(path)) {
+            return fs.readFileSync(path).toString();
+        }
+
+        return undefined;
+    }
+
+    private setCache(name: string, text: string) {
+        const path = `cache/${this.pathSafeName(name)}.json`;
+        fs.mkdirSync("cache", { recursive: true });
+        fs.writeFileSync(path, text);
+    }
+
+    private decodeContent(response: NonNullable<GetContentResponse>) {
         const data = response.data;
         if (!('type' in data)) {
             throw new Error(`Received data expected to have the property 'type'`);
@@ -44,7 +73,13 @@ export class GitHub {
         return buffer.toString("utf-8");
     }
 
-    async getContent(repo: string, path: string, failOnNotFound: boolean = true) {
+    async getContent(repo: string, path: string, failOnNotFound: boolean = true): Promise<string | undefined> {
+        const cachePath = `${repo}-${path}`;
+        if (this.CACHE) {
+            const cached = this.getCache(cachePath);
+            if (cached) return cached;
+        }
+
         let response;
 
         try {
@@ -55,23 +90,27 @@ export class GitHub {
             });
         } catch (error) {
             if (error instanceof RequestError && error.status == 404 && !failOnNotFound) {
-                console.log(`[,] Content not found for '${path}' in '${repo}'`);
                 return undefined;
             }
 
             throw new Error(`Failed to retrieve content for '${path}' in '${repo}'`, { cause: error });;
         }
 
-        return this.decodeContent(response);
-    }
-
-    async getMetadata(repo: string, failOnNotFound: boolean = true) {
-        const text = await this.getContent(repo, "meta.yml", failOnNotFound);
-        if (!text) return undefined;
-        return parseYML(text);
+        const decoded = this.decodeContent(response);
+        this.setCache(cachePath, decoded);
+        return decoded;
     }
 
     async getDir(repo: string, path: string, failOnNotFound: boolean = true) {
+        const cachePath = `${repo}-${path}`;
+        if (this.CACHE) {
+            const cached = this.getCache(cachePath);
+            if (cached) {
+                const obj = JSON.parse(cached);
+                return obj as GetContentData;
+            }
+        }
+
         let response;
 
         try {
@@ -89,10 +128,27 @@ export class GitHub {
             throw new Error(`Failed to retrieve directory for '${path}' in '${repo}'`, { cause: error });;
         }
 
+        const data: GetContentData = response.data;
+        this.setCache(cachePath, JSON.stringify(data));
         return response.data;
     }
 
+    async getMetadata(repo: string, failOnNotFound: boolean = true) {
+        const text = await this.getContent(repo, "meta.yml", failOnNotFound);
+        if (!text) return undefined;
+        return parseYML(text);
+    }
+
     async listRepos() {
+        const cachePath = `repos`;
+        if (this.CACHE) {
+            const cached = this.getCache(cachePath);
+            if (cached) {
+                const obj = JSON.parse(cached);
+                return obj as ListReposData;
+            }
+        }
+
         let response;
 
         try {
@@ -103,11 +159,14 @@ export class GitHub {
             throw new Error(`Failed to retrieve repositories for organization '${this.ORG}'`, { cause: error });
         }
 
+        const data: ListReposData = response.data;
+        this.setCache(cachePath, JSON.stringify(data));
         return response.data;
     }
 
-    constructor(token: string, org: string) {
+    constructor(token: string, org: string, cache: boolean = false) {
         this.OCTOKIT = new Octokit({ auth: token });
+        this.CACHE = cache;
         this.ORG = org;
     }
 }
@@ -196,10 +255,11 @@ export class Writeups {
 
             let tags = [problem.category.name];
             let category = problem.category.name;
+            let repo = problem.category.repo.name;
             let competition = problem.category.repo.ctftimeId || "";
 
             const writeup: Writeup = {
-                id: `${competition}-${category}-${problem.name}`.toLowerCase(),
+                id: `${repo}-${category}-${problem.name}`.toLowerCase(),
                 tags,
                 title,
                 category,

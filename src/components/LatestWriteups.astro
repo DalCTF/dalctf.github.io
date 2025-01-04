@@ -1,12 +1,30 @@
 ---
-import { getCollection } from "astro:content";
+import { getCollection, getEntry } from "astro:content";
 
 import { summary } from "../util/markdown";
 import Card from "./Card.astro";
 import Preview from "./Preview.astro";
 import Writeup from "./Writeup.astro";
 
-const writeups = (await getCollection("writeups")).slice(0, 4);
+let writeups = await getCollection("writeups");
+const pairs = [];
+
+for (let writeup of writeups) {
+  const competition = await getEntry({
+    collection: "competitions",
+    id: writeup.data.competition,
+  });
+
+  pairs.push({ writeup, competition });
+}
+
+pairs.sort(
+  (a, b) =>
+    b.competition.data.dateStart.getTime() -
+    a.competition.data.dateStart.getTime(),
+);
+
+writeups = pairs.slice(0, 4).map((x) => x.writeup);
 ---
 
 <Preview title="Latest Writeups" url="/writeups">

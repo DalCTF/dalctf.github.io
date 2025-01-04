@@ -2,6 +2,7 @@
 import type { GetStaticPaths, Page } from "astro";
 import { getCollection, type CollectionEntry } from "astro:content";
 
+import { getEntry } from "astro:content";
 import Button from "../../components/Button.astro";
 import Hero from "../../components/Hero.astro";
 import Pagination from "../../components/Pagination.astro";
@@ -12,14 +13,33 @@ import { summary } from "../../util/markdown";
 
 export const getStaticPaths: GetStaticPaths = async ({ paginate }) => {
     const writeups = await getCollection("writeups");
+    const pairs = [];
 
-    return paginate(writeups, {
+    for (let writeup of writeups) {
+        const competition = await getEntry({
+            collection: "competitions",
+            id: writeup.data.competition,
+        });
+
+        pairs.push({ writeup, competition });
+    }
+
+    pairs.sort(
+        (a, b) =>
+            b.competition.data.dateStart.getTime() -
+            a.competition.data.dateStart.getTime(),
+    );
+
+    return paginate(pairs, {
         pageSize: 5,
     });
 };
 
 type Props = {
-    page: Page<CollectionEntry<"writeups">>;
+    page: Page<{
+        writeup: CollectionEntry<"writeups">;
+        competition: CollectionEntry<"competitions">;
+    }>;
 };
 
 const { page } = Astro.props;
@@ -32,7 +52,7 @@ const { page } = Astro.props;
     <!-- List of writeups -->
     <section>
         {
-            page.data.map((writeup) => (
+            page.data.map(({ writeup, competition }) => (
                 <div>
                     <Writeup
                         snippet={summary(writeup.data.raw, 300).text}

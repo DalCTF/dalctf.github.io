@@ -16,13 +16,13 @@ export class Downloader {
     }
 
     private save(url: string, text: string) {
-        const path = `_cache/${this.pathSafeUrl(url)}.json`;
-        fs.mkdirSync("_cache", { recursive: true });
+        const path = `cache/${this.pathSafeUrl(url)}.json`;
+        fs.mkdirSync("cache", { recursive: true });
         fs.writeFileSync(path, text);
     }
 
     private get(url: string) {
-        const path = `_cache/${this.pathSafeUrl(url)}.json`;
+        const path = `cache/${this.pathSafeUrl(url)}.json`;
         if (fs.existsSync(path)) {
             return fs.readFileSync(path).toString();
         }
