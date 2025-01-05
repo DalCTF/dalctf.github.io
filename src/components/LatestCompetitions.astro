@@ -1,9 +1,9 @@
 ---
-import { getCollection } from "astro:content";
+import { Competitions } from "../loaders/Competitions";
 import Placement from "./Placement.astro";
 import Preview from "./Preview.astro";
 
-const competitions = await getCollection("competitions");
+const competitions = await Competitions.shared.list();
 const latest = competitions.splice(0, 3);
 ---
 
@@ -12,10 +12,10 @@ const latest = competitions.splice(0, 3);
     {
       latest.map((competition) => (
         <Placement
-          competition={competition.data.name}
-          position={competition.data.place!}
-          total={competition.data.total}
-          id={competition.data.id}
+          competition={competition.name}
+          position={competition.place!}
+          total={competition.total}
+          id={competition.id}
         />
       ))
     }

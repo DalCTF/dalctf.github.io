@@ -2,46 +2,43 @@
 import "highlight.js/styles/github-dark.css";
 
 import type { GetStaticPaths } from "astro";
-import { getCollection, getEntry, type CollectionEntry } from "astro:content";
 
 import Hero from "../../components/Hero.astro";
 import Tag from "../../components/Tag.astro";
 import Layout from "../../layouts/Layout.astro";
+import { Competitions } from "../../loaders/Competitions";
+import { Writeups, type Writeup } from "../../loaders/Writeups";
 import { tagFor } from "../../util/tags";
 
 export const getStaticPaths: GetStaticPaths = async () => {
-    return (await getCollection("writeups")).map((writeup) => {
+    return (await Writeups.shared.list()).map((writeup) => {
         return {
-            params: { slug: writeup.data.id },
+            params: { slug: writeup.id },
             props: { writeup },
         };
     });
 };
 
 type Props = {
-    writeup: CollectionEntry<"writeups">;
+    writeup: Writeup;
 };
 
 const { writeup } = Astro.props;
 
-const tags = (writeup.data.tags || []).map((tag) =>
-    tagFor(tag, "border", false),
-);
+const tags = (writeup.tags || []).map((tag) => tagFor(tag, "border", false));
 
-const competition =
-    (
-        await getEntry({
-            collection: "competitions",
-            id: writeup.data.competition || "",
-        })
-    )?.data.name || "Other";
+let competition = "Other";
+if (writeup.competition) {
+    let result = await Competitions.shared.get(writeup.competition);
+    competition = result.name;
+}
 
 // To-do: Sanitize HTML and Markdown from writeup
 ---
 
-<Layout title={`${writeup.data.title} | Writeups | Status 418`} description="">
+<Layout title={`${writeup.title} | Writeups | Status 418`} description="">
     <!-- Hero -->
-    <Hero title={writeup.data.title} upper={competition}>
+    <Hero title={writeup.title} upper={competition}>
         <div class="tags">
             {
                 tags.map((tag) => (
@@ -58,7 +55,7 @@ const competition =
 
     <!-- Content -->
     <section class="content">
-        <div set:html={writeup.data.rendered} />
+        <div set:html={writeup.rendered} />
     </section>
 </Layout>
 

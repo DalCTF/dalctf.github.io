@@ -1,33 +1,29 @@
 ---
 import type { GetStaticPaths, Page } from "astro";
-import { getCollection, type CollectionEntry } from "astro:content";
 
-import { getEntry } from "astro:content";
 import Button from "../../components/Button.astro";
 import Hero from "../../components/Hero.astro";
 import Pagination from "../../components/Pagination.astro";
 import Spacer from "../../components/Spacer.astro";
-import Writeup from "../../components/Writeup.astro";
+import WriteupItem from "../../components/WriteupItem.astro";
 import Layout from "../../layouts/Layout.astro";
+import { Competitions, type Competition } from "../../loaders/Competitions";
+import { Writeups, type Writeup } from "../../loaders/Writeups";
 import { summary } from "../../util/markdown";
 
 export const getStaticPaths: GetStaticPaths = async ({ paginate }) => {
-    const writeups = await getCollection("writeups");
+    const writeups = await Writeups.shared.list();
     const pairs = [];
 
     for (let writeup of writeups) {
-        const competition = await getEntry({
-            collection: "competitions",
-            id: writeup.data.competition,
-        });
-
+        const competition = await Competitions.shared.get(writeup.competition!);
         pairs.push({ writeup, competition });
     }
 
     pairs.sort(
         (a, b) =>
-            b.competition.data.dateStart.getTime() -
-            a.competition.data.dateStart.getTime(),
+            b.competition.dateStart.getTime() -
+            a.competition.dateStart.getTime(),
     );
 
     return paginate(pairs, {
@@ -37,8 +33,8 @@ export const getStaticPaths: GetStaticPaths = async ({ paginate }) => {
 
 type Props = {
     page: Page<{
-        writeup: CollectionEntry<"writeups">;
-        competition: CollectionEntry<"competitions">;
+        writeup: Writeup;
+        competition: Competition;
     }>;
 };
 
@@ -54,17 +50,14 @@ const { page } = Astro.props;
         {
             page.data.map(({ writeup, competition }) => (
                 <div>
-                    <Writeup
-                        snippet={summary(writeup.data.raw, 300).text}
-                        competitionId={writeup.data.competition}
-                        title={writeup.data.title}
-                        tags={writeup.data.tags}
+                    <WriteupItem
+                        snippet={summary(writeup.raw, 300).text}
+                        competitionId={writeup.competition!}
+                        title={writeup.title}
+                        tags={writeup.tags}
                     />
                     <Spacer height={24} />
-                    <Button
-                        text="Read more"
-                        url={"/writeups/" + writeup.data.id}
-                    />
+                    <Button text="Read more" url={"/writeups/" + writeup.id} />
                 </div>
             ))
         }

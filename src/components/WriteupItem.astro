@@ -1,5 +1,5 @@
 ---
-import { getEntry } from "astro:content";
+import { Competitions } from "../loaders/Competitions";
 import { tagFor } from "../util/tags";
 import Tag from "./Tag.astro";
 
@@ -18,13 +18,11 @@ const {
   preview = false,
 } = Astro.props;
 
-const competition =
-  (
-    await getEntry({
-      collection: "competitions",
-      id: competitionId,
-    })
-  )?.data.name || "Other";
+let competition = "Other";
+if (competitionId != "") {
+  let result = await Competitions.shared.get(competitionId);
+  competition = result.name;
+}
 
 const tags = (Astro.props.tags || []).map((tag) =>
   tagFor(tag, "border", !preview),

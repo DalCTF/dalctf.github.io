@@ -1,7 +1,25 @@
 import { HTMLElement, parse as parseHTML } from 'node-html-parser';
-import type { Competition } from '../model/Competition';
-import type { Placement } from '../model/Placement';
-import { Downloader } from './downloader';
+import { Downloader } from '../util/downloader';
+
+/*
+--- Model
+*/
+export interface Placement {
+    id: string;
+    place: number;
+}
+
+export interface Competition {
+    id: string;
+    url: string;
+    name: string;
+    total: number;
+    dateEnd: Date;
+    dateStart: Date;
+    eventUrl: string;
+
+    place?: number;
+}
 
 /*
 --- Parsers
@@ -174,6 +192,17 @@ class CompetitionParser extends HTMLParser {
 --- Loader
 */
 export class Competitions {
+
+    private static instance: Competitions;
+    public static get shared(): Competitions {
+        if (!this.instance) {
+            const teamCode = "361970";
+            const cache = process.env.NODE_ENV === 'development';
+            this.instance = new Competitions(teamCode, cache);
+        }
+
+        return this.instance;
+    }
 
     protected CTFTIME_URL: string = "https://ctftime.org";
 

@@ -1,23 +1,23 @@
 ---
 import type { GetStaticPaths } from "astro";
-import { getCollection, type CollectionEntry } from "astro:content";
 
 import Button from "../../components/Button.astro";
 import Hero from "../../components/Hero.astro";
 import Placement from "../../components/Placement.astro";
 import Layout from "../../layouts/Layout.astro";
+import { Competitions, type Competition } from "../../loaders/Competitions";
 
 export const getStaticPaths: GetStaticPaths = async () => {
-    return (await getCollection("competitions")).map((competition) => {
+    return (await Competitions.shared.list()).map((competition) => {
         return {
-            params: { slug: competition.data.id },
+            params: { slug: competition.id },
             props: { competition },
         };
     });
 };
 
 type Props = {
-    competition: CollectionEntry<"competitions">;
+    competition: Competition;
 };
 
 const { competition } = Astro.props;
@@ -26,13 +26,13 @@ const { competition } = Astro.props;
 ---
 
 <Layout
-    title={`${competition.data.name} | Competitions | Status 418`}
+    title={`${competition.name} | Competitions | Status 418`}
     description=""
 >
     <!-- Hero -->
     <Hero
-        title={competition.data.name}
-        subtitle={competition.data.dateStart.toLocaleDateString("en-us", {
+        title={competition.name}
+        subtitle={competition.dateStart.toLocaleDateString("en-us", {
             year: "numeric",
             month: "long",
             day: "numeric",
@@ -40,7 +40,7 @@ const { competition } = Astro.props;
     >
         <Button
             text="See on CTFTime"
-            url={competition.data.eventUrl}
+            url={competition.eventUrl}
             target="_blank"
         />
     </Hero>
@@ -48,10 +48,10 @@ const { competition } = Astro.props;
     <!-- Placement -->
     <section>
         <Placement
-            competition={competition.data.name}
-            position={competition.data.place!}
-            total={competition.data.total}
-            id={competition.data.id}
+            competition={competition.name}
+            position={competition.place!}
+            total={competition.total}
+            id={competition.id}
             link={false}
         />
     </section>

@@ -1,27 +1,22 @@
 ---
-import { getCollection, getEntry } from "astro:content";
-
+import { Competitions } from "../loaders/Competitions";
+import { Writeups } from "../loaders/Writeups";
 import { summary } from "../util/markdown";
 import Card from "./Card.astro";
 import Preview from "./Preview.astro";
-import Writeup from "./Writeup.astro";
+import WriteupItem from "./WriteupItem.astro";
 
-let writeups = await getCollection("writeups");
+let writeups = await Writeups.shared.list();
 const pairs = [];
 
 for (let writeup of writeups) {
-  const competition = await getEntry({
-    collection: "competitions",
-    id: writeup.data.competition,
-  });
-
+  const competition = await Competitions.shared.get(writeup.competition!);
   pairs.push({ writeup, competition });
 }
 
 pairs.sort(
   (a, b) =>
-    b.competition.data.dateStart.getTime() -
-    a.competition.data.dateStart.getTime(),
+    b.competition.dateStart.getTime() - a.competition.dateStart.getTime(),
 );
 
 writeups = pairs.slice(0, 4).map((x) => x.writeup);
@@ -31,12 +26,12 @@ writeups = pairs.slice(0, 4).map((x) => x.writeup);
   <div class="grid">
     {
       writeups.map((writeup) => (
-        <Card url={"/writeups/" + writeup.data.id}>
-          <Writeup
-            snippet={summary(writeup.data.raw).text}
-            competitionId={writeup.data.competition}
-            title={writeup.data.title}
-            tags={writeup.data.tags}
+        <Card url={"/writeups/" + writeup.id}>
+          <WriteupItem
+            snippet={summary(writeup.raw).text}
+            competitionId={writeup.competition!}
+            title={writeup.title}
+            tags={writeup.tags}
             preview={true}
           />
         </Card>

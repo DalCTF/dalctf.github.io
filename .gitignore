@@ -23,6 +23,6 @@ pnpm-debug.log*
 # jetbrains setting folder
 .idea/
 
-# folder for testing
-playground/
-cache/
+# cache folder
+/src/playground.ts
+/cache/
