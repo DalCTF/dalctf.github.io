@@ -32,7 +32,7 @@ const { competition } = Astro.props;
     <!-- Hero -->
     <Hero
         title={competition.name}
-        subtitle={competition.dateStart.toLocaleDateString("en-us", {
+        subtitle={new Date(competition.dateStart).toLocaleDateString("en-us", {
             year: "numeric",
             month: "long",
             day: "numeric",
