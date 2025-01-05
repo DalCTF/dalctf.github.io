@@ -214,7 +214,7 @@ export class Writeups {
             let path = entry.path;
             let dateUpdated = entry.dateUpdated;
             let publish = meta?.publish || false;
-            let ctftimeId = meta?.ctf_time_id || undefined;
+            let ctftimeId = meta?.ctf_time_id.toString() || undefined;
 
             let repo: Repo = {
                 path,

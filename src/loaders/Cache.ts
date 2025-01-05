@@ -36,15 +36,6 @@ export class Cache<T> {
             .replace(/_+/g, '_');
     }
 
-    putWithDate(id: string, content: T, date: Date) {
-        this.load();
-
-        const entry = { id, content, date: date.getTime() };
-        this.entries.set(id, entry);
-
-        fs.writeFileSync(this.filename(id), JSON.stringify(entry));
-    }
-
     putWithHash(id: string, content: T, hash: string) {
         this.load();
 
@@ -54,19 +45,22 @@ export class Cache<T> {
         fs.writeFileSync(this.filename(id), JSON.stringify(entry));
     }
 
-    getWithDate(id: string, date: Date): T | undefined {
+    putWithDate(id: string, content: T, date: Date) {
         this.load();
-        const entry = this.entries.get(id);
 
-        if (!entry) return undefined;
-        if (!entry.date) return undefined;
-        if (date.getTime() > entry.date) return undefined;
+        const entry = { id, content, date: date.getTime() };
+        this.entries.set(id, entry);
 
-        return entry.content;
+        fs.writeFileSync(this.filename(id), JSON.stringify(entry));
     }
 
-    hasWithDate(id: string, date: Date): boolean {
-        return !!this.getWithDate(id, date);
+    put(id: string, content: T) {
+        this.load();
+
+        const entry = { id, content };
+        this.entries.set(id, entry);
+
+        fs.writeFileSync(this.filename(id), JSON.stringify(entry));
     }
 
     getWithHash(id: string, hash: string): T | undefined {
@@ -80,15 +74,32 @@ export class Cache<T> {
         return entry.content;
     }
 
+    getWithDate(id: string, date: Date): T | undefined {
+        this.load();
+        const entry = this.entries.get(id);
+
+        if (!entry) return undefined;
+        if (!entry.date) return undefined;
+        if (date.getTime() > entry.date) return undefined;
+
+        return entry.content;
+    }
+
+    get(id: string) {
+        this.load();
+        return this.entries.get(id)?.content;
+    }
+
     hasWithHash(id: string, hash: string): boolean {
         return !!this.getWithHash(id, hash);
     }
 
-    get(id: string) {
-        return this.entries.get(id)?.content;
+    hasWithDate(id: string, date: Date): boolean {
+        return !!this.getWithDate(id, date);
     }
 
     has(id: string) {
+        this.load();
         return this.entries.has(id);
     }
 

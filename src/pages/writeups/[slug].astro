@@ -30,7 +30,7 @@ const tags = (writeup.tags || []).map((tag) => tagFor(tag, "border", false));
 let competition = "Other";
 if (writeup.competition) {
     let result = await Competitions.shared.get(writeup.competition);
-    competition = result.name;
+    competition = result?.name || "Other";
 }
 
 // To-do: Sanitize HTML and Markdown from writeup

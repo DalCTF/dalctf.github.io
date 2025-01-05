@@ -21,7 +21,7 @@ const {
 let competition = "Other";
 if (competitionId != "") {
   let result = await Competitions.shared.get(competitionId);
-  competition = result.name;
+  competition = result?.name || "Other";
 }
 
 const tags = (Astro.props.tags || []).map((tag) =>

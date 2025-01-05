@@ -3,14 +3,15 @@ import { Competitions } from "../loaders/Competitions";
 import Placement from "./Placement.astro";
 import Preview from "./Preview.astro";
 
-const competitions = await Competitions.shared.list();
-const latest = competitions.splice(0, 3);
+const competitions = (await Competitions.shared.list())
+  .toSorted((a, b) => b.dateEnd - a.dateStart)
+  .splice(0, 3);
 ---
 
 <Preview title="Latest Competitions" url="/competitions">
   <div>
     {
-      latest.map((competition) => (
+      competitions.map((competition) => (
         <Placement
           competition={competition.name}
           position={competition.place!}

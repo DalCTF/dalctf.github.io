@@ -20,11 +20,11 @@ export const getStaticPaths: GetStaticPaths = async ({ paginate }) => {
         pairs.push({ writeup, competition });
     }
 
-    pairs.sort(
-        (a, b) =>
-            b.competition.dateStart.getTime() -
-            a.competition.dateStart.getTime(),
-    );
+    pairs.sort((a, b) => {
+        if (!a.competition) return 1;
+        if (!b.competition) return -1;
+        return b.competition?.dateStart - a.competition.dateStart;
+    });
 
     return paginate(pairs, {
         pageSize: 5,
@@ -48,7 +48,7 @@ const { page } = Astro.props;
     <!-- List of writeups -->
     <section>
         {
-            page.data.map(({ writeup, competition }) => (
+            page.data.map(({ writeup }) => (
                 <div>
                     <WriteupItem
                         snippet={summary(writeup.raw, 300).text}

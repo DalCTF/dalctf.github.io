@@ -14,10 +14,11 @@ for (let writeup of writeups) {
   pairs.push({ writeup, competition });
 }
 
-pairs.sort(
-  (a, b) =>
-    b.competition.dateStart.getTime() - a.competition.dateStart.getTime(),
-);
+pairs.sort((a, b) => {
+  if (!a.competition) return 1;
+  if (!b.competition) return -1;
+  return b.competition?.dateStart - a.competition.dateStart;
+});
 
 writeups = pairs.slice(0, 4).map((x) => x.writeup);
 ---

@@ -1,6 +1,5 @@
 import { HTMLElement, parse as parseHTML } from 'node-html-parser';
-import { Downloader } from '../util/downloader';
-
+import { Cache } from './Cache';
 /*
 --- Model
 */
@@ -14,9 +13,9 @@ export interface Competition {
     url: string;
     name: string;
     total: number;
-    dateEnd: Date;
-    dateStart: Date;
+    dateEnd: number;
     eventUrl: string;
+    dateStart: number;
 
     place?: number;
 }
@@ -159,7 +158,7 @@ class CompetitionParser extends HTMLParser {
         }
     }
 
-    get dates(): Date[] {
+    get dates(): number[] {
         try {
             let fullDateString = this.details.querySelector("p")?.firstChild?.rawText.trim();
             fullDateString = fullDateString?.replace("&nbsp;", "");
@@ -171,7 +170,7 @@ class CompetitionParser extends HTMLParser {
             let dateStrings = fullDateString.split("&mdash;");
             dateStrings = [...dateStrings.map(x => x.trim())];
 
-            return [new Date(dateStrings[0]), new Date(dateStrings[1])];
+            return [new Date(dateStrings[0]).getTime(), new Date(dateStrings[1]).getTime()];
         } catch (error) {
             throw new Error("Failed to parse competition dates", { cause: error });
         }
@@ -197,104 +196,86 @@ export class Competitions {
     public static get shared(): Competitions {
         if (!this.instance) {
             const teamCode = "361970";
-            const cache = process.env.NODE_ENV === 'development';
-            this.instance = new Competitions(teamCode, cache);
+            this.instance = new Competitions(teamCode);
         }
 
         return this.instance;
     }
 
-    protected CTFTIME_URL: string = "https://ctftime.org";
+    CTFTIME_URL: string = "https://ctftime.org";
+    COMPETITION_CACHE: Cache<Competition>;
+    TEAM_CODE: string;
+    LOADED = false;
 
-    protected competitions: Map<string, Competition>;
-    protected placements: Map<string, Placement>;
-    protected teamCode: string;
-    protected loaded = false;
-    protected cache = true;
+    private async loadCompetition(placement: Placement) {
+        if (this.COMPETITION_CACHE.has(placement.id)) {
+            return;
+        }
+
+        console.log(`Competition '${placement.id}' is outdated or missing. Loading...`);
+        await new Promise(r => setTimeout(r, 250));
+
+        let url = `${this.CTFTIME_URL}/event/${placement.id}`;
+        let response = await fetch(url);
+        let status = response.status;
+
+        if (status != 200) {
+            throw new Error(`Failed to download page '${url}'. Status code: ${status}`);
+        }
+
+        const text = await response.text();
+        let parser = new CompetitionParser(text);
+
+        let competition: Competition = {
+            dateStart: parser.dates[0],
+            dateEnd: parser.dates[1],
+            total: parser.total,
+            name: parser.name,
+            id: placement.id,
+            url: parser.url,
+            eventUrl: url,
+
+            place: placement?.place || undefined,
+        }
+
+        this.COMPETITION_CACHE.put(placement.id, competition);
+    }
 
     private async loadPlacements() {
-        if (this.loaded) return;
+        let url = `${this.CTFTIME_URL}/team/${this.TEAM_CODE}`;
+        let response = await fetch(url);
+        let status = response.status;
 
-        try {
-            let text = await Downloader.shared.downloadPage(`${this.CTFTIME_URL}/team/${this.teamCode}`, this.cache);
-            let parser = new PlacementParser(text);
-            parser.placements.forEach(p => this.placements.set(p.id, p));
-            this.loaded = true;
-        } catch (error) {
-            throw new Error("Failed to get placements", { cause: error });
+        if (status != 200) {
+            throw new Error(`Failed to download page '${url}'. Status code: ${status}`);
+        }
+
+        const text = await response.text();
+        let parser = new PlacementParser(text);
+        for (let placement of parser.placements) {
+            await this.loadCompetition(placement);
         }
     }
 
-    private async listPlacements(): Promise<Placement[]> {
+    private async load() {
+        if (this.LOADED) return;
         await this.loadPlacements();
-        return Array.from(this.placements.entries().map(([_, v]) => v));
+        this.LOADED = true;
     }
 
-    private async getPlacement(id: string): Promise<Placement | undefined> {
-        await this.loadPlacements();
-
-        if (!this.placements.has(id)) return undefined;
-        console.debug(`Hit placement cache for '${id}'`)
-        return this.placements.get(id);
-    }
-
-    private async _get(id: string, placement: Placement | undefined): Promise<Competition> {
-        if (this.cache) {
-            if (this.competitions.has(id)) {
-                console.debug(`Hit competition cache for '${id}'`);
-                return this.competitions.get(id)!;
-            }
-        }
-
-        try {
-            let url = `${this.CTFTIME_URL}/event/${id}`;
-            let text = await Downloader.shared.downloadPage(url, this.cache);
-
-            let parser = new CompetitionParser(text);
-
-            let competition: Competition = {
-                dateStart: parser.dates[0],
-                dateEnd: parser.dates[1],
-                total: parser.total,
-                name: parser.name,
-                url: parser.url,
-                eventUrl: url,
-                id,
-
-                place: placement?.place || undefined,
-            }
-
-            this.competitions.set(id, competition);
-            return competition;
-        } catch (error) {
-            throw new Error(`Failed to get competition '${id}'`, { cause: error });
-        }
-    }
-    async get(id: string): Promise<Competition> {
-        let placement = await this.getPlacement(id);
-        return this._get(id, placement);
+    // Retrieval
+    async get(id: string) {
+        await this.load();
+        return this.COMPETITION_CACHE.get(id);
     }
 
     async list(): Promise<Competition[]> {
-        const placements = await this.listPlacements();
-
-        let competitions = [];
-        for (let placement of placements) {
-            const competition = await this._get(placement.id, placement);
-            this.competitions.set(competition.id, competition);
-            competitions.push(competition);
-
-            // Sleeps for half a second
-            await new Promise(r => setTimeout(r, 500));
-        }
-
-        return competitions;
+        await this.load();
+        return this.COMPETITION_CACHE.list();
     }
 
-    constructor(teamCode: string, cache: boolean = true) {
-        this.competitions = new Map();
-        this.placements = new Map();
-        this.teamCode = teamCode;
-        this.cache = cache;
+    constructor(teamCode: string) {
+        this.COMPETITION_CACHE = new Cache("competitions");
+        this.TEAM_CODE = teamCode;
     }
 }
