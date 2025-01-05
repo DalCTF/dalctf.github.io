@@ -3,7 +3,9 @@ import "highlight.js/styles/github-dark.css";
 
 import type { GetStaticPaths } from "astro";
 
+import Banner from "../../components/Banner.astro";
 import Hero from "../../components/Hero.astro";
+import Spacer from "../../components/Spacer.astro";
 import Tag from "../../components/Tag.astro";
 import Layout from "../../layouts/Layout.astro";
 import { Competitions } from "../../loaders/Competitions";
@@ -52,6 +54,10 @@ if (writeup.competition) {
             }
         </div>
     </Hero>
+
+    <!-- Banner -->
+    <Banner text="View on GitHub" url={writeup.link} icon="github" />
+    <Spacer height={64} />
 
     <!-- Content -->
     <section class="content">

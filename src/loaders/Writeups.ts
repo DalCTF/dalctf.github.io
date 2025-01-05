@@ -39,6 +39,7 @@ export interface Problem {
 
 export interface Writeup {
     id: string;
+    link: string;
     title: string;
     tags: string[];
     competition?: string;
@@ -132,10 +133,12 @@ export class Writeups {
         let tags = [problem.category.name];
         let title = params.get('title') || problem.name;
         let competition = problem.category.repo.ctftimeId;
+        let link = `https://github.com/${problem.category.repo.path}/tree/main/${problem.path}`;
 
         const writeup: Writeup = {
             id,
             tags,
+            link,
             title,
             competition,
 
