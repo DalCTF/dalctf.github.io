@@ -32,17 +32,17 @@ jobs:
             ./.astro
           key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
 
+      # Restore the ./cache folder
+      - name: Restore cached content
+        uses: actions/cache/restore@v4
+        with:
+          path: ./cache
+          key: ${{ runner.os }}-content
+
       # Conditionally clear the ./cache folder
       - name: Conditionally Clear ./cache
         if: ${{ inputs.clear-cache == 'true' }}
         run: rm -rf ./cache
-
-      # Cache the ./cache folder separately
-      - name: Restore Cache (./cache folder)
-        uses: actions/cache@v4
-        with:
-          path: ./cache
-          key: ${{ runner.os }}-content
 
       - name: Install dependencies
         run: npm install
@@ -62,3 +62,9 @@ jobs:
           build_dir: dist
         env:
           GITHUB_TOKEN: ${{ secrets.PRIVILEGED_GITHUB_TOKEN }}
+
+      - name: Cache content
+        uses: actions/cache/save@v4
+        with:
+          path: ./cache
+          key: ${{ runner.os }}-content
