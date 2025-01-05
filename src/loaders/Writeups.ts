@@ -242,6 +242,7 @@ export class Writeups {
 
         try {
             response = await this.OCTOKIT.rest.repos.listForOrg({
+                type: "public",
                 org: this.ORG
             });
         } catch (error) {
