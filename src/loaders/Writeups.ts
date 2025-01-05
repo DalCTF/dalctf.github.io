@@ -128,12 +128,15 @@ export class Writeups {
         }
 
         let decoded = this.decode(response);
-        let { text, params } = processMD(decoded);
-
         let tags = [problem.category.name];
-        let title = params.get('title') || problem.name;
         let competition = problem.category.repo.ctftimeId;
         let link = `https://github.com/${problem.category.repo.path}/tree/main/${problem.path}`;
+
+        let imageBaseURL = `https://github.com/${problem.category.repo.path}/raw/main/${problem.path}/`;
+        let linkBaseURL = `https://github.com/${problem.category.repo.path}/blob/main/${problem.path}/`;
+
+        let { text, params } = processMD(decoded, imageBaseURL, linkBaseURL);
+        let title = params.get('title') || problem.name;
 
         const writeup: Writeup = {
             id,

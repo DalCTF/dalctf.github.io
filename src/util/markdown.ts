@@ -294,14 +294,47 @@ class MarkdownProcessor {
         if (this.handleSpecialCase(state, block.open)) return;
 
         let result = this.processTokens(block.content);
-        let href = block.open.attrGet("href") || "";
+        let href = block.open.attrGet("href");
         let text = result.text;
 
-        if (this.options.stripLinks) {
+        if (this.options.stripLinks || !href) {
             state.push(text);
-        } else {
-            state.push(`[${text}](${href})`);
+            return;
         }
+
+        try {
+            href = (new URL(href)).toString();
+        } catch {
+            if (this.options.linkBaseURL != "") {
+                href = (new URL(href, this.options.linkBaseURL)).toString();
+            }
+        }
+
+        state.push(`[${text}](${href})`);
+    }
+
+    private processImage(state: State) {
+        const token = state.top();
+        if (this.handleSpecialCase(state, token)) return;
+
+        let result = this.processTokens(token.children || []);
+        let src = token.attrGet("src");
+        let text = result.text;
+
+        if (!src) {
+            state.push(text);
+            return;
+        }
+
+        try {
+            src = (new URL(src)).toString();
+        } catch {
+            if (this.options.imageBaseURL != "") {
+                src = (new URL(src, this.options.imageBaseURL)).toString();
+            }
+        }
+
+        state.push(`![${text}](${src})`);
     }
 
     // General
@@ -334,6 +367,9 @@ class MarkdownProcessor {
                 case "link_open":
                     this.processLink(state);
                     break;
+                case "image":
+                    this.processImage(state);
+                    break;
                 default:
                     if (this.handleSpecialCase(state, token)) break;
                     state.push(token.content);
@@ -363,6 +399,19 @@ class MarkdownProcessor {
         else text = partial.text;
 
         if (this.options.render) {
+            // Renders every link with target="_blank"
+            mdit.renderer.rules.link_open = function (tokens, idx, options, env, self) {
+                const token = tokens[idx];
+                const hrefIndex = token.attrIndex('href');
+
+                if (hrefIndex >= 0 && token.attrs) {
+                    token.attrSet('target', '_blank');
+                    token.attrSet('rel', 'noopener noreferrer');
+                }
+
+                return self.renderToken(tokens, idx, options);
+            };
+
             text = mdit.render(text);
         }
 
@@ -381,6 +430,9 @@ export class MarkdownProcessOptions {
     compress: boolean = false;
     render: boolean = false;
     debug: boolean = false;
+
+    imageBaseURL: string = "";
+    linkBaseURL: string = "";
 
     collapse: string[] = [];
     clip: string[] = [];
@@ -413,9 +465,11 @@ export function summary(text: string, max: number = 140): MarkdownProcessResult 
     return { text, params: new Map<string, any>() };
 }
 
-export function process(text: string): MarkdownProcessResult {
+export function process(text: string, imageBaseURL: string = "", linkBaseURL: string = ""): MarkdownProcessResult {
 
     let options = new MarkdownProcessOptions();
+    options.imageBaseURL = imageBaseURL;
+    options.linkBaseURL = linkBaseURL;
     options.extractTitle = true;
     options.compress = false;
     options.collapse = [];
