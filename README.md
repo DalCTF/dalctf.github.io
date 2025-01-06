@@ -14,7 +14,7 @@ Writeups are loaded directly from our GitHub. Repositories containing writeups m
 
 Each folder in the root of the repository (with the exception of hidden folders) is considered to be a problem category. Inside each category folder, each subfolder is considered to be a problem folder. If a problem folder contains a `README.md` file, that is rendered into an entry on the website. Problems that do not contain a `README.md` are not considered.
 
-```bash
+```
 ├── Web/
 │   ├── Problem1/
 │   |   └── README.md   # Included
