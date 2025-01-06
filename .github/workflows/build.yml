@@ -7,11 +7,6 @@ on:
   schedule:
     - cron: 0 0 * * *
   workflow_dispatch:
-    inputs:
-      clear-cache:
-        description: "Clear the ./cache folder before the build"
-        required: false
-        default: "false"
 
 jobs:
   deploy:
@@ -40,10 +35,6 @@ jobs:
           key: ${{ runner.os }}-content-${{ hashFiles('cache/**/*') }}
           restore-keys: |
             ${{ runner.os }}-content-
-
-      - name: Conditionally Clear ./cache
-        if: ${{ inputs.clear-cache == 'true' }}
-        run: rm -rf ./cache
 
       - name: Install dependencies
         run: npm install
