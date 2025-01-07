@@ -28,7 +28,9 @@ jobs:
           key: content
 
       - name: Print status of cache
-        run: ls -l cache/
+        run: |
+          mkdir -p cache;
+          ls -l cache;
 
       - name: Build project
         run: |
@@ -38,7 +40,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.PRIVILEGED_GITHUB_TOKEN }}
 
       - name: Print status of cache
-        run: ls -l cache/
+        run: |
+          mkdir -p cache;
+          ls -l cache;
 
       - name: Save content to cache
         uses: actions/cache/save@v4
