@@ -1,13 +1,13 @@
 name: Build and Trigger Deploy
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
-  repository_dispatch:
-      types:
-        - content_changed
+  # push:
+  #   branches:
+  #     - main
+  # repository_dispatch:
+  #     types:
+  #       - content_changed
     
 jobs:
   Build:

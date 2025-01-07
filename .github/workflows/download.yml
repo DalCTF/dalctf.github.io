@@ -21,18 +21,24 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Restore content from cache (cache/)
+      - name: Restore content from cache
         uses: actions/cache/restore@v4
         with:
           path: cache/
           key: content
+
+      - name: Print status of cache
+        run: ls -l cache/
 
       - name: Build project
         run: npm run download > updated.txt
         env:
           GITHUB_TOKEN: ${{ secrets.PRIVILEGED_GITHUB_TOKEN }}
 
-      - name: Save content to cache (cache/)
+      - name: Print status of cache
+        run: ls -l cache/
+
+      - name: Save content to cache
         uses: actions/cache/save@v4
         with:
           path: cache/

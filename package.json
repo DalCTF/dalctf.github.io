@@ -19,6 +19,7 @@
     "node-html-parser": "^7.0.1",
     "octokit": "^4.0.2",
     "sass": "^1.83.0",
+    "tsx": "^4.19.2",
     "typescript": "^5.5.3"
   },
   "devDependencies": {
