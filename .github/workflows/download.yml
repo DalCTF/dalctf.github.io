@@ -1,0 +1,50 @@
+name: Download New Content
+
+on:
+  schedule:
+    - cron: 0 0 * * *
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Restore content from cache (cache/)
+        uses: actions/cache/restore@v4
+        with:
+          path: cache/
+          key: content
+
+      - name: Build project
+        run: npm run download > updated.txt
+        env:
+          GITHUB_TOKEN: ${{ secrets.PRIVILEGED_GITHUB_TOKEN }}
+
+      - name: Save content to cache (cache/)
+        uses: actions/cache/save@v4
+        with:
+          path: cache/
+          key: content
+
+      - name: Check if content changed and trigger another workflow
+        run: |
+          content=$(cat updated.txt)
+          if [ "$content" != "0" ]; then
+            echo "Content has changed. Triggering follow-up workflow."
+            gh api repos/${{ github.repository }}/dispatches \
+              -f event_type=content_changed
+          else
+            echo "No content change detected. Skipping follow-up workflow."
+        

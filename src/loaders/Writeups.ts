@@ -109,22 +109,24 @@ export class Writeups {
     }
 
     // Loader methods
-    private async loadWriteups(problem: Problem) {
+    private async loadWriteups(problem: Problem): Promise<string[]> {
+        let result = [];
+
         const response = await this.getContent(problem.category.repo.name, problem.path + "/README.md", false);
         if (!response) {
             console.log(`\t\t\tWriteup not found for problem '${problem.name}'`);
-            return;
+            return [];
         }
 
         if (!("sha" in response.data)) {
             console.log(`\t\t\tWriteup does not contain expected property 'sha'`);
-            return;
+            return [];
         };
 
         let id = problem.id;
         let sha = response.data.sha;
         if (this.WRITEUP_CACHE.hasWithHash(id, sha)) {
-            return;
+            return [];
         }
 
         let decoded = this.decode(response);
@@ -150,9 +152,12 @@ export class Writeups {
         };
 
         this.WRITEUP_CACHE.putWithHash(id, writeup, sha);
+        return [id];
     }
 
-    private async loadProblems(category: Category) {
+    private async loadProblems(category: Category): Promise<string[]> {
+        let result = [];
+
         let problemFolders = await this.getContent(category.repo.name, category.path);
         if (!Array.isArray(problemFolders?.data)) {
             throw new Error(`Expected array, got ${problemFolders}`);
@@ -173,12 +178,16 @@ export class Writeups {
             if (this.PROBLEM_CACHE.hasWithHash(problem.id, problem.sha)) continue;
             console.log(`\t\tProblem '${problem.path}' is outdated or missing. Loading...`);
 
-            await this.loadWriteups(problem)
+            result.push(...await this.loadWriteups(problem));
             this.PROBLEM_CACHE.putWithHash(problem.id, problem, problem.sha);
         }
+
+        return result;
     }
 
-    private async loadCategories(repo: Repo) {
+    private async loadCategories(repo: Repo): Promise<string[]> {
+        let result = [];
+
         let categoryFolders = await this.getContent(repo.name, "");
         if (!Array.isArray(categoryFolders?.data)) {
             throw new Error(`Expected array, got ${categoryFolders}`);
@@ -199,12 +208,16 @@ export class Writeups {
             if (this.CATEGORY_CACHE.hasWithHash(category.id, category.sha)) continue;
             console.log(`\tCategory '${category.path}' is outdated or missing. Loading...`);
 
-            await this.loadProblems(category)
+            result.push(...await this.loadProblems(category));
             this.CATEGORY_CACHE.putWithHash(category.id, category, category.sha);
         }
+
+        return result;
     }
 
-    private async loadRepos(entries: Entry[]) {
+    private async loadRepos(entries: Entry[]): Promise<string[]> {
+        let loadedEntries = [];
+
         for (let entry of entries) {
             if (this.REPO_CACHE.hasWithDate(entry.name, entry.dateUpdated)) continue;
             console.log(`Repository '${entry.name}' is outdated or missing. Loading...`);
@@ -230,13 +243,15 @@ export class Writeups {
                 dateUpdated,
             };
 
-            await this.loadCategories(repo);
+            loadedEntries.push(...await this.loadCategories(repo));
             this.REPO_CACHE.putWithDate(entry.name, repo, dateUpdated);
         }
+
+        return loadedEntries;
     }
 
-    private async load() {
-        if (this.LOADED) return;
+    async load(): Promise<string[]> {
+        if (this.LOADED) return [];
 
         let response;
 
@@ -254,8 +269,10 @@ export class Writeups {
         });
         entries = entries.filter(x => x.name !== "dalctf.github.io");
 
-        await this.loadRepos(entries);
+        const loadedEntries = await this.loadRepos(entries);
         this.LOADED = true;
+
+        return loadedEntries;
     }
 
     // Retrieval

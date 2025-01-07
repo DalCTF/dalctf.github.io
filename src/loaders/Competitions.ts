@@ -257,7 +257,7 @@ export class Competitions {
         }
     }
 
-    private async load() {
+    async load() {
         if (this.LOADED) return;
         await this.loadPlacements();
         this.LOADED = true;
