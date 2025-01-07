@@ -47,4 +47,6 @@ jobs:
           else
             echo "No content change detected. Skipping follow-up workflow.";
           fi
+        env:
+          GH_TOKEN: ${{ github.token }}
         
