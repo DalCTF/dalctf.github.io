@@ -21,6 +21,9 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Install tree
+        run: apt install tree -y  
+
       - name: Restore content from cache
         uses: actions/cache/restore@v4
         with:
@@ -30,7 +33,7 @@ jobs:
       - name: Print status of cache
         run: |
           mkdir -p cache;
-          ls -l cache;
+          tree cache;
 
       - name: Build project
         run: |
@@ -42,7 +45,7 @@ jobs:
       - name: Print status of cache
         run: |
           mkdir -p cache;
-          ls -l cache;
+          tree cache;
 
       - name: Save content to cache
         uses: actions/cache/save@v4
