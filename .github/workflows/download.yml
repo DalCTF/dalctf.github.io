@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  deploy:
+  Download:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -40,11 +40,11 @@ jobs:
 
       - name: Check if content changed and trigger another workflow
         run: |
-          content=$(cat updated.txt)
+          content=$(cat updated.txt);
           if [ "$content" != "0" ]; then
-            echo "Content has changed. Triggering follow-up workflow."
-            gh api repos/${{ github.repository }}/dispatches \
-              -f event_type=content_changed
+            echo "Content has changed. Triggering follow-up workflow.";
+            gh api repos/${{ github.repository }}/dispatches -f event_type=content_changed;
           else
-            echo "No content change detected. Skipping follow-up workflow."
+            echo "No content change detected. Skipping follow-up workflow.";
+          fi
         

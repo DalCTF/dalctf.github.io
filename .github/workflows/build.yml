@@ -10,7 +10,7 @@ on:
         - content_changed
     
 jobs:
-  deploy:
+  Build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
