@@ -24,41 +24,45 @@ jobs:
       - name: Restore content from cache
         uses: actions/cache/restore@v4
         with:
+          restore-keys: content-
           path: cache/
-          key: content
+          key: null
 
       - name: Print status of cache
         run: |
           mkdir -p cache;
           tree cache;
 
-      - name: Build project
+      - name: Download content if necessary
+        id: download
         run: |
-          npm run download > updated.txt;
-          echo "Problems updated: $(cat updated.txt)";
+          echo "updated=$(npm run download)" >> $GITHUB_OUTPUT;
+          echo "Problems updated: $GITHUB_OUTPUT";
         env:
           GITHUB_TOKEN: ${{ secrets.PRIVILEGED_GITHUB_TOKEN }}
 
-      - name: Print status of cache
+      - name: Print status of content
         run: |
           mkdir -p cache;
           tree cache;
 
+      - name: Get Date
+        id: get-date
+        run: |
+          echo "date=$(/bin/date -u "+%Y%m%d%M%S")" >> $GITHUB_OUTPUT
+        shell: bash
+
       - name: Save content to cache
         uses: actions/cache/save@v4
+        if: ${{ steps.download.outputs.updated }} > 0
         with:
           path: cache/
-          key: content
+          key: content-${{ steps.get-date.outputs.date }}
 
-      - name: Check if content changed and trigger another workflow
+      - name: Trigger another workflow
+        if: ${{ steps.download.outputs.updated }} > 0
         run: |
-          content=$(cat updated.txt);
-          if [ "$content" != "0" ]; then
-            echo "Content has changed. Triggering follow-up workflow.";
             gh api repos/${{ github.repository }}/dispatches -f event_type=content_changed;
-          else
-            echo "No content change detected. Skipping follow-up workflow.";
-          fi
         env:
           GH_TOKEN: ${{ github.token }}
         
