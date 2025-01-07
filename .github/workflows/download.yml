@@ -36,7 +36,8 @@ jobs:
       - name: Download content if necessary
         id: download
         run: |
-          echo "updated=$(npm run download)" >> $GITHUB_OUTPUT;
+          npm run download;
+          echo "updated=$(cat updated)" >> $GITHUB_OUTPUT;
         env:
           GITHUB_TOKEN: ${{ secrets.PRIVILEGED_GITHUB_TOKEN }}
 
