@@ -31,7 +31,9 @@ jobs:
         run: ls -l cache/
 
       - name: Build project
-        run: npm run download > updated.txt
+        run: |
+          npm run download > updated.txt;
+          echo "Problems updated: $(cat updated.txt)";
         env:
           GITHUB_TOKEN: ${{ secrets.PRIVILEGED_GITHUB_TOKEN }}
 
