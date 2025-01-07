@@ -207,9 +207,9 @@ export class Competitions {
     TEAM_CODE: string;
     LOADED = false;
 
-    private async loadCompetition(placement: Placement) {
+    private async loadCompetition(placement: Placement): Promise<string[]> {
         if (this.COMPETITION_CACHE.has(placement.id)) {
-            return;
+            return [];
         }
 
         console.log(`Competition '${placement.id}' is outdated or missing. Loading...`);
@@ -239,9 +239,10 @@ export class Competitions {
         }
 
         this.COMPETITION_CACHE.put(placement.id, competition);
+        return [placement.id];
     }
 
-    private async loadPlacements() {
+    private async loadPlacements(): Promise<string[]> {
         let url = `${this.CTFTIME_URL}/team/${this.TEAM_CODE}`;
         let response = await fetch(url);
         let status = response.status;
@@ -250,17 +251,21 @@ export class Competitions {
             throw new Error(`Failed to download page '${url}'. Status code: ${status}`);
         }
 
+        let result = [];
         const text = await response.text();
         let parser = new PlacementParser(text);
         for (let placement of parser.placements) {
-            await this.loadCompetition(placement);
+            result.push(...await this.loadCompetition(placement));
         }
+
+        return result;
     }
 
-    async load() {
-        if (this.LOADED) return;
-        await this.loadPlacements();
+    async load(): Promise<string[]> {
+        if (this.LOADED) return [];
+        const result = await this.loadPlacements();
         this.LOADED = true;
+        return result;
     }
 
     // Retrieval
