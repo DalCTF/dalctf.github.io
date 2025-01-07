@@ -28,11 +28,6 @@ jobs:
           path: cache/
           key: "_"
 
-      - name: Print status of cache
-        run: |
-          mkdir -p cache;
-          tree cache;
-
       - name: Download content if necessary
         id: download
         run: |
@@ -41,6 +36,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.PRIVILEGED_GITHUB_TOKEN }}
 
+      - name: Print status of cache
+        run: |
+          mkdir -p cache;
+          tree cache;
+  
       - name: Get Date
         id: get-date
         run: |
