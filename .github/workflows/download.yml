@@ -37,7 +37,6 @@ jobs:
         id: download
         run: |
           echo "updated=$(npm run download)" >> $GITHUB_OUTPUT;
-          echo "Problems updated: $GITHUB_OUTPUT";
         env:
           GITHUB_TOKEN: ${{ secrets.PRIVILEGED_GITHUB_TOKEN }}
 
