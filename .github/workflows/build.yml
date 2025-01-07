@@ -1,13 +1,13 @@
 name: Build and Trigger Deploy
 
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
-  # push:
-  #   branches:
-  #     - main
-  # repository_dispatch:
-  #     types:
-  #       - content_changed
+  repository_dispatch:
+      types:
+        - content_changed
     
 jobs:
   Build:
@@ -24,17 +24,12 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Restore Cache (.astro/)
+      - name: Restore content from cache
         uses: actions/cache/restore@v4
         with:
-          path: .astro/
-          key: astro
-
-      - name: Restore content from cache (cache/)
-        uses: actions/cache/restore@v4
-        with:
+          restore-keys: content-
           path: cache/
-          key: content
+          key: "_"
 
       - name: Build project
         run: npm run build
