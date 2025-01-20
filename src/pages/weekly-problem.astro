@@ -4,26 +4,25 @@ import Hero from "../components/Hero.astro";
 import Spacer from "../components/Spacer.astro";
 import Tag from "../components/Tag.astro";
 import Layout from "../layouts/Layout.astro";
+import { hexFor } from "../util/colors";
 ---
 
 <Layout title="Weekly Problem | Status 418" description="">
 	<!-- Hero -->
-	<Hero upper="Weekly Problem" title="Function Overwrite">
-		<Tag type="border" color="#E01A00" text="PWN" />
+	<Hero upper="Weekly Problem" title="JaWT Scratchpad">
+		<Tag type="border" color={hexFor("blue")} text="Web" />
 	</Hero>
 
 	<!-- Banner -->
 	<Banner
 		icon="archive"
 		text="Download Problem"
-		url="https://play.picoctf.org/practice/challenge/272"
+		url="https://play.picoctf.org/practice/challenge/25"
 	/>
 	<Spacer />
 
 	<!-- Text -->
 	<section>
-		<p>
-			You can point to all kinds of things in C. Checkout our function pointers demo program.
-		</p>
+		<p>Check the admin scratchpad!</p>
 	</section>
 </Layout>
