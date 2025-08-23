@@ -161,7 +161,7 @@ class State {
     }
 
     constructor(tokens: Token[]) {
-        // if (tokens.length == 0) throw new Error("[!] Tokens for state cannot be empty");
+        if (tokens.length == 0) throw new Error("[!] Tokens for state cannot be empty");
         this.params = new Map<string, any>();
         this._tail = tokens.toReversed();
         this.content = [];
