@@ -1,0 +1,181 @@
+---
+export interface Props {
+  title: string;
+  isOpenByDefault?: boolean;
+  className?: string;
+  
+}
+
+const { title, isOpenByDefault = false, className = "" } = Astro.props;
+const uniqueId = `collapsible-${Math.random().toString(36)}`;
+---
+
+<div class={`collapsible ${className}`}>
+  <button 
+    class="collapsible-trigger"
+    type="button"
+    aria-expanded={isOpenByDefault ? "true" : "false"}
+    aria-controls={uniqueId}
+  >
+    <span class="collapsible-title">{title}</span>
+    <svg class="collapsible-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+  
+  <div 
+    class="collapsible-content"
+    id={uniqueId}
+    aria-hidden={isOpenByDefault ? "false" : "true"}
+    style={isOpenByDefault ? "" : "max-height: 0;"}
+  >
+    <div class="collapsible-inner">
+      <slot />
+    </div>
+  </div>
+</div>
+
+<style>
+  .collapsible {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .collapsible-trigger {
+    width: 100%;
+    padding: 16px 20px;
+    background: none;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    color: #374151;
+    transition: background-color 0.2s ease;
+  }
+
+  .collapsible-trigger:hover {
+    background-color: #f9fafb;
+  }
+
+  .collapsible-trigger:focus {
+    outline: none;
+    background-color: #afb6c5;
+    box-shadow: inset 0 0 0 2px #3b82f6;
+  }
+
+  .collapsible-title {
+    text-align: left;
+    flex: 1;
+    font-size: xx-large;
+    /* font-weight: bold; */
+    color: #ffffff;
+  }
+
+  .collapsible-icon {
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+    margin-left: 12px;
+  }
+
+  .collapsible-trigger[aria-expanded="true"] .collapsible-icon {
+    transform: rotate(180deg);
+  }
+
+  .collapsible-content {
+    overflow: hidden;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+    max-height: 0;
+  }
+
+  .collapsible-content[aria-hidden="false"] {
+    max-height: 500px; /* Adjust based on your content needs */
+  }
+
+  .collapsible-inner {
+    padding: 20px;
+    color: #6b7280;
+    line-height: 1.6;
+  }
+
+  /* When collapsed, remove padding */
+  .collapsible-content[aria-hidden="true"] .collapsible-inner {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+</style>
+
+<script>
+  class CollapsibleComponent {
+    constructor(element) {
+      this.element = element;
+      this.trigger = element.querySelector('.collapsible-trigger');
+      this.content = element.querySelector('.collapsible-content');
+      this.inner = element.querySelector('.collapsible-inner');
+      
+      this.init();
+    }
+
+    init() {
+      this.trigger.addEventListener('click', () => this.toggle());
+      
+      // Set initial state properly
+      this.updateContentHeight();
+      
+      // Handle resize events to recalculate height
+      window.addEventListener('resize', () => this.updateContentHeight());
+    }
+
+    toggle() {
+      const isExpanded = this.trigger.getAttribute('aria-expanded') === 'true';
+      
+      if (isExpanded) {
+        this.collapse();
+      } else {
+        this.expand();
+      }
+    }
+
+    expand() {
+      this.trigger.setAttribute('aria-expanded', 'true');
+      this.content.setAttribute('aria-hidden', 'false');
+      
+      // Calculate the actual height needed
+      const actualHeight = this.inner.scrollHeight;
+      this.content.style.maxHeight = actualHeight + 40 + 'px'; // Add padding
+    }
+
+    collapse() {
+      this.trigger.setAttribute('aria-expanded', 'false');
+      this.content.setAttribute('aria-hidden', 'true');
+      this.content.style.maxHeight = '0';
+    }
+
+    updateContentHeight() {
+      const isExpanded = this.trigger.getAttribute('aria-expanded') === 'true';
+      if (isExpanded) {
+        const actualHeight = this.inner.scrollHeight;
+        this.content.style.maxHeight = actualHeight + 40 + 'px';
+      }
+    }
+  }
+
+  // Initialize all collapsible components
+  document.addEventListener('DOMContentLoaded', () => {
+    const collapsibles = document.querySelectorAll('.collapsible');
+    collapsibles.forEach(collapsible => {
+      new CollapsibleComponent(collapsible);
+    });
+  });
+
+  // Handle page navigation in Astro (for client-side routing)
+  document.addEventListener('astro:page-load', () => {
+    const collapsibles = document.querySelectorAll('.collapsible');
+    collapsibles.forEach(collapsible => {
+      new CollapsibleComponent(collapsible);
+    });
+  });
+</script>

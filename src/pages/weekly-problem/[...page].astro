@@ -1,0 +1,144 @@
+---
+import type { GetStaticPaths, Page } from "astro";
+import Banner from "../../components/Banner.astro";
+import Button from "../../components/Button.astro";
+import FlagInput from "../../components/FlagInput.astro";
+import Hero from "../../components/Hero.astro";
+import Spacer from "../../components/Spacer.astro";
+import Tag from "../../components/Tag.astro";
+import WeeklyProblemItem from "../../components/WeeklyProblemItem.astro";
+import Layout from "../../layouts/Layout.astro";
+import { WeeklyProblems, type WeeklyProblem } from "../../loaders/WeeklyProblem";
+import { hexFor } from "../../util/colors";
+import { number } from "astro:schema";
+
+export const getStaticPaths: GetStaticPaths = async ({ paginate }) => {
+    const weekly_problems = await WeeklyProblems.shared.list();
+
+	// console.log("\nPROBLEMS\n\n");
+	// for (let problem of weekly_problems) {
+	// 	console.log(problem);
+	// }
+	console.log("------------unformated weekly problems--------------");
+	console.log(weekly_problems)
+	console.log("----------PROBLEM OF THE WEEK----------");
+	const pow = [];
+	let id_counter = 0;
+	for (let problem of weekly_problems) {
+		// if (problem.id.startsWith("weekly-problems_pow")) {
+			let wp: WeeklyProblem = {
+				id: id_counter,
+				author: problem.author,
+				path: problem.path,
+				name: problem.name,
+				presentedBy: problem.presentedBy,
+				snippet: problem.snippet,
+				category: problem.category,
+				tags: problem.tags,
+				datePresented: problem.datePresented,
+				title: problem.title,
+				link: "",
+				flag: problem.flag || "TEST",
+				flagFormat: problem.flagFormat || "dalctf{.*}",
+				};
+			console.log(wp);
+			pow.push(wp);
+			id_counter++;
+		// }
+	}
+	// console.log(pow);
+
+	// pow.sort((a, b) => {
+	// 	if (!(Number)(a.id)) return 1;
+	// 	if (!(Number)(b.id)) return -1;
+	// 	return (Number)(b.id )- (Number)(a.id);
+	// });
+
+	pow.sort((a, b) => {
+		return a > b ? 1 : -1;
+	});
+
+	return paginate(pow, {
+		pageSize: 5,
+	});
+};
+
+type Props = {
+    page: Page<{
+		name: string;
+		author: string;
+		tags: string[];
+		presentedBy: string | undefined;
+		snippet: string | undefined;
+		category: any;
+		id: string;
+        problem: WeeklyProblem;
+    }>;
+}; 
+
+const { page } = Astro.props; 
+---
+
+<!-- <WeeklyProblemItem title="Test" author="Author" presentedBy="Nir"></WeeklyProblemItem> -->
+
+<Layout title="Weekly Problem(s) | Status 418" description="">
+
+	<!-- Hero -->
+	<Hero title="Weekly Problems" />
+
+	<!-- Problems go here -->
+	<section>
+		{
+			page.data.map((problem) => (
+				<div>
+					<WeeklyProblemItem
+						id={problem.id}
+						name={problem.name}
+						author={problem.author}
+						presentedBy={problem.presentedBy}
+						snippet={problem.snippet}
+						tags={problem.tags}
+					/>
+					<Spacer height={24} />
+					<Button text="Read more" url={"/weekly-problem/" + problem.id} />
+				</div>
+				<Spacer height={48} />
+			))
+		}
+	</section>
+
+	<!-- Hero -->
+	<Hero upper="Weekly Problem" title="Forky" subtitle="Presented by: Nir Kazatsker">
+		<Tag
+			type="border"
+			color={hexFor("yellow")}
+			text="Reverse Engineering"
+		/>
+	</Hero>
+	
+
+	<!-- Banner -->
+	<Banner
+		icon="archive"
+		text="Download Problem"
+		url="https://play.picoctf.org/practice/challenge/24"
+	/>
+	<!-- <Spacer /> -->
+
+	<!-- Text -->
+	<section>
+		<p>
+			In this program, identify the last integer value that is passed as
+			parameter to the function doNothing().
+		</p>
+	</section>
+
+	<section>
+		<FlagInput challengeID={24} flag="flag{example_flag}" flagFormat="example{}"/>
+	</section>
+
+	<section>
+		<h3>Featured Writeups</h2>
+		<p>No writeups yet. Be the first to submit one!</p>
+	</section>
+</Layout>

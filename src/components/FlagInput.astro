@@ -1,0 +1,99 @@
+---
+interface Props {
+  challengeID: string | number;
+  flag: string;
+  flagFormat: string;
+}
+
+const {
+  challengeID = 0,
+  flag = "",
+  flagFormat = "dalctf{.*}",
+} = Astro.props;
+
+
+console.log("FlagInput component loaded with challengeID:", challengeID);
+---
+
+<div>
+  <span>
+    <input class="flag-input" problem-id={challengeID} placeholder={flagFormat} />
+    <button class="flag-submit" problem-id={challengeID}>Submit</button>
+  </span>
+</div>
+
+<script define:vars={{ flag, challengeID }}>  
+  // Simple approach - wait a bit for DOM to be ready
+  setTimeout(() => {
+    const input = document.querySelector(`.flag-input[problem-id="${challengeID}"]`);
+    const button = document.querySelector(`.flag-submit[problem-id="${challengeID}"]`);
+        
+    const submitFlagClick = () => {
+      console.log("Button clicked!");
+      const userFlag = input?.value;
+      console.log("User entered:", userFlag);
+      
+      // Check if the flag matches
+      if (userFlag === flag) {
+        alert('Correct flag! 🎉');
+      } else {
+        alert('Incorrect flag. Try again! ❌');
+      }
+    };
+
+    if (button) {
+      // button?.removeEventListener('click', submitFlagClick);
+      button?.addEventListener('click', submitFlagClick);
+    }
+
+
+  }, 100);
+</script>
+
+<style lang="scss">
+  @use "../styles/variables" as *;
+
+  .flag-input {
+    border: 1px solid gray;
+    border-radius: 4px;
+    padding: 8px;
+    font-size: 16px;
+    color: black;
+    background-color: white; /* Simplified for debugging */
+    width: 300px;
+
+    &:focus {
+      outline: none;
+      border-color: blue; /* Simplified for debugging */
+      box-shadow: 0 0 5px blue;
+    }
+  }
+
+  .flag-submit {
+    background-color: green;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-left: 8px;
+    border-radius: 4px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: darkgreen;
+    }
+  }
+
+  div {
+    flex-direction: column;
+    max-width: 100%;
+    display: flex;
+  }
+
+  span {
+    color: black; /* Simplified for debugging */
+  }
+</style>

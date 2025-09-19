@@ -1,4 +1,4 @@
-export type Color = "red" | "green" | "blue" | "orange" | "yellow";
+export type Color = "red" | "green" | "blue" | "orange" | "yellow" | "purple";
 
 export function hexFor(color: Color): string {
     switch (color) {
@@ -12,5 +12,7 @@ export function hexFor(color: Color): string {
             return "#FF9000";
         case "yellow":
             return "#D1B800";
+        case "purple":
+            return "#8000FF";
     }
 }

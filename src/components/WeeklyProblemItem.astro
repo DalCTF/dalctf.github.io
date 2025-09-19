@@ -1,0 +1,103 @@
+---
+import { tagFor } from '../util/tags';
+import FlagInput from './FlagInput.astro';
+
+
+
+interface Props {
+    id: string | number;
+    name: string;
+    author?: string; 
+    presentedBy?: string; 
+    tags?: string[];
+    snippet?: string;
+    datePresented?: string;
+    preview?: boolean;
+    link?: string;
+}
+
+
+const {
+    id,
+    name,
+    author,
+    presentedBy = "Status 418",
+    snippet = "",
+    preview = false,
+    link
+} = Astro.props;
+
+const tags = Array.isArray(Astro.props.tags)
+  ? Astro.props.tags.map((tag) => tagFor(tag, "border", !preview))
+  : [];
+
+// const tags = (Astro.props.tags || []).map((tag) =>
+//   tagFor(tag, "border", !preview),
+// );
+---
+
+<div>
+  <span>Author: {author} </span>
+  <h2>{name}</h2>
+  <!-- <Hero title={name} subtitle=`Presented by {}`/> -->
+  <span>Presented by {presentedBy}</span>
+  <div class="tags">
+    <!-- <p> sample tag </p>
+    {
+      tags.map((tag) => (
+        <Tag text={tag.text} color={tag.color} type={tag.type} url={tag.url} />
+      ))
+    } -->
+  </div>
+</div>
+<div>
+  <p
+    set:html={snippet}
+    style={{
+      display: "-webkit-box",
+      "-webkit-box-orient": "vertical",
+      "-webkit-line-clamp": 3,
+      overflow: "hidden",
+    }}
+  />
+</div>
+
+<FlagInput challengeID={id} flag='TEST' flagFormat="dalctf{.*}" />
+
+
+<style lang="scss">
+  @use "../styles/variables" as *;
+
+  div {
+    flex-direction: column;
+    max-width: 100%;
+    display: flex;
+  }
+
+  span {
+    color: $foreground-secondary-color;
+  }
+
+  h2 {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 100%;
+    display: block;
+  }
+
+  .tags {
+    flex-direction: row;
+    margin-top: 8px;
+    display: flex;
+    gap: 8px;
+  }
+
+  p {
+    margin-top: 16px;
+
+    :global(span) {
+      color: $accent-color-light;
+    }
+  }
+</style>
