@@ -34,8 +34,8 @@ export interface WeeklyProblem {
     tags?: string[];
     link: string;
     snippet?: string;
-    flag?: string;
-    flagFormat?: string;
+    flag: string;
+    flagFormat: string;
 }
 
 export class WeeklyProblems {
@@ -106,7 +106,6 @@ export class WeeklyProblems {
 
         const problemJsonResponse = await this.getContent(problem.category.repo.name, problem.path + `/${problem.name}.json`, false);
         const p = `${problem.category.repo.name}/${problem.path}/${problem.name}.json`;
-        console.log("problem.path: " + p);
         if (!problemJsonResponse) {
             console.log(`\t\t\tWeekly Problem not found for problem '${problem.name}'`);
             return [];
@@ -117,7 +116,7 @@ export class WeeklyProblems {
             return [];
         }
 
-        let id = problem.id;
+        let id = problem.id.toString();
         let sha = problemJsonResponse.data.sha;
         if (this.WEEKLY_PROBLEMS_CACHE.hasWithHash(id, sha)) {
             return [];
@@ -157,6 +156,8 @@ export class WeeklyProblems {
             // category, 
             link: '',
             category: problem.category,
+            flag: params.flag,
+            flagFormat: params.flagFormat,
         };
 
         // console.log("------Weekly Problem:---------");

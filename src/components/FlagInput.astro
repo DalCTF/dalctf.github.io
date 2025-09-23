@@ -7,12 +7,12 @@ interface Props {
 
 const {
   challengeID = 0,
-  flag = "",
-  flagFormat = "dalctf{.*}",
+  flag,
+  flagFormat,
 } = Astro.props;
 
 
-console.log("FlagInput component loaded with challengeID:", challengeID);
+// console.log("FlagInput component loaded with challengeID:", challengeID);
 ---
 
 <div>

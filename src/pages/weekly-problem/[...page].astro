@@ -73,6 +73,8 @@ type Props = {
 		category: any;
 		id: string;
         problem: WeeklyProblem;
+		flag: string;
+		flagFormat: string;
     }>;
 }; 
 
@@ -98,6 +100,8 @@ const { page } = Astro.props;
 						presentedBy={problem.presentedBy}
 						snippet={problem.snippet}
 						tags={problem.tags}
+						flag={problem.flag}
+						flagFormat={problem.flagFormat}
 					/>
 					<Spacer height={24} />
 					<Button text="Read more" url={"/weekly-problem/" + problem.id} />
