@@ -26,6 +26,7 @@ export const getStaticPaths: GetStaticPaths = async ({ paginate }) => {
 	let id_counter = 0;
 	for (let problem of weekly_problems) {
 		// if (problem.id.startsWith("weekly-problems_pow")) {
+		if (problem.active) {
 			let wp: WeeklyProblem = {
 				id: id_counter,
 				author: problem.author,
@@ -40,10 +41,12 @@ export const getStaticPaths: GetStaticPaths = async ({ paginate }) => {
 				link: "",
 				flag: problem.flag || "TEST",
 				flagFormat: problem.flagFormat || "dalctf{.*}",
+				active: problem.active
 				};
 			console.log(wp);
 			pow.push(wp);
 			id_counter++;
+		}
 		// }
 	}
 	// console.log(pow);
@@ -69,12 +72,14 @@ type Props = {
 		author: string;
 		tags: string[];
 		presentedBy: string | undefined;
+		datePresented: string;
 		snippet: string | undefined;
 		category: any;
 		id: string;
         problem: WeeklyProblem;
 		flag: string;
 		flagFormat: string;
+		active: boolean;
     }>;
 }; 
 
@@ -84,10 +89,12 @@ const { page } = Astro.props;
 <!-- <WeeklyProblemItem title="Test" author="Author" presentedBy="Nir"></WeeklyProblemItem> -->
 
 <Layout title="Weekly Problem(s) | Status 418" description="">
-
+	<!-- <section>
+		<p>To see previous week's problems, click here: </p>
+	</section> -->
 	<!-- Hero -->
 	<Hero title="Weekly Problems" />
-
+	
 	<!-- Problems go here -->
 	<section>
 		{
@@ -98,6 +105,7 @@ const { page } = Astro.props;
 						name={problem.name}
 						author={problem.author}
 						presentedBy={problem.presentedBy}
+						datePresented={problem.datePresented}
 						snippet={problem.snippet}
 						tags={problem.tags}
 						flag={problem.flag}
