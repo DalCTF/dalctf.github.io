@@ -30,12 +30,13 @@ export interface WeeklyProblem {
     name: string;
     title: string;
     presentedBy?: string;
-    datePresented?: Date;
+    datePresented?: string;
     tags?: string[];
     link: string;
     snippet?: string;
     flag: string;
     flagFormat: string;
+    active: boolean;
 }
 
 export class WeeklyProblems {
@@ -140,12 +141,20 @@ export class WeeklyProblems {
         // let link = params.link;
         let title = params.title;
         let presentedBy = params.presentedBy || "Status 418";
-        let datePresented = params.datePresented ? new Date(params.datePresented) : undefined;
+        // console.log("Parsed Date " + presentedBy);
+        // let datePresented = paparams.datePresented);
+        let datePresented = parseDate(params.datePresented).toLocaleString('en-US', {
+            weekday: 'long',
+            month: 'long',
+            day: 'numeric'
+        });
+        // let datePresented = datePresented.toDateString();
         let snippet = params.snippet || undefined;
 
         const weeklyProblem: WeeklyProblem = {
             id,
             path: problem.path,
+            author: params.author,
             name,
             tags,
             // link,  
@@ -158,6 +167,7 @@ export class WeeklyProblems {
             category: problem.category,
             flag: params.flag,
             flagFormat: params.flagFormat,
+            active: params.active
         };
 
         // console.log("------Weekly Problem:---------");

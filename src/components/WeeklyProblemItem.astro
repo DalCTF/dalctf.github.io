@@ -1,6 +1,8 @@
 ---
 import { tagFor } from '../util/tags';
+import Banner from './Banner.astro';
 import FlagInput from './FlagInput.astro';
+import Tag from './Tag.astro';
 
 
 
@@ -11,7 +13,7 @@ interface Props {
     presentedBy?: string; 
     tags?: string[];
     snippet?: string;
-    datePresented?: string;
+    datePresented: string;
     preview?: boolean;
     link?: string;
     flag: string;
@@ -24,6 +26,7 @@ const {
     name,
     author,
     presentedBy = "Status 418",
+    datePresented = "Unknown Date",
     snippet = "",
     preview = false,
     link, 
@@ -31,29 +34,34 @@ const {
     flagFormat,
 } = Astro.props;
 
-const tags = Array.isArray(Astro.props.tags)
-  ? Astro.props.tags.map((tag) => tagFor(tag, "border", !preview))
-  : [];
+// const tags = Array.isArray(Astro.props.tags)
+//   ? Astro.props.tags.map((tag) => tagFor(tag, "border", !preview))
+//   : [];
 
-// const tags = (Astro.props.tags || []).map((tag) =>
-//   tagFor(tag, "border", !preview),
-// );
+const tags = (Astro.props.tags || []).map((tag) =>
+  tagFor(tag, "border", !preview),
+);
 ---
 
 <div>
   <span>Author: {author} </span>
   <h2>{name}</h2>
   <!-- <Hero title={name} subtitle=`Presented by {}`/> -->
-  <span>Presented by {presentedBy}</span>
+  <span>Presented by {presentedBy} on {datePresented}</span>
   <div class="tags">
-    <!-- <p> sample tag </p>
+    <!-- <p> sample tag </p> -->
     {
       tags.map((tag) => (
         <Tag text={tag.text} color={tag.color} type={tag.type} url={tag.url} />
       ))
-    } -->
+    }
   </div>
 </div>
+<Banner 
+  icon="archive"
+  text="Download Problem"
+  url={link || "#"}
+  /> 
 <div>
   <p
     set:html={snippet}
