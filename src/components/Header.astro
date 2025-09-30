@@ -1,6 +1,8 @@
 ---
 import { Image } from "astro:assets";
-import Logo from "../assets/logo.png";
+// import Logo from "../assets/logo.png";
+// import DalCTFLogo from "../assets/DalCTF_logo_glitch.png";
+import DalCTFLogo from "../assets/DalCTF_logo_cleanW.png";
 import Button from "./Button.astro";
 
 const pages = [
@@ -14,7 +16,7 @@ const pages = [
 
 <section>
   <a class="logo" href="/">
-    <Image src={Logo} alt="" loading={"eager"} />
+    <Image src={DalCTFLogo} alt="" loading={"eager"} width={64*4} height={96*4} style="object-fit: contain;" />
   </a>
   <div class="links">
     {pages.map((page) => <a href={page[1]}>{page[0]}</a>)}
@@ -42,7 +44,7 @@ const pages = [
     height: 96px;
   }
 
-  .logo * {
+  .logo *{
     width: 100%;
     height: 100%;
   }
