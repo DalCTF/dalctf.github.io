@@ -34,82 +34,185 @@ const {
     flagFormat,
 } = Astro.props;
 
-// const tags = Array.isArray(Astro.props.tags)
-//   ? Astro.props.tags.map((tag) => tagFor(tag, "border", !preview))
-//   : [];
-
 const tags = (Astro.props.tags || []).map((tag) =>
   tagFor(tag, "border", !preview),
 );
 ---
 
-<div>
-  <span>Author: {author} </span>
-  <h2>{name}</h2>
-  <!-- <Hero title={name} subtitle=`Presented by {}`/> -->
-  <span>Presented by {presentedBy} on {datePresented}</span>
-  <div class="tags">
-    <!-- <p> sample tag </p> -->
-    {
-      tags.map((tag) => (
-        <Tag text={tag.text} color={tag.color} type={tag.type} url={tag.url} />
-      ))
-    }
+<article class="weekly-problem-item">
+  <header class="problem-header">
+    <div class="problem-meta">
+      {author && <span class="author">Author: {author}</span>}
+      <span class="presented-info">Presented by {presentedBy} on {datePresented}</span>
+    </div>
+    <h2 class="problem-title">{name}</h2>
+    {tags.length > 0 && (
+      <div class="tags">
+        {tags.map((tag) => (
+          <Tag text={tag.text} color={tag.color} type={tag.type} url={tag.url} />
+        ))}
+      </div>
+    )}
+  </header>
+
+  <div class="problem-content">
+    {snippet && (
+      <div class="snippet-container">
+        <p class="snippet" set:html={snippet} />
+      </div>
+    )}
+    
+    <div class="problem-actions">
+      <Banner 
+        icon="archive"
+        text="Download Problem"
+        url={link || "#"}
+      /> 
+    </div>
   </div>
-</div>
-<Banner 
-  icon="archive"
-  text="Download Problem"
-  url={link || "#"}
-  /> 
-<div>
-  <p
-    set:html={snippet}
-    style={{
-      display: "-webkit-box",
-      "-webkit-box-orient": "vertical",
-      "-webkit-line-clamp": 3,
-      overflow: "hidden",
-    }}
-  />
-</div>
 
-<FlagInput challengeID={id} flag={flag} flagFormat={flagFormat} />
-
+  <footer class="problem-footer">
+    <FlagInput challengeID={id} flag={flag} flagFormat={flagFormat} />
+  </footer>
+</article>
 
 <style lang="scss">
   @use "../styles/variables" as *;
 
-  div {
-    flex-direction: column;
-    max-width: 100%;
+  .weekly-problem-item {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+  }
+
+  .problem-header {
+    margin-bottom: 20px;
+  }
+
+  .problem-meta {
     display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 12px;
+
+    @media (min-width: 768px) {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
   }
 
-  span {
-    color: $foreground-secondary-color;
+  .author,
+  .presented-info {
+    font-size: 0.9rem;
+    // color: $foreground-secondary-color;
+    opacity: 0.8;
   }
 
-  h2 {
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-    max-width: 100%;
-    display: block;
+  .author {
+    font-weight: 500;
+  }
+
+  .problem-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0 0 16px 0;
+    line-height: 1.3;
+    // collor: $foreground-primary-color;
+    
+    @media (max-width: 768px) {
+      font-size: 1.3rem;
+      word-break: break-word;
+      hyphens: auto;
+    }
   }
 
   .tags {
-    flex-direction: row;
-    margin-top: 8px;
     display: flex;
+    flex-wrap: wrap;
     gap: 8px;
+    margin-top: 12px;
   }
 
-  p {
-    margin-top: 16px;
+  .problem-content {
+    margin-bottom: 20px;
+  }
 
+  .snippet-container {
+    margin-bottom: 20px;
+  }
+
+  .snippet {
+    background: rgba(0, 0, 0, 0.2);
+    border-left: 4px solid $accent-color-light;
+    padding: 16px;
+    border-radius: 6px;
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    
+    // Ellipsis overflow for preview
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+    
     :global(span) {
       color: $accent-color-light;
+    }
+
+    :global(code) {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+    }
+  }
+
+  .problem-actions {
+    // display: flex;
+    // justify-content: flex-start;
+  }
+
+  .problem-footer {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 20px;
+    margin-top: 20px;
+  }
+
+  // Responsive adjustments
+  @media (max-width: 768px) {
+    .weekly-problem-item {
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .problem-meta {
+      gap: 8px;
+    }
+
+    .tags {
+      gap: 6px;
+    }
+  }
+
+  // Print styles
+  @media print {
+    .weekly-problem-item {
+      background: none;
+      border: 1px solid #ccc;
+      box-shadow: none;
+      break-inside: avoid;
     }
   }
 </style>

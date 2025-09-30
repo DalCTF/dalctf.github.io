@@ -89,11 +89,22 @@ const { page } = Astro.props;
 <!-- <WeeklyProblemItem title="Test" author="Author" presentedBy="Nir"></WeeklyProblemItem> -->
 
 <Layout title="Weekly Problem(s) | Status 418" description="">
+
 	<!-- <section>
 		<p>To see previous week's problems, click here: </p>
 	</section> -->
 	<!-- Hero -->
 	<Hero title="Weekly Problems" />
+		<section class="flex justify-center">
+				<p>Stay sharp with our weekly challenges! Each week, we present a new problem to test your skills and keep you engaged. 
+					Dive in, solve the puzzles, and enhance your expertise one challenge at a time.</p>
+				<p>Have a suggestion for a challenge to be presented next week, or you wrote a writeup for one of our weekly challenges 
+					and want it presented on the site? Get in touch with a society exec on our Discord</p>
+		<!-- <Button 
+			text="View Past Problems" 
+			url="/weekly-problem/archive" 
+		/> -->
+		</section>	
 	
 	<!-- Problems go here -->
 	<section>
@@ -112,7 +123,7 @@ const { page } = Astro.props;
 						flagFormat={problem.flagFormat}
 					/>
 					<Spacer height={24} />
-					<Button text="Read more" url={"/weekly-problem/" + problem.id} />
+					{/* <Button text="Read more" url={"/weekly-problem/" + problem.id} /> */}
 				</div>
 				<Spacer height={48} />
 			))
@@ -120,37 +131,37 @@ const { page } = Astro.props;
 	</section>
 
 	<!-- Hero -->
-	<Hero upper="Weekly Problem" title="Forky" subtitle="Presented by: Nir Kazatsker">
+	<!-- <Hero upper="Weekly Problem" title="Forky" subtitle="Presented by: Nir Kazatsker">
 		<Tag
 			type="border"
 			color={hexFor("yellow")}
 			text="Reverse Engineering"
 		/>
-	</Hero>
+	</Hero> -->
 	
 
 	<!-- Banner -->
-	<Banner
+	<!-- <Banner
 		icon="archive"
 		text="Download Problem"
 		url="https://play.picoctf.org/practice/challenge/24"
-	/>
+	/> -->
 	<!-- <Spacer /> -->
 
 	<!-- Text -->
-	<section>
+	<!-- <section>
 		<p>
 			In this program, identify the last integer value that is passed as
 			parameter to the function doNothing().
 		</p>
-	</section>
+	</section> -->
 
-	<section>
+	<!-- <section>
 		<FlagInput challengeID={24} flag="flag{example_flag}" flagFormat="example{}"/>
-	</section>
-
+	</section> -->
+<!-- 
 	<section>
 		<h3>Featured Writeups</h2>
 		<p>No writeups yet. Be the first to submit one!</p>
-	</section>
+	</section> -->
 </Layout>

@@ -199,7 +199,10 @@ export class WeeklyProblems {
                 name: x.name,
                 sha: x.sha,
                 title: x.name,
-                link: x.path
+                link: x.path,
+                flag: '',
+                flagFormat: '',
+                active: true
             }));
         
         for (let problem of problems) {
