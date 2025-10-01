@@ -27,7 +27,7 @@ export const getStaticPaths: GetStaticPaths = async ({ paginate }) => {
 	for (let problem of weekly_problems) {
 		// if (problem.id.startsWith("weekly-problems_pow")) {
 		if (problem.active) {
-			let wp: WeeklyProblem = {
+			let wp: WeeklyProblem & { id: number } = {
 				id: id_counter,
 				author: problem.author,
 				path: problem.path,
@@ -58,7 +58,7 @@ export const getStaticPaths: GetStaticPaths = async ({ paginate }) => {
 	// });
 
 	pow.sort((a, b) => {
-		return a > b ? 1 : -1;
+		return a.id - b.id;
 	});
 
 	return paginate(pow, {
@@ -90,20 +90,19 @@ const { page } = Astro.props;
 
 <Layout title="Weekly Problem(s) | Status 418" description="">
 
-	<!-- <section>
-		<p>To see previous week's problems, click here: </p>
-	</section> -->
-	<!-- Hero -->
+	<section>
+
+ 	</section>
+ 	<!-- Hero -->
 	<Hero title="Weekly Problems" />
 		<section class="flex justify-center">
 				<p>Stay sharp with our weekly challenges! Each week, we present a new problem to test your skills and keep you engaged. 
 					Dive in, solve the puzzles, and enhance your expertise one challenge at a time.</p>
 				<p>Have a suggestion for a challenge to be presented next week, or you wrote a writeup for one of our weekly challenges 
-					and want it presented on the site? Get in touch with a society exec on our Discord</p>
-		<!-- <Button 
-			text="View Past Problems" 
-			url="/weekly-problem/archive" 
-		/> -->
+					and want it presented on the site? Get in touch with a society exec on our 
+					<a href="https://discord.gg/4vEJJF6CQg">Discord.</a></p>
+				<Spacer height={16} />
+				<Button text="See Past Weekly Problems" url="/past-weekly-problems" />
 		</section>	
 	
 	<!-- Problems go here -->
@@ -130,38 +129,4 @@ const { page } = Astro.props;
 		}
 	</section>
 
-	<!-- Hero -->
-	<!-- <Hero upper="Weekly Problem" title="Forky" subtitle="Presented by: Nir Kazatsker">
-		<Tag
-			type="border"
-			color={hexFor("yellow")}
-			text="Reverse Engineering"
-		/>
-	</Hero> -->
-	
-
-	<!-- Banner -->
-	<!-- <Banner
-		icon="archive"
-		text="Download Problem"
-		url="https://play.picoctf.org/practice/challenge/24"
-	/> -->
-	<!-- <Spacer /> -->
-
-	<!-- Text -->
-	<!-- <section>
-		<p>
-			In this program, identify the last integer value that is passed as
-			parameter to the function doNothing().
-		</p>
-	</section> -->
-
-	<!-- <section>
-		<FlagInput challengeID={24} flag="flag{example_flag}" flagFormat="example{}"/>
-	</section> -->
-<!-- 
-	<section>
-		<h3>Featured Writeups</h2>
-		<p>No writeups yet. Be the first to submit one!</p>
-	</section> -->
 </Layout>

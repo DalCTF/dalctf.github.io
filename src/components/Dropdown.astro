@@ -1,0 +1,103 @@
+---
+export interface Props {
+  title: string;
+  items: Array<{
+    label: string;
+    href: string;
+  }>;
+}
+
+const { title, items } = Astro.props;
+---
+
+<div class="dropdown">
+  <a href="#" class="dropdown-toggle" role="button">
+    {title} <span class="arrow">▼</span>
+  </a>
+  <ul class="dropdown-menu">
+    {items.map((item) => (
+      <li><a href={item.href}>{item.label}</a></li>
+    ))}
+  </ul>
+</div>
+
+<style lang="scss">
+  @use "../styles/variables" as *;
+
+  .dropdown {
+    position: relative;
+    display: inline-block;
+  }
+
+  .dropdown-toggle {
+    color: $foreground-color;
+    text-decoration: none;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    transition: color 0.2s ease;
+    
+    &:hover {
+      color: lighten($foreground-color, 20%);
+    }
+  }
+
+  .arrow {
+    font-size: 0.8em;
+    transition: transform 0.2s ease;
+  }
+
+  .dropdown:hover .arrow {
+    transform: rotate(180deg);
+  }
+
+  .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: $background-color;
+    border: 1px solid lighten($background-color, 10%);
+    border-radius: 4px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    min-width: 160px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.2s ease;
+    z-index: 1000;
+  }
+
+  .dropdown:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .dropdown-menu li {
+    margin: 0;
+  }
+
+  .dropdown-menu a {
+    display: block;
+    padding: 8px 16px;
+    color: $foreground-color;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: lighten($background-color, 5%);
+    }
+  }
+
+  .dropdown-menu li:first-child a {
+    border-radius: 4px 4px 0 0;
+  }
+
+  .dropdown-menu li:last-child a {
+    border-radius: 0 0 4px 4px;
+  }
+</style>

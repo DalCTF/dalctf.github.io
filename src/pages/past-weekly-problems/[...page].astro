@@ -1,0 +1,112 @@
+---
+import type { GetStaticPaths, Page } from "astro";
+import Banner from "../../components/Banner.astro";
+import Button from "../../components/Button.astro";
+import FlagInput from "../../components/FlagInput.astro";
+import Hero from "../../components/Hero.astro";
+import Spacer from "../../components/Spacer.astro";
+import Tag from "../../components/Tag.astro";
+import WeeklyProblemItem from "../../components/WeeklyProblemItem.astro";
+import Layout from "../../layouts/Layout.astro";
+import { WeeklyProblems, type WeeklyProblem } from "../../loaders/WeeklyProblem";
+import { hexFor } from "../../util/colors";
+import { number } from "astro:schema";
+
+export const getStaticPaths: GetStaticPaths = async ({ paginate }) => {
+    const weekly_problems = await WeeklyProblems.shared.list();
+
+	const pow = [];
+	let id_counter = 0;
+	for (let problem of weekly_problems) {
+		// if (problem.id.startsWith("weekly-problems_pow")) {
+		if (!problem.active) {
+			let wp: WeeklyProblem = {
+				id: id_counter,
+				author: problem.author,
+				path: problem.path,
+				name: problem.name,
+				presentedBy: problem.presentedBy,
+				snippet: problem.snippet,
+				category: problem.category,
+				tags: problem.tags,
+				datePresented: problem.datePresented,
+				title: problem.title,
+				link: "",
+				flag: problem.flag || "TEST",
+				flagFormat: problem.flagFormat || "dalctf{.*}",
+				active: problem.active
+				};
+			console.log(wp);
+			pow.push(wp);
+			id_counter++;
+		}
+	}
+
+	pow.sort((a, b) => {
+		return a > b ? 1 : -1;
+	});
+
+	return paginate(pow, {
+		pageSize: 5,
+	});
+};
+
+type Props = {
+    page: Page<{
+		name: string;
+		author: string;
+		tags: string[];
+		presentedBy: string | undefined;
+		datePresented: string;
+		snippet: string | undefined;
+		category: any;
+		id: string;
+        problem: WeeklyProblem;
+		flag: string;
+		flagFormat: string;
+		active: boolean;
+    }>;
+}; 
+
+const { page } = Astro.props; 
+---
+
+<!-- <WeeklyProblemItem title="Test" author="Author" presentedBy="Nir"></WeeklyProblemItem> -->
+
+<Layout title="Past Weekly Problems | Status 418" description="">
+
+	<!-- <section>
+		<p>To see previous week's problems, click here: </p>
+	</section> -->
+	<!-- Hero -->
+	<Hero title="Past Weekly Problems" />
+		<section class="flex justify-center">
+            <Button text="See Current Week's Problem(s)" url="/weekly-problem" />
+            <p>Previous problems solved during society meetings.</p>
+		</section>	
+	
+	<!-- Problems go here -->
+	<section>
+		{
+			page.data.map((problem) => (
+				<div>
+					<WeeklyProblemItem
+						id={problem.id}
+						name={problem.name}
+						author={problem.author}
+						presentedBy={problem.presentedBy}
+						datePresented={problem.datePresented}
+						snippet={problem.snippet}
+						tags={problem.tags}
+						flag={problem.flag}
+						flagFormat={problem.flagFormat}
+					/>
+					<Spacer height={24} />
+					{/* <Button text="Read more" url={"/weekly-problem/" + problem.id} /> */}
+				</div>
+				<Spacer height={48} />
+			))
+		}
+	</section>
+
+</Layout>
