@@ -38,7 +38,7 @@ export const getStaticPaths: GetStaticPaths = async ({ paginate }) => {
 				tags: problem.tags,
 				datePresented: problem.datePresented,
 				title: problem.title,
-				link: "",
+				link: problem.link,
 				flag: problem.flag || "TEST",
 				flagFormat: problem.flagFormat || "dalctf{.*}",
 				active: problem.active
@@ -49,14 +49,8 @@ export const getStaticPaths: GetStaticPaths = async ({ paginate }) => {
 		}
 		// }
 	}
-	// console.log(pow);
 
-	// pow.sort((a, b) => {
-	// 	if (!(Number)(a.id)) return 1;
-	// 	if (!(Number)(b.id)) return -1;
-	// 	return (Number)(b.id )- (Number)(a.id);
-	// });
-
+	// Sort by ascending id order. 
 	pow.sort((a, b) => {
 		return a.id - b.id;
 	});
@@ -80,13 +74,12 @@ type Props = {
 		flag: string;
 		flagFormat: string;
 		active: boolean;
+		link: string;
     }>;
 }; 
 
 const { page } = Astro.props; 
 ---
-
-<!-- <WeeklyProblemItem title="Test" author="Author" presentedBy="Nir"></WeeklyProblemItem> -->
 
 <Layout title="Weekly Problem(s) | Status 418" description="">
 
@@ -120,6 +113,7 @@ const { page } = Astro.props;
 						tags={problem.tags}
 						flag={problem.flag}
 						flagFormat={problem.flagFormat}
+						link={problem.link}
 					/>
 					<Spacer height={24} />
 					{/* <Button text="Read more" url={"/weekly-problem/" + problem.id} /> */}

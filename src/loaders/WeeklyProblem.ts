@@ -163,7 +163,7 @@ export class WeeklyProblems {
             datePresented,
             snippet,
             // category, 
-            link: '',
+            link: params.link,
             category: problem.category,
             flag: params.flag,
             flagFormat: params.flagFormat,

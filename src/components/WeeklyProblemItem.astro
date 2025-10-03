@@ -4,8 +4,6 @@ import Banner from './Banner.astro';
 import FlagInput from './FlagInput.astro';
 import Tag from './Tag.astro';
 
-
-
 interface Props {
     id: string | number;
     name: string;
@@ -18,8 +16,8 @@ interface Props {
     link?: string;
     flag: string;
     flagFormat: string;
+    collapsed?: boolean;
 }
-
 
 const {
     id,
@@ -32,6 +30,7 @@ const {
     link, 
     flag,
     flagFormat,
+    collapsed = false,
 } = Astro.props;
 
 const tags = (Astro.props.tags || []).map((tag) =>
@@ -39,7 +38,13 @@ const tags = (Astro.props.tags || []).map((tag) =>
 );
 ---
 
-<article class="weekly-problem-item">
+<article class="weekly-problem-item" data-collapsed={collapsed}>
+  <button class="collapse-toggle" aria-label="Toggle problem details">
+    <svg class="chevron" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+      <path d="M8 10.5L3.5 6 4.5 5l3.5 3.5L11.5 5l1 1-4.5 4.5z"/>
+    </svg>
+  </button>
+
   <header class="problem-header">
     <div class="problem-meta">
       {author && <span class="author">Author: {author}</span>}
@@ -55,26 +60,66 @@ const tags = (Astro.props.tags || []).map((tag) =>
     )}
   </header>
 
-  <div class="problem-content">
-    {snippet && (
-      <div class="snippet-container">
-        <p class="snippet" set:html={snippet} />
+  <div class="collapsible-content">
+    <div class="problem-content">
+      {snippet && (
+        <div class="snippet-container">
+          <p class="snippet" set:html={snippet} />
+        </div>
+      )}
+      
+      <div class="problem-actions">
+        <Banner 
+          icon="archive"
+          text="Download Problem"
+          url={link || "#"}
+        /> 
       </div>
-    )}
-    
-    <div class="problem-actions">
-      <Banner 
-        icon="archive"
-        text="Download Problem"
-        url={link || "#"}
-      /> 
     </div>
-  </div>
 
-  <footer class="problem-footer">
-    <FlagInput challengeID={id} flag={flag} flagFormat={flagFormat} />
-  </footer>
+    <footer class="problem-footer">
+      <FlagInput challengeID={id} flag={flag} flagFormat={flagFormat} />
+    </footer>
+  </div>
 </article>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const items = document.querySelectorAll('.weekly-problem-item');
+    
+    items.forEach(item => {
+      const isCollapsed = item.getAttribute('data-collapsed') === 'true';
+      const content = item.querySelector('.collapsible-content') as HTMLElement;
+      const toggle = item.querySelector('.collapse-toggle');
+      
+      if (!content || !toggle) return;
+      
+      // Set initial state
+      if (isCollapsed) {
+        content.style.maxHeight = '0';
+        item.classList.add('collapsed');
+      } else {
+        content.style.maxHeight = content.scrollHeight + 'px';
+      }
+      
+      toggle.addEventListener('click', () => {
+        const isCurrentlyCollapsed = item.classList.contains('collapsed');
+        
+        if (isCurrentlyCollapsed) {
+          // Expand
+          content.style.maxHeight = content.scrollHeight + 'px';
+          item.classList.remove('collapsed');
+          item.setAttribute('data-collapsed', 'false');
+        } else {
+          // Collapse
+          (content as HTMLElement).style.maxHeight = '0';
+          item.classList.add('collapsed');
+          item.setAttribute('data-collapsed', 'true');
+        }
+      });
+    });
+  });
+</script>
 
 <style lang="scss">
   @use "../styles/variables" as *;
@@ -87,16 +132,59 @@ const tags = (Astro.props.tags || []).map((tag) =>
     margin-bottom: 24px;
     transition: all 0.3s ease;
     backdrop-filter: blur(10px);
+    position: relative;
 
     &:hover {
       transform: translateY(-2px);
       box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
       border-color: rgba(255, 255, 255, 0.2);
     }
+
+    &.collapsed {
+      .chevron {
+        transform: rotate(-90deg);
+      }
+    }
+  }
+
+  .collapse-toggle {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    color: inherit;
+    cursor: pointer;
+    padding: 8px;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    &:focus {
+      outline: 2px solid rgba(255, 255, 255, 0.4);
+      outline-offset: 2px;
+    }
+  }
+
+  .chevron {
+    transition: transform 0.3s ease;
   }
 
   .problem-header {
     margin-bottom: 20px;
+    padding-right: 40px; // Make room for collapse button
+
+    .collapsed & {
+      margin-bottom: 0;
+    }
   }
 
   .problem-meta {
@@ -115,7 +203,6 @@ const tags = (Astro.props.tags || []).map((tag) =>
   .author,
   .presented-info {
     font-size: 0.9rem;
-    // color: $foreground-secondary-color;
     opacity: 0.8;
   }
 
@@ -128,7 +215,6 @@ const tags = (Astro.props.tags || []).map((tag) =>
     font-weight: 700;
     margin: 0 0 16px 0;
     line-height: 1.3;
-    // collor: $foreground-primary-color;
     
     @media (max-width: 768px) {
       font-size: 1.3rem;
@@ -142,6 +228,11 @@ const tags = (Astro.props.tags || []).map((tag) =>
     flex-wrap: wrap;
     gap: 8px;
     margin-top: 12px;
+  }
+
+  .collapsible-content {
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
   }
 
   .problem-content {
@@ -161,7 +252,6 @@ const tags = (Astro.props.tags || []).map((tag) =>
     font-size: 0.95rem;
     line-height: 1.6;
     
-    // Ellipsis overflow for preview
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3;
@@ -179,22 +269,26 @@ const tags = (Astro.props.tags || []).map((tag) =>
     }
   }
 
-  .problem-actions {
-    // display: flex;
-    // justify-content: flex-start;
-  }
-
   .problem-footer {
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     padding-top: 20px;
     margin-top: 20px;
   }
 
-  // Responsive adjustments
   @media (max-width: 768px) {
     .weekly-problem-item {
       padding: 20px;
       margin-bottom: 20px;
+    }
+
+    .collapse-toggle {
+      top: 12px;
+      right: 12px;
+      padding: 6px;
+    }
+
+    .problem-header {
+      padding-right: 36px;
     }
 
     .problem-meta {
@@ -206,13 +300,21 @@ const tags = (Astro.props.tags || []).map((tag) =>
     }
   }
 
-  // Print styles
   @media print {
     .weekly-problem-item {
       background: none;
       border: 1px solid #ccc;
       box-shadow: none;
       break-inside: avoid;
+    }
+
+    .collapse-toggle {
+      display: none;
+    }
+
+    .collapsible-content {
+      max-height: none !important;
+      overflow: visible !important;
     }
   }
 </style>
