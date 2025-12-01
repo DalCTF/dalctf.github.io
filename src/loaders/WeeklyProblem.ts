@@ -47,6 +47,7 @@ export class WeeklyProblems {
     REPO_CACHE: Cache<Repo>;
     // REPO_CACHE: Cache<Repo>;
     LOADED: boolean = false;
+    private loadAttempts: number = 0;
     OCTOKIT: Octokit;
     ORG: string;
 
@@ -305,6 +306,14 @@ export class WeeklyProblems {
     // Retrieval 
     async list(): Promise<WeeklyProblem[]> {
         await this.load();
+
+        // If the cache is still empty after the first attempted load, try one more time.
+        const current = this.WEEKLY_PROBLEMS_CACHE.list();
+        if (current.length === 0 && this.loadAttempts < 2) {
+            this.LOADED = false;
+            await this.load();
+        }
+
         return this.WEEKLY_PROBLEMS_CACHE.list();
     }
 
