@@ -174,6 +174,7 @@ export class WeeklyProblems {
         // console.log(weeklyProblem);
 
         this.WEEKLY_PROBLEMS_CACHE.putWithHash(id, weeklyProblem, sha);
+        console.log(`\t\tLoaded weekly problem '${id}' from '${p}'`);
 
         result.push(weeklyProblem);
 
@@ -205,9 +206,12 @@ export class WeeklyProblems {
                 active: true
             }));
         
+        console.log(`\tFound ${problems.length} problems in category '${category.path}'`);
         for (let problem of problems) {
             console.log("path: " + problem.path);
-            if (this.WEEKLY_PROBLEMS_CACHE.hasWithHash(problem.id, problem.sha)) continue;
+            if (this.WEEKLY_PROBLEMS_CACHE.hasWithHash(problem.id, problem.sha)) {
+                continue
+            };
             console.log(`\t\tProblem '${problem.path}' is outdated or missing. Loading...`);
 
             result.push(...await this.loadWeeklyProblems(problem));
@@ -235,6 +239,8 @@ export class WeeklyProblems {
                 repo: repo,
                 sha: x.sha
             }));
+
+            console.log(`	Found ${categories.length} categories in repo '${repo.name}'`);
 
         for (let category of categories) {
             if (this.CATEGORY_CACHE.hasWithHash(category.id, category.sha)) continue;
