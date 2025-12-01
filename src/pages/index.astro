@@ -10,12 +10,10 @@ import { WeeklyProblems } from "../loaders/WeeklyProblem";
 // Populate weekly problems cache during server-side render.
 // This is necessary even if weekly problems are not presented, 
 // as the cache will then remain empty when the weekly problems page is accessed.
-if (process.env.GITHUB_TOKEN) {
-	try {
-		await WeeklyProblems.shared.list();
-	} catch (e) {
-		console.warn("WeeklyProblems load failed on index page:", e);
-	}
+try {
+	await WeeklyProblems.shared.list();
+} catch (e) {
+	console.error("Error preloading weekly problems");
 }
 ---
 
