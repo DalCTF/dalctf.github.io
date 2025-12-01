@@ -273,22 +273,26 @@ export class WeeklyProblems {
 
         let response;
 
-        // Get Weekly Probelms Repo
         try {
-            response = await this.OCTOKIT.rest.repos.get({
+            response = await this.OCTOKIT.rest.repos.listForOrg({
                 type: "public",
-                owner: this.ORG,
-                repo: "weekly-problems"
+                org: this.ORG
             });
         } catch (error) {
-            throw new Error(`Failed to retrieve weekly problems repository for organization '${this.ORG}'`, { cause: error });
+            throw new Error(`Failed to retrieve repositories for organization '${this.ORG}'`, { cause: error });
         }
 
-        let entries = [{ name: response.data.name, path: response.data.full_name, dateUpdated: parseDate(response.data.updated_at) }];
+        const repoEntry = response.data.find(r => r.name === "weekly-problems");
+        if (!repoEntry) {
+            console.log(`Weekly problems repository not found for organization '${this.ORG}'.`);
+            return [];
+        }
 
+        let entries = [{ name: repoEntry.name, path: repoEntry.full_name, dateUpdated: parseDate(repoEntry.updated_at) }];
+        console.log("Loading weekly problems from repository: " + entries[0].name);
         const weeklyProblem = await this.loadRepo(entries[0]);
         this.LOADED = true;
-        
+
         return weeklyProblem;
     }
 
