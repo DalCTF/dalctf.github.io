@@ -5,6 +5,18 @@ import LatestCompetitions from "../components/LatestCompetitions.astro";
 import LatestWriteups from "../components/LatestWriteups.astro";
 import Spacer from "../components/Spacer.astro";
 import Layout from "../layouts/Layout.astro";
+import { WeeklyProblems } from "../loaders/WeeklyProblem";
+
+// Populate weekly problems cache during server-side render.
+// This is necessary even if weekly problems are not presented, 
+// as the cache will then remain empty when the weekly problems page is accessed.
+if (process.env.GITHUB_TOKEN) {
+	try {
+		await WeeklyProblems.shared.list();
+	} catch (e) {
+		console.warn("WeeklyProblems load failed on index page:", e);
+	}
+}
 ---
 
 <Layout title="Status 418" description="">

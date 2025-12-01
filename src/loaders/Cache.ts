@@ -105,7 +105,7 @@ export class Cache<T> {
 
     list(): T[] {
         this.load();
-        return Array.from(this.entries.entries().map(([_, entry]) => entry.content));
+        return Array.from(this.entries.values()).map(entry => entry.content);
     }
 
     constructor(path: string) {
