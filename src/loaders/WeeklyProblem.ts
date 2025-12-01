@@ -245,11 +245,11 @@ export class WeeklyProblems {
         console.log("Categories:");
         console.log(categories);
         for (let category of categories) {
-            if (this.CATEGORY_CACHE.hasWithHash(category.id, category.sha)) {
-                console.log(`\tCategory '${category.path}' is up to date. Skipping.`);
-                continue;
-            };
-            console.log(`\tCategory '${category.path}' is outdated or missing. Loading...`);
+            // if (this.CATEGORY_CACHE.hasWithHash(category.id, category.sha)) {
+            //     console.log(`\tCategory '${category.path}' is up to date. Skipping.`);
+            //     continue;
+            // };
+            // console.log(`\tCategory '${category.path}' is outdated or missing. Loading...`);
 
             result.push(...await this.loadProblems(category));
             this.CATEGORY_CACHE.putWithHash(category.id, category, category.sha);
