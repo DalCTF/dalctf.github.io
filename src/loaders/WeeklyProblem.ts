@@ -241,10 +241,14 @@ export class WeeklyProblems {
                 sha: x.sha
             }));
 
-            console.log(`	Found ${categories.length} categories in repo '${repo.name}'`);
-
+        console.log(`	Found ${categories.length} categories in repo '${repo.name}'`);
+        console.log("Categories:");
+        console.log(categories);
         for (let category of categories) {
-            if (this.CATEGORY_CACHE.hasWithHash(category.id, category.sha)) continue;
+            if (this.CATEGORY_CACHE.hasWithHash(category.id, category.sha)) {
+                console.log(`\tCategory '${category.path}' is up to date. Skipping.`);
+                continue;
+            };
             console.log(`\tCategory '${category.path}' is outdated or missing. Loading...`);
 
             result.push(...await this.loadProblems(category));
