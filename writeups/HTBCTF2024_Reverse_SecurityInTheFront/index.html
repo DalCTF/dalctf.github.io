@@ -1,0 +1,165 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta http-equiv="x-ua-compatible" content="ie=edge"><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="shortcut icon" href="/favicon.ico"><link rel="manifest" href="/site.webmanifest"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#212830"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><title>Security In The Front | Writeups | Status 418</title><style>pre code.hljs{display:block;overflow-x:auto;padding:1em}code.hljs{padding:3px 5px}/*!
+  Theme: GitHub Dark
+  Description: Dark theme as seen on github.com
+  Author: github.com
+  Maintainer: @Hirse
+  Updated: 2021-05-15
+
+  Outdated base version: https://github.com/primer/github-syntax-dark
+  Current colors taken from GitHub's CSS
+*/.hljs{color:#c9d1d9;background:#0d1117}.hljs-doctag,.hljs-keyword,.hljs-meta .hljs-keyword,.hljs-template-tag,.hljs-template-variable,.hljs-type,.hljs-variable.language_{color:#ff7b72}.hljs-title,.hljs-title.class_,.hljs-title.class_.inherited__,.hljs-title.function_{color:#d2a8ff}.hljs-attr,.hljs-attribute,.hljs-literal,.hljs-meta,.hljs-number,.hljs-operator,.hljs-variable,.hljs-selector-attr,.hljs-selector-class,.hljs-selector-id{color:#79c0ff}.hljs-regexp,.hljs-string,.hljs-meta .hljs-string{color:#a5d6ff}.hljs-built_in,.hljs-symbol{color:#ffa657}.hljs-comment,.hljs-code,.hljs-formula{color:#8b949e}.hljs-name,.hljs-quote,.hljs-selector-tag,.hljs-selector-pseudo{color:#7ee787}.hljs-subst{color:#c9d1d9}.hljs-section{color:#1f6feb;font-weight:700}.hljs-bullet{color:#f2cc60}.hljs-emphasis{color:#c9d1d9;font-style:italic}.hljs-strong{color:#c9d1d9;font-weight:700}.hljs-addition{color:#aff5b4;background-color:#033a16}.hljs-deletion{color:#ffdcd7;background-color:#67060c}.content[data-astro-cid-tfjleern] a{color:#4985c1}.content[data-astro-cid-tfjleern] p,.content[data-astro-cid-tfjleern] h2{margin-bottom:24px}.content[data-astro-cid-tfjleern] h2 :not(:first-of-type){margin-top:48px}.content[data-astro-cid-tfjleern] img{max-width:100%;border-radius:8px}.content[data-astro-cid-tfjleern] code{background:#171c22;padding:.2em .5em;border-radius:6px;font-size:85%;margin:0;white-space:pre-wrap;word-wrap:break-word;word-break:break-word;overflow-wrap:anywhere}.content[data-astro-cid-tfjleern] pre{background:#171c22;border-radius:8px;margin:24px 0;display:block;padding:16px;white-space:pre-wrap;word-wrap:break-word;word-break:break-word;overflow-wrap:anywhere}.content[data-astro-cid-tfjleern] pre code{padding:0}
+</style>
+<link rel="stylesheet" href="/_astro/_page_.IxI8udFK.css">
+<style>section[data-astro-cid-kggsjsm4]{display:block}[data-astro-cid-kggsjsm4][data-icon]{fill:#ffffffe6}[data-astro-cid-kggsjsm4][data-icon=github]{width:48px;height:48px;padding:8px}[data-astro-cid-kggsjsm4][data-icon=discord]{width:64px;height:64px}[data-astro-cid-kggsjsm4][data-icon=chevron]{width:16px;height:16px}[data-astro-cid-kggsjsm4][data-icon=archive]{width:36px;height:36px;padding:14px}a[data-astro-cid-kggsjsm4]{background:#171c22;justify-content:space-between;border-radius:8px;flex-direction:row;align-items:center;padding:16px;display:flex;color:inherit}a[data-astro-cid-kggsjsm4]:hover .right[data-astro-cid-kggsjsm4]{margin-right:16px}div[data-astro-cid-kggsjsm4]{flex-direction:row;align-items:center;display:flex;gap:16px}.right[data-astro-cid-kggsjsm4]{margin-right:24px;transition:.1s}
+.wrapper[data-astro-cid-blwjyjpt]{border:2px solid var(--color);background:var(--background);display:inline-block;border-radius:16px;padding:0 8px;font-weight:500;color:var(--textColor);line-height:1.5rem;font-size:.75rem}
+</style></head> <body> <section data-astro-cid-3ef6ksr2> <a class="logo" href="/" data-astro-cid-3ef6ksr2> <img src="/_astro/DalCTF_logo_cleanW.D7mbQLRA_ZwvbxW.webp" alt loading="eager" style="object-fit: contain;" data-astro-cid-3ef6ksr2="true" width="256" height="384" decoding="async"> </a> <div class="links" data-astro-cid-3ef6ksr2> <!-- <div class="dropdown">
+      <a href="#" class="dropdown-toggle" role="button">Weekly Problems <span class="arrow">▼</span></a>
+      <ul class="dropdown-menu">
+        <li><a href="/weekly-problem">This Weeks</a></li>
+        <li><a href="/past-weekly-problems">Past Problems</a></li>
+      </ul>
+    </div> --> <div class="dropdown" data-astro-cid-pqsyg2qg> <a href="#" class="dropdown-toggle" role="button" data-astro-cid-pqsyg2qg> Weekly Problems <span class="arrow" data-astro-cid-pqsyg2qg>▼</span> </a> <ul class="dropdown-menu" data-astro-cid-pqsyg2qg> <li data-astro-cid-pqsyg2qg><a href="/weekly-problem" data-astro-cid-pqsyg2qg>This Week&#39;s Problem(s)</a></li><li data-astro-cid-pqsyg2qg><a href="/past-weekly-problems" data-astro-cid-pqsyg2qg>Past Problems</a></li> </ul> </div>  <a href="/writeups" data-astro-cid-3ef6ksr2>Writeups</a><a href="/competitions" data-astro-cid-3ef6ksr2>Competitions</a> <a class="wrapper" href="https://discord.gg/4vEJJF6CQg" target="_blank" data-astro-cid-vnzlvqnm style="--textColor: #4985C1;--borderColor: #4985C1;--backgroundColor: transparent;"> Join us! </a>  </div> </section>    <section data-astro-cid-bbe6dxrz> <h3 data-astro-cid-bbe6dxrz>HTB University CTF 2024: Binary Badlands</h3> <h1 data-astro-cid-bbe6dxrz>Security In The Front</h1>  <div data-astro-cid-bbe6dxrz>  <div class="tags" data-astro-cid-tfjleern> <p class="wrapper" data-astro-cid-blwjyjpt style="--color: #FFFFFF;--textColor: #FFFFFF;--background: transparent;">Reverse</p> </div>  </div> </section>   <section data-astro-cid-kggsjsm4> <a href="https://github.com/DalCTF/HTBCTF2024/tree/main/Reverse/SecurityInTheFront" target="_blank" data-astro-cid-kggsjsm4> <div class="left" data-astro-cid-kggsjsm4> <svg width="1.03em" height="1em" data-astro-cid-kggsjsm4="true" data-icon="github">   <symbol id="ai:local:github" viewBox="0 0 98 96"><path fill="currentColor" fill-rule="evenodd" d="M48.854 0C21.839 0 0 22 0 49.217c0 21.756 13.993 40.172 33.405 46.69 2.427.49 3.316-1.059 3.316-2.362 0-1.141-.08-5.052-.08-9.127-13.59 2.934-16.42-5.867-16.42-5.867-2.184-5.704-5.42-7.17-5.42-7.17-4.448-3.015.324-3.015.324-3.015 4.934.326 7.523 5.052 7.523 5.052 4.367 7.496 11.404 5.378 14.235 4.074.404-3.178 1.699-5.378 3.074-6.6-10.839-1.141-22.243-5.378-22.243-24.283 0-5.378 1.94-9.778 5.014-13.2-.485-1.222-2.184-6.275.486-13.038 0 0 4.125-1.304 13.426 5.052a47 47 0 0 1 12.214-1.63c4.125 0 8.33.571 12.213 1.63 9.302-6.356 13.427-5.052 13.427-5.052 2.67 6.763.97 11.816.485 13.038 3.155 3.422 5.015 7.822 5.015 13.2 0 18.905-11.404 23.06-22.324 24.283 1.78 1.548 3.316 4.481 3.316 9.126 0 6.6-.08 11.897-.08 13.526 0 1.304.89 2.853 3.316 2.364 19.412-6.52 33.405-24.935 33.405-46.691C97.707 22 75.788 0 48.854 0" clip-rule="evenodd"/></symbol><use href="#ai:local:github"></use>  </svg> <p class="emphasis" data-astro-cid-kggsjsm4>View on GitHub</p> </div> <div class="right" data-astro-cid-kggsjsm4> <svg width="0.95em" height="1em" data-astro-cid-kggsjsm4="true" data-icon="chevron">   <symbol id="ai:local:chevron" viewBox="0 0 16 17"><g fill="none"><g clip-path="url(#a)"><path fill="currentColor" d="M13.057 8.48a.78.78 0 0 0-.251-.574L5.93 1.17a.8.8 0 0 0-.573-.226.777.777 0 0 0-.79.79.83.83 0 0 0 .225.565l6.32 6.18-6.32 6.18a.8.8 0 0 0-.225.565c0 .451.347.79.79.79a.78.78 0 0 0 .573-.234l6.875-6.728a.8.8 0 0 0 .251-.573z"/></g><defs><clipPath id="a"><path fill="currentColor" d="M0 .5h16v16H0z"/></clipPath></defs></g></symbol><use href="#ai:local:chevron"></use>  </svg> </div> </a> </section>  <span style="display: block; height: 64px"></span>  <section class="content" data-astro-cid-tfjleern> <div data-astro-cid-tfjleern><h2>Analysis</h2>
+<p>The problem gives us a single <a href="https://github.com/DalCTF/HTBCTF2024/blob/main/Reverse/SecurityInTheFront/Source/index.html" target="_blank" rel="noopener noreferrer"><code>index.html</code></a> file. If rendered, it has a login form asking for a guard name and an access code.</p>
+<h2>Solution</h2>
+<p>By analyzing the code for the page, we will notice that the validation of the login credentials are handled in JavaScript directly on the client. The function <code>checkCredentials</code> is written on a single line and is obfuscated. This is where the solution lies, and it's where we will focus our efforts.</p>
+<p>By running the line through a <a href="https://beautifier.io/" target="_blank" rel="noopener noreferrer">JS Beautifier</a> we will have a better idea of the code. First we notice some single-letter variables (c, i, a, o p, etc) which hold the value of prototype functions of known classes. Our first step is to replace all instances of these variables for their values. We will then notice that there is a big <code>if</code> condition with multiple values inside, eventually reaching a call to <code>.reduce()</code>. This means that each element of the outermost array is going to be sent to the function along with the current value, starting with <code>true</code>. The function used is <code>(e, t) =&gt; e &amp;&amp; n.apply(undefined, t)</code>, where <code>e</code> is the current value of the reduction, and <code>t</code> is the element of the array. The element of the array is send to function <code>n</code>, which is in itself a <code>.reduce()</code>. This element <code>t</code> is going to be called the block from this point forward. The outermost array is a collection of blocks, and each call of <code>n</code> handles a single block.</p>
+<p>The function <code>n</code> has three parameters which will be taken from the block: the first is a list of functions, the second is a list of arguments, and the third is a value. The function essentially applies the functions of the first parameter, <code>e</code>, in sequence using the respective parameters, using the value as the current &quot;context&quot;. For example, the first block is the following:</p>
+<pre><code class="hljs language-javascript">[<span class="hljs-title class_">String</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">split</span>, <span class="hljs-title class_">Array</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">map</span>, f, h],
+[
+    [<span class="hljs-string">&quot;&quot;</span>], 
+    [<span class="hljs-function"><span class="hljs-params">e</span> =&gt;</span> -<span class="hljs-number">1</span> == <span class="hljs-title class_">Array</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-title function_">indexOf</span>(c2, e) ? e : c1[<span class="hljs-title class_">Array</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-title function_">indexOf</span>(c2, e)]],
+    [
+        [<span class="hljs-string">&quot;n&quot;</span>, <span class="hljs-string">&quot;q&quot;</span>, <span class="hljs-string">&quot;z&quot;</span>, <span class="hljs-string">&quot;v&quot;</span>, <span class="hljs-string">&quot;a&quot;</span>]
+    ],
+    [<span class="hljs-number">0</span>]
+], 
+access_user
+</code></pre>
+<p>This will apply the function <code>String.prototype.split</code> to the value (<code>access_user.split()</code>) with the parameter <code>&quot;&quot;</code>, meaning that it will break the string into its individual characters. Next, it will apply the function <code>e =&gt; -1 == Array.prototype.indexOf(c2, e) ? e : c1[Array.prototype.indexOf(c2, e)]</code> to each character using <code>.map()</code>. This function finds the character inside the <code>c2</code> variable and, if it exists, replaces it with the character at the same index in <code>c1</code>. Next, it uses function <code>f</code> to compare the current value to that of <code>[&quot;n&quot;, &quot;q&quot;, &quot;z&quot;, &quot;v&quot;, &quot;a&quot;]</code>. Function <code>f</code> will give us <code>-1</code>, <code>0</code>, or <code>1</code> depending on the result of the comparison. Equality is represented by <code>0</code>. Finally, it uses function <code>h</code> to test if our final value is equal to <code>0</code>. If it is, the final value of the block is <code>true</code> .</p>
+<p>It is our job to reverse every step of this block, which is essentially reversing the translation made in the second step where every character from <code>c2</code> became its counterpart on <code>c1</code>. We will do this by finding <code>n</code> in <code>c1</code> and checking its counterpart in <code>c2</code>, which is <code>a</code>. The same for <code>q</code>, which is <code>d</code>, <code>z</code> becomes <code>m</code>, <code>v</code> becomes <code>i</code>, and <code>a</code> becomes <code>n</code>. With that, we conclude that the expected value for <code>access_user</code> is <code>admin</code> .</p>
+<p>We now have another 8 blocks to reverse to find clues about the <code>access_code</code>. Explanations will be summarized for brevity:</p>
+<pre><code class="hljs language-javascript">[<span class="hljs-title class_">String</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">slice</span>, <span class="hljs-title class_">String</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">repeat</span>, <span class="hljs-title class_">String</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">split</span>, <span class="hljs-title class_">Array</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">map</span>, <span class="hljs-title class_">Array</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">filter</span>, f, h],
+[
+    [<span class="hljs-number">0</span>, <span class="hljs-number">4</span>],
+    [<span class="hljs-number">3</span>],
+    [<span class="hljs-string">&quot;&quot;</span>],
+    [<span class="hljs-function"><span class="hljs-params">e</span> =&gt;</span> -<span class="hljs-number">1</span> == <span class="hljs-title class_">Array</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-title function_">indexOf</span>(c2, e) ? e : c1[<span class="hljs-title class_">Array</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-title function_">indexOf</span>(c2, e)]],
+    [<span class="hljs-function">(<span class="hljs-params">e, t</span>) =&gt;</span> t % <span class="hljs-number">3</span> == <span class="hljs-number">1</span>],
+    [
+        [<span class="hljs-string">&quot;G&quot;</span>, <span class="hljs-string">&quot;U&quot;</span>, <span class="hljs-string">&quot;{&quot;</span>, <span class="hljs-string">&quot;O&quot;</span>]
+    ],
+    [<span class="hljs-number">0</span>]
+], access_code
+</code></pre>
+<p>In this block we get the first 4 characters of the code, repeat it 3 times, split into the individual characters, perform the translation from <code>c2</code> to <code>c1</code>, get the character at every index where <code>index % 3 == 1</code> (indexes 1, 4, 7, and 10), compare it to <code>[&quot;G&quot;, &quot;U&quot;, &quot;{&quot;, &quot;O&quot;]</code>, and make sure they are the same.</p>
+<p>Reversing this block tells us that the first 4 characters of the access code are <code>HTB{</code> .</p>
+<pre><code class="hljs language-javascript">[<span class="hljs-title class_">String</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">slice</span>, <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) {
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">encodeURI</span>(<span class="hljs-variable language_">this</span>)
+}, <span class="hljs-title class_">String</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">slice</span>, <span class="hljs-keyword">function</span> (<span class="hljs-params">e</span>) {
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">parseInt</span>(<span class="hljs-variable language_">this</span>, e)
+}, <span class="hljs-keyword">function</span> (<span class="hljs-params">e</span>) {
+    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span> ^ e
+}, h],
+[
+    [-<span class="hljs-number">1</span>],
+    [],
+    [-<span class="hljs-number">2</span>],
+    [<span class="hljs-number">16</span>],
+    [<span class="hljs-number">96</span>],
+    [<span class="hljs-number">29</span>]
+], access_code
+</code></pre>
+<p>In this block we get the last character of the code, encode it using URI encoding, get the last 2 characters of that (essentially stripping the <code>%</code> part of the result), parse it as an integer using base 16, perform an <code>XOR</code> with <code>96</code>, and compare it to <code>29</code> .</p>
+<p>Reversing this block tells us that the last character of the code is <code>}</code> .</p>
+<p>(At this point we just figured out the obvious, that is, that the flag starts with <code>HTB{</code> and ends in <code>}</code>, but its reassuring to see that our process makes sense)</p>
+<pre><code class="hljs language-javascript">[<span class="hljs-title class_">String</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">split</span>, <span class="hljs-title class_">Array</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">reduce</span>, h],
+[
+    [<span class="hljs-string">&quot;&quot;</span>], 
+    [<span class="hljs-function"><span class="hljs-params">e</span> =&gt;</span> e + e, <span class="hljs-number">1</span>],
+    [<span class="hljs-number">16777216</span>]
+], access_code
+</code></pre>
+<p>This block splits all the characters of the code and performs a reduce adding the value of each character to the initial value of <code>1</code> and comparing it to <code>16777216</code>. This means that the sum of all characters in the result is <code>16777215</code> (subtract the initial <code>1</code>).</p>
+<pre><code class="hljs language-javascript">[<span class="hljs-title class_">String</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">repeat</span>, <span class="hljs-title class_">String</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">split</span>, <span class="hljs-title class_">Array</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">map</span>, <span class="hljs-title class_">Array</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">reduce</span>, h],
+[
+    [<span class="hljs-number">21</span>], 
+    [<span class="hljs-string">&quot;&quot;</span>], 
+    [<span class="hljs-function"><span class="hljs-params">e</span> =&gt;</span> n1[<span class="hljs-title class_">Array</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-title function_">indexOf</span>(n2, e)]],
+    [<span class="hljs-function">(<span class="hljs-params">e, t</span>) =&gt;</span> e + h.<span class="hljs-title function_">apply</span>(t, [<span class="hljs-number">8</span>]), <span class="hljs-number">0</span>],
+    [<span class="hljs-number">63</span>]
+], access_code
+</code></pre>
+<p>This block repeats the code <code>21</code> times and splits it into individual characters. It then finds the index of each character in the <code>n2</code> array and replaces it with its counterpart in <code>n1</code>. It then adds the value of the equality between each value and <code>8</code>. In JavaScript, <code>true</code> has the value of <code>1</code> and <code>false</code> the value of <code>0</code>, meaning that it will add <code>1</code> for each value <code>8</code> it finds. Finally, it compares it to <code>63</code> .</p>
+<p>The value in <code>n2</code> that will result in <code>8</code> in <code>c1</code> is the character <code>3</code>. Since we repeated the code <code>21</code> times, this blocks says that our original code contains <code>3</code> (<code>63/21</code>) characters <code>3</code> .</p>
+<pre><code class="hljs language-javascript">[<span class="hljs-title class_">String</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">split</span>, <span class="hljs-title class_">Array</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">filter</span>, <span class="hljs-title class_">Array</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">map</span>, <span class="hljs-title class_">Array</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">reverse</span>, <span class="hljs-title class_">Array</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">join</span>, h],
+[
+    [<span class="hljs-string">&quot;&quot;</span>], 
+    [<span class="hljs-function">(<span class="hljs-params">e, t</span>) =&gt;</span> ~<span class="hljs-title class_">Array</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-title function_">indexOf</span>([<span class="hljs-number">4</span>, <span class="hljs-number">11</span>, <span class="hljs-number">13</span>, <span class="hljs-number">14</span>, <span class="hljs-number">16</span>, <span class="hljs-number">17</span>, <span class="hljs-number">20</span>, <span class="hljs-number">22</span>], t)],
+    [<span class="hljs-function"><span class="hljs-params">e</span> =&gt;</span> c1[<span class="hljs-title class_">Array</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-title function_">indexOf</span>(c2, e)]], <span class="hljs-comment">// FDPWCHKR</span>
+    [],
+    [<span class="hljs-string">&quot;-&quot;</span>], <span class="hljs-comment">// SQCJPUXE</span>
+    [<span class="hljs-string">&quot;E-X-U-P-J-C-Q-S&quot;</span>]
+], access_code
+</code></pre>
+<p>This block splits the code into individual characters and then removes all the elements that are not on indexes <code>4, 11, 13, 14, 16, 17, 20, and 22</code>. It then performs the replacement from <code>c2</code> to <code>c1</code>, reverses the array, joins the elements using <code>-</code>, and compares the result to <code>E-X-U-P-J-C-Q-S</code> .</p>
+<p>Reversing this block tells us that the code, from the beginning to index <code>22</code>, fits the pattern <code>____F______D_PW_CH__K_R</code> (where <code>_</code> means unknown values).</p>
+<pre><code class="hljs language-javascript">[<span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) { <span class="hljs-keyword">return</span> <span class="hljs-title class_">Array</span>.<span class="hljs-title function_">from</span>(<span class="hljs-variable language_">this</span>) }, f, h],
+[
+    [],
+    [
+        [<span class="hljs-string">&quot;_&quot;</span>]
+    ],
+    [<span class="hljs-number">0</span>]
+], <span class="hljs-keyword">new</span> <span class="hljs-title class_">Set</span>(
+    <span class="hljs-title function_">n</span>(
+        [<span class="hljs-title class_">String</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">slice</span>, <span class="hljs-title class_">String</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">split</span>, <span class="hljs-title class_">Array</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">reverse</span>, <span class="hljs-title class_">Array</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">filter</span>], 
+        [
+            [<span class="hljs-number">12</span>, <span class="hljs-number">16</span>],
+            [<span class="hljs-string">&quot;&quot;</span>],
+            [],
+            [<span class="hljs-function">(<span class="hljs-params">e, t</span>) =&gt;</span> ~<span class="hljs-title class_">Array</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-title function_">indexOf</span>([<span class="hljs-number">0</span>, <span class="hljs-number">3</span>], [t])]
+        ], access_code)
+    )
+]
+</code></pre>
+<p>This block converts the value into an array and compares it to <code>[&quot;_&quot;]</code>, meaning that what really matters here is what is inside of the <code>Set()</code> call, which is in itself another block. In that block, it takes the values from indexes <code>12, 13, 14, and 15</code> from the code, splits into individual characters, reverses, and removes all values but for the ones in indexes <code>0</code> and <code>3</code>. This would be the equivalent of keeping the values from positions <code>12</code> and <code>15</code> from the original code. Since this is a <code>Set</code>, the same value would not exist twice, which explains how a set with two elements can become an array with a single element. This means that both characters are the same and are both <code>_</code> .</p>
+<pre><code class="hljs language-javascript">[<span class="hljs-title class_">String</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">split</span>, <span class="hljs-title class_">Array</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">reverse</span>, <span class="hljs-title class_">Array</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">filter</span>, <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) {
+    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">slice</span>(<span class="hljs-number">2</span>, <span class="hljs-variable language_">this</span>.<span class="hljs-property">length</span>).<span class="hljs-title function_">concat</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-title function_">slice</span>(<span class="hljs-number">0</span>, <span class="hljs-number">2</span>))
+}, <span class="hljs-title class_">Array</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">reverse</span>, <span class="hljs-title class_">Array</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">join</span>, h],
+[
+    [<span class="hljs-string">&quot;&quot;</span>], 
+    [],
+    [<span class="hljs-function">(<span class="hljs-params">e, t</span>) =&gt;</span> ~<span class="hljs-title class_">Array</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-title function_">indexOf</span>([<span class="hljs-number">18</span>, <span class="hljs-number">13</span>, <span class="hljs-number">4</span>, <span class="hljs-number">16</span>, <span class="hljs-number">15</span>], [t])],
+    [],
+    [],
+    [<span class="hljs-string">&quot;&quot;</span>],
+    [<span class="hljs-string">&quot;ncrnt&quot;</span>]
+], access_code
+</code></pre>
+<p>This block splits the code into individual characters, reverses it, removes all elements but the ones on indexes <code>4, 13, 15, 16, and 18</code>, takes the two first elements and places them at the end, reverses the array, joins it back into a string, and compares it to <code>ncrnt</code> .</p>
+<p>Reversing this block gives us that the code follows the pattern <code>r_nt_n________c____</code> from the end (we are sure that there are 4 characters between the end of the string and <code>c</code>, but not how many there are before <code>r</code>).</p>
+<pre><code class="hljs language-javascript">[<span class="hljs-title class_">String</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">charAt</span>, h],
+[
+    [<span class="hljs-number">6</span>],
+    [<span class="hljs-string">&quot;0&quot;</span>]
+], access_code
+</code></pre>
+<p>Our final block tells us that the character at index <code>6</code> is the character <code>0</code> .</p>
+<p>With that, we can join all the hints to determine the code:</p>
+<pre><code class="hljs">0 <span class="hljs-number"> 1 </span><span class="hljs-number"> 2 </span><span class="hljs-number"> 3 </span><span class="hljs-number"> 4 </span><span class="hljs-number"> 5 </span><span class="hljs-number"> 6 </span><span class="hljs-number"> 7 </span><span class="hljs-number"> 8 </span><span class="hljs-number"> 9 </span><span class="hljs-number"> 10 </span>11<span class="hljs-number"> 12 </span>13<span class="hljs-number"> 14 </span>15<span class="hljs-number"> 16 </span>17<span class="hljs-number"> 18 </span>19<span class="hljs-number"> 20 </span>21<span class="hljs-number"> 22 </span>23
+H  T  B  {  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+.  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  }
+.  .  .  .  F  .  .  .  .  .  .  D  .  P  W  .  C  H  .  .  K  .  R  .
+.  .  .  .  .  .  .  .  .  .  .  .  _  .  .  _  .  .  .  .  .  .  .  .
+.  .  .  .  .  r  .  n  t  .  n  .  .  .  .  .  .  .  .  c  .  .  .  .
+.  .  .  .  .  . <span class="hljs-number"> 0 </span> .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+
+H  T  B  {  F  r <span class="hljs-number"> 0 </span> n  t  .  n  D  _  P  W  _  C  H  .  c  K  .  R  }
+</code></pre>
+<p>The three missing characters are replaced by the three characters <code>3</code> that we know must exist, which gives us the final flag:</p>
+<p><code>HTB{Fr0nt3nD_PW_CH3cK3R}</code></p>
+</div> </section>  <section data-astro-cid-sz7xmlte> <p data-astro-cid-sz7xmlte>
+Last Updated in 2025<br data-astro-cid-sz7xmlte>
+Halifax, NS<br data-astro-cid-sz7xmlte>
+Canada
+</p> </section>  </body></html> 
