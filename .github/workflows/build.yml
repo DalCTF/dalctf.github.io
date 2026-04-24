@@ -39,7 +39,7 @@ jobs:
       - name: Build project
         run: npm run build
         env:
-          GITHUB_TOKEN: ${{ secrets.PRIVILEGED_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Add .nojekyll file
         run: touch dist/.nojekyll
@@ -51,4 +51,4 @@ jobs:
           build_dir: dist
           fqdn: dalctf.ca
         env:
-          GITHUB_TOKEN: ${{ secrets.PRIVILEGED_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

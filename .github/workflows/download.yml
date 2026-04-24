@@ -37,7 +37,7 @@ jobs:
           npm run download;
           echo "updated=$(cat updated)" >> $GITHUB_OUTPUT;
         env:
-          GITHUB_TOKEN: ${{ secrets.PRIVILEGED_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Print status of cache
         run: |
