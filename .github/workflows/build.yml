@@ -19,10 +19,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: 22
           
@@ -30,7 +30,7 @@ jobs:
         run: npm install
 
       - name: Restore content from cache
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           restore-keys: content-
           path: cache/
@@ -52,5 +52,3 @@ jobs:
           fqdn: dalctf.ca
         env:
           GITHUB_TOKEN: ${{ secrets.PRIVILEGED_GITHUB_TOKEN }}
-
-

@@ -5,15 +5,18 @@ on:
     - cron: 30 5 * * *
   workflow_dispatch:
 
+# permissions:
+#   contents: write
+
 jobs:
   Download:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: 22
           cache: npm
@@ -22,7 +25,7 @@ jobs:
         run: npm install
 
       - name: Restore content from cache
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           restore-keys: content-
           path: cache/
@@ -48,7 +51,7 @@ jobs:
         shell: bash
 
       - name: Save content to cache
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v5
         if: ${{ steps.download.outputs.updated != '0' }}
         with:
           path: cache/
