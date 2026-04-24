@@ -11,7 +11,12 @@
 				"syler.sass-indented"
 			]
 		}
-	}
+	},
+	"containerEnv": {
+		"GITHUB_TOKEN": "${localEnv:GITHUB_TOKEN}"
+	},
+
+	// in the container, run GITHUB_TOKEN=your_token
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
