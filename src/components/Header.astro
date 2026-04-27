@@ -4,13 +4,12 @@ import { Image } from "astro:assets";
 // import DalCTFLogo from "../assets/DalCTF_logo_glitch.png";
 import DalCTFLogo from "../assets/DalCTF_logo_cleanW.png";
 import Button from "./Button.astro";
-import Dropdown from "./Dropdown.astro";
 
 // Static pages to show in the header
 // 
 const pages = [
   // ["Home", "/"],
-  // ["About", "/about"],
+  // ["About Us", "/about"],
   // ["Weekly Problem", "/weekly-problem"],
   ["Writeups", "/writeups"],
   ["Competitions", "/competitions"],
@@ -29,10 +28,10 @@ const pages = [
         <li><a href="/past-weekly-problems">Past Problems</a></li>
       </ul>
     </div> -->
-    <Dropdown title="Weekly Problems" items={[
+    <!-- <Dropdown title="Weekly Problems" items={[
       { label: "This Week's Problem(s)", href: "/weekly-problem" },
       { label: "Past Problems", href: "/past-weekly-problems" },
-    ]} />
+    ]} /> -->
     {pages.map((page) => <a href={page[1]}>{page[0]}</a>)}
     <Button
       url="https://discord.gg/4vEJJF6CQg"
