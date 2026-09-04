@@ -1,6 +1,5 @@
-import MarkdownIt from 'markdown-it';
+import MarkdownIt, { type Token } from 'markdown-it';
 import highlightjs from 'markdown-it-highlightjs';
-import type { Token } from 'markdown-it/index.js';
 
 type Result = { text: string, params: Map<string, any> }
 export type MarkdownProcessResult = Result;
@@ -294,13 +293,15 @@ class MarkdownProcessor {
         if (this.handleSpecialCase(state, block.open)) return;
 
         let result = this.processTokens(block.content);
-        let href = block.open.attrGet("href");
+        const hrefAttribute = block.open.attrGet("href");
         let text = result.text;
 
-        if (this.options.stripLinks || !href) {
+        if (this.options.stripLinks || hrefAttribute == null) {
             state.push(text);
             return;
         }
+
+        let href = String(hrefAttribute);
 
         try {
             href = (new URL(href)).toString();
@@ -318,13 +319,15 @@ class MarkdownProcessor {
         if (this.handleSpecialCase(state, token)) return;
 
         let result = this.processTokens(token.children || []);
-        let src = token.attrGet("src");
+        const srcAttribute = token.attrGet("src");
         let text = result.text;
 
-        if (!src) {
+        if (srcAttribute == null) {
             state.push(text);
             return;
         }
+
+        let src = String(srcAttribute);
 
         try {
             src = (new URL(src)).toString();

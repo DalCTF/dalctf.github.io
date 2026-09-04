@@ -110,11 +110,22 @@ const uniqueId = `collapsible-${Math.random().toString(36)}`;
 
 <script>
   class CollapsibleComponent {
-    constructor(element) {
-      this.element = element;
-      this.trigger = element.querySelector('.collapsible-trigger');
-      this.content = element.querySelector('.collapsible-content');
-      this.inner = element.querySelector('.collapsible-inner');
+    private trigger: HTMLElement;
+    private content: HTMLElement;
+    private inner: HTMLElement;
+
+    constructor(element: Element) {
+      const trigger = element.querySelector<HTMLElement>('.collapsible-trigger');
+      const content = element.querySelector<HTMLElement>('.collapsible-content');
+      const inner = element.querySelector<HTMLElement>('.collapsible-inner');
+
+      if (!trigger || !content || !inner) {
+        throw new Error('Invalid collapsible component markup');
+      }
+
+      this.trigger = trigger;
+      this.content = content;
+      this.inner = inner;
       
       this.init();
     }
