@@ -1,0 +1,34 @@
+---
+import Hero from "../components/Hero.astro";
+import MemberCard from "../components/MemberCard.astro";
+import Layout from "../layouts/Layout.astro";
+import ProfilePlaceholder from "../assets/logo.png";
+
+const honorees = [
+  {
+    name: "Hall of Fame Name",
+    profilePicture: ProfilePlaceholder,
+    profileAlt: "Status 418 profile placeholder",
+    categories: ["pwn", "forensics", "misc"],
+    bio: "Add a description for a notable Status 418 alum, contributor, or teammate here, including their impact on the team.",
+  },
+];
+---
+
+<Layout
+  title="Hall of Fame | Status 418"
+  description="Hall of fame for notable Status 418 members and contributors."
+>
+  <Hero title="Hall of Fame" />
+
+  <section class="member-list">
+    {honorees.map((member) => <MemberCard member={member} />)}
+  </section>
+</Layout>
+
+<style lang="scss">
+  .member-list {
+    display: grid;
+    gap: 16px;
+  }
+</style>

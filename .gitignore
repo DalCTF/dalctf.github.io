@@ -27,4 +27,4 @@ pnpm-debug.log*
 /cache/
 
 # file containing number of updated items
-updated
+t.txt

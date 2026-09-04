@@ -11,6 +11,8 @@ const pages = [
   // ["Home", "/"],
   // ["About Us", "/about"],
   // ["Weekly Problem", "/weekly-problem"],
+  ["Current Members", "/current-members"],
+  ["Hall of Fame", "/hall-of-fame"],
   ["Writeups", "/writeups"],
   ["Competitions", "/competitions"],
 ];
@@ -65,6 +67,8 @@ const pages = [
   .links {
     align-items: center;
     display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
     padding: 0px;
     gap: 16px;
   }
@@ -84,6 +88,7 @@ const pages = [
     }
 
     .links {
+      justify-content: center;
       margin-top: 24px;
     }
   }

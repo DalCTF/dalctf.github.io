@@ -1,0 +1,34 @@
+---
+import Hero from "../components/Hero.astro";
+import MemberCard from "../components/MemberCard.astro";
+import Layout from "../layouts/Layout.astro";
+import ProfilePlaceholder from "../assets/logo.png";
+
+const members = [
+  {
+    name: "Member Name",
+    profilePicture: ProfilePlaceholder,
+    profileAlt: "Status 418 profile placeholder",
+    categories: ["rev", "web", "crypto"],
+    bio: "Add a short bio for a current Status 418 member here, including their interests, role, or favorite CTF categories.",
+  },
+];
+---
+
+<Layout
+  title="Current Members | Status 418"
+  description="Current members of Status 418, Dalhousie University's CTF team."
+>
+  <Hero title="Current Members" />
+
+  <section class="member-list">
+    {members.map((member) => <MemberCard member={member} />)}
+  </section>
+</Layout>
+
+<style lang="scss">
+  .member-list {
+    display: grid;
+    gap: 16px;
+  }
+</style>
