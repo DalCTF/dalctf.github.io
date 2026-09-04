@@ -1,0 +1,97 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="x-ua-compatible" content="ie=edge"><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="shortcut icon" href="/favicon.ico"><link rel="manifest" href="/site.webmanifest"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#212830"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><title>Out of the Container | Writeups | Status 418</title><style>pre code.hljs{padding:1em;display:block;overflow-x:auto}code.hljs{padding:3px 5px}.hljs{color:#c9d1d9;background:#0d1117}.hljs-doctag,.hljs-keyword,.hljs-meta .hljs-keyword,.hljs-template-tag,.hljs-template-variable,.hljs-type,.hljs-variable.language_{color:#ff7b72}.hljs-title,.hljs-title.class_,.hljs-title.class_.inherited__,.hljs-title.function_{color:#d2a8ff}.hljs-attr,.hljs-attribute,.hljs-literal,.hljs-meta,.hljs-number,.hljs-operator,.hljs-variable,.hljs-selector-attr,.hljs-selector-class,.hljs-selector-id{color:#79c0ff}.hljs-regexp,.hljs-string,.hljs-meta .hljs-string{color:#a5d6ff}.hljs-built_in,.hljs-symbol{color:#ffa657}.hljs-comment,.hljs-code,.hljs-formula{color:#8b949e}.hljs-name,.hljs-quote,.hljs-selector-tag,.hljs-selector-pseudo{color:#7ee787}.hljs-subst{color:#c9d1d9}.hljs-section{color:#1f6feb;font-weight:700}.hljs-bullet{color:#f2cc60}.hljs-emphasis{color:#c9d1d9;font-style:italic}.hljs-strong{color:#c9d1d9;font-weight:700}.hljs-addition{color:#aff5b4;background-color:#033a16}.hljs-deletion{color:#ffdcd7;background-color:#67060c}.content[data-astro-cid-oeikcr7m] a{color:#4985c1}.content[data-astro-cid-oeikcr7m] p,.content[data-astro-cid-oeikcr7m] h2{margin-bottom:24px}.content[data-astro-cid-oeikcr7m] h2 :not(:first-of-type){margin-top:48px}.content[data-astro-cid-oeikcr7m] img{border-radius:8px;max-width:100%}.content[data-astro-cid-oeikcr7m] code{white-space:pre-wrap;word-wrap:break-word;word-break:break-word;overflow-wrap:anywhere;background:#171c22;border-radius:6px;margin:0;padding:.2em .5em;font-size:85%}.content[data-astro-cid-oeikcr7m] pre{background:#171c22;border-radius:8px;margin:24px 0;padding:16px;display:block}.content[data-astro-cid-oeikcr7m] pre code{padding:0}.content[data-astro-cid-oeikcr7m] pre{white-space:pre-wrap;word-wrap:break-word;word-break:break-word;overflow-wrap:anywhere}
+section[data-astro-cid-uljtwisc]{display:block}[data-astro-cid-uljtwisc][data-icon]{fill:#ffffffe6}[data-astro-cid-uljtwisc][data-icon=github]{width:48px;height:48px;padding:8px}[data-astro-cid-uljtwisc][data-icon=discord]{width:64px;height:64px}[data-astro-cid-uljtwisc][data-icon=chevron]{width:16px;height:16px}[data-astro-cid-uljtwisc][data-icon=archive]{width:36px;height:36px;padding:14px}a[data-astro-cid-uljtwisc]{color:inherit;background:#171c22;border-radius:8px;flex-direction:row;justify-content:space-between;align-items:center;padding:16px;display:flex}a[data-astro-cid-uljtwisc]:hover .right[data-astro-cid-uljtwisc]{margin-right:16px}div[data-astro-cid-uljtwisc]{flex-direction:row;align-items:center;gap:16px;display:flex}.right[data-astro-cid-uljtwisc]{margin-right:24px;transition:all .1s}
+</style><style>@import "https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap";@import "https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,500;1,500&display=swap";section[data-astro-cid-ge2uvauf]{flex-direction:column;justify-content:center;align-items:flex-start;margin-top:2em;display:flex}section[data-astro-cid-ge2uvauf] [data-astro-cid-ge2uvauf]{max-width:750px}h3[data-astro-cid-ge2uvauf]{color:#fff9}div[data-astro-cid-ge2uvauf]{margin-top:16px}html,body{font-optical-sizing:auto;color:#ffffffe6;background:#212830;margin:0;padding:0;font-family:Inter,sans-serif}h1{color:#ffffffe6;font-optical-sizing:auto;letter-spacing:0.5%;margin:0;font-size:3rem;font-style:normal;font-weight:600}h2{color:#ffffffe6;font-optical-sizing:auto;letter-spacing:0.5%;margin:0;font-size:2.25rem;font-style:normal;font-weight:400}h3{color:#ffffffe6;font-optical-sizing:auto;letter-spacing:0.5%;margin:0;font-size:2rem;font-style:normal;font-weight:600}code,pre{letter-spacing:0.5%;font-family:Roboto Mono,monospace;font-size:1rem;font-weight:500}p.emphasis{color:#ffffffe6;font-size:1.25rem;font-weight:500}p{font-optical-sizing:auto;color:#fffc;margin:0;font-size:1rem;font-style:normal;font-weight:400;line-height:1.75rem}section{box-sizing:border-box;max-width:900px;margin:0 auto 8px;padding:16px}a{text-decoration:none}p[data-astro-cid-jo6i4kqk]{color:#fff9;text-align:center;margin:96px 0 48px}.wrapper[data-astro-cid-ekguhzzh]{border:3px solid var(--borderColor);background:var(--backgroundColor);color:var(--textColor);-webkit-user-select:none;user-select:none;cursor:pointer;border-radius:8px;padding:12px 16px;font-size:1rem;font-weight:600;line-height:1rem;display:inline-block}section[data-astro-cid-nen7h5rs]{flex-direction:row;justify-content:space-between;align-items:center;display:flex}.logo[data-astro-cid-nen7h5rs]{width:64px;height:96px}.logo[data-astro-cid-nen7h5rs] [data-astro-cid-nen7h5rs]{width:100%;height:100%}.links[data-astro-cid-nen7h5rs]{align-items:center;gap:16px;padding:0;display:flex}.links[data-astro-cid-nen7h5rs] a[data-astro-cid-nen7h5rs]{color:#ffffffe6}@media screen and (width<=600px){.grid a:nth-child(n+3){background:red;display:none}section[data-astro-cid-nen7h5rs]{flex-direction:column}.links[data-astro-cid-nen7h5rs]{margin-top:24px}}
+</style><style>.wrapper[data-astro-cid-7t72llso]{border:2px solid var(--color);background:var(--background);color:var(--textColor);border-radius:16px;padding:0 8px;font-size:.75rem;font-weight:500;line-height:1.5rem;display:inline-block}
+</style></head><body><section data-astro-cid-nen7h5rs><a class="logo" href="/" data-astro-cid-nen7h5rs><img src="/_astro/DalCTF_logo_cleanW.D7mbQLRA_HmPnw.webp" alt loading="eager" style="object-fit: contain;" data-astro-cid-nen7h5rs="true" decoding="async" width="600" height="256"></a><div class="links" data-astro-cid-nen7h5rs><!-- <div class="dropdown">
+      <a href="#" class="dropdown-toggle" role="button">Weekly Problems <span class="arrow">▼</span></a>
+      <ul class="dropdown-menu">
+        <li><a href="/weekly-problem">This Weeks</a></li>
+        <li><a href="/past-weekly-problems">Past Problems</a></li>
+      </ul>
+    </div> --><!-- <Dropdown title="Weekly Problems" items={[
+      { label: "This Week's Problem(s)", href: "/weekly-problem" },
+      { label: "Past Problems", href: "/past-weekly-problems" },
+    ]} /> --><a href="/writeups" data-astro-cid-nen7h5rs>Writeups</a><a href="/competitions" data-astro-cid-nen7h5rs>Competitions</a><a class="wrapper" href="https://discord.gg/KATQNJyBCB" target="_blank" style="--textColor: #4985C1;--borderColor: #4985C1;--backgroundColor: transparent;" data-astro-cid-ekguhzzh>Join us!</a></div></section><section data-astro-cid-ge2uvauf><h3 data-astro-cid-ge2uvauf>UofTCTF 2025</h3><h1 data-astro-cid-ge2uvauf>Out of the Container</h1><div data-astro-cid-ge2uvauf><div class="tags" data-astro-cid-oeikcr7m><p class="wrapper" style="--color: #FF9000;--textColor: #FF9000;--background: transparent;" data-astro-cid-7t72llso>Misc</p></div></div></section><section data-astro-cid-uljtwisc><a href="https://github.com/DalCTF/UofTCTF2025/tree/main/Misc/OutOfTheContainer" target="_blank" data-astro-cid-uljtwisc><div class="left" data-astro-cid-uljtwisc><svg width="1.03em" height="1em" viewBox="0 0 98 96" data-astro-cid-uljtwisc="true" data-icon="github"><symbol id="ai:local:github"><path fill="currentColor" fill-rule="evenodd" d="M48.854 0C21.839 0 0 22 0 49.217c0 21.756 13.993 40.172 33.405 46.69 2.427.49 3.316-1.059 3.316-2.362 0-1.141-.08-5.052-.08-9.127-13.59 2.934-16.42-5.867-16.42-5.867-2.184-5.704-5.42-7.17-5.42-7.17-4.448-3.015.324-3.015.324-3.015 4.934.326 7.523 5.052 7.523 5.052 4.367 7.496 11.404 5.378 14.235 4.074.404-3.178 1.699-5.378 3.074-6.6-10.839-1.141-22.243-5.378-22.243-24.283 0-5.378 1.94-9.778 5.014-13.2-.485-1.222-2.184-6.275.486-13.038 0 0 4.125-1.304 13.426 5.052a47 47 0 0 1 12.214-1.63c4.125 0 8.33.571 12.213 1.63 9.302-6.356 13.427-5.052 13.427-5.052 2.67 6.763.97 11.816.485 13.038 3.155 3.422 5.015 7.822 5.015 13.2 0 18.905-11.404 23.06-22.324 24.283 1.78 1.548 3.316 4.481 3.316 9.126 0 6.6-.08 11.897-.08 13.526 0 1.304.89 2.853 3.316 2.364 19.412-6.52 33.405-24.935 33.405-46.691C97.707 22 75.788 0 48.854 0" clip-rule="evenodd"/></symbol><use href="#ai:local:github"></use></svg><p class="emphasis" data-astro-cid-uljtwisc>View on GitHub</p></div><div class="right" data-astro-cid-uljtwisc><svg width="0.95em" height="1em" viewBox="0 0 16 17" data-astro-cid-uljtwisc="true" data-icon="chevron"><symbol id="ai:local:chevron"><g fill="none"><g clip-path="url(#a48)"><path fill="currentColor" d="M13.057 8.48a.78.78 0 0 0-.251-.574L5.93 1.17a.8.8 0 0 0-.573-.226.777.777 0 0 0-.79.79.83.83 0 0 0 .225.565l6.32 6.18-6.32 6.18a.8.8 0 0 0-.225.565c0 .451.347.79.79.79a.78.78 0 0 0 .573-.234l6.875-6.728a.8.8 0 0 0 .251-.573z"/></g><defs><clipPath id="a48"><path fill="currentColor" d="M0 .5h16v16H0z"/></clipPath></defs></g></symbol><use href="#ai:local:chevron"></use></svg></div></a></section><span style="display: block; height: 64px"></span><section class="content" data-astro-cid-oeikcr7m><div data-astro-cid-oeikcr7m><h2>Analysis</h2>
+<p>The problem asks us to download a Docker image named <code>windex123/config-tester</code> and check it out. If we attempt to download it using <code>docker pull windex123/config-tester</code>, we will get an error that the tag <code>latest</code> has not been found. This is our first obstacle.</p>
+<h2>Solution</h2>
+<p>First, we need to access <a href="https://hub.docker.com/" target="_blank" rel="noopener noreferrer">Docker Hub</a> and look for the image by its name. If we list the available tags, we will see it only contains a tag <code>v1</code>. So, in order to properly download the image, we need to use:</p>
+<pre><code class="hljs language-bash">$ docker pull windex123/config-tester:v1
+</code></pre>
+<p>Now the image will download successfully and we can run it using:</p>
+<pre><code class="hljs language-bash">$ docker run --<span class="hljs-built_in">rm</span> -it windex123/config-tester:v1 /bin/sh
+</code></pre>
+<p>This will spawn a shell inside the container connect us to it. However, if we analyze the system, we will not find anything out of the ordinary: no flag file, no program running, no processes, no different users, or anything like it.</p>
+<p>The real place we should be looking at is the previous layers of the Docker image. When a Docker image is build, Docker uses the definitions on the <code>Dockerfile</code> to create multiple layers. Each layer is built on top of the previous one, and applying all these layers in sequence gives us the final image.</p>
+<p>We can inspect the layers of a downloaded image by doing:</p>
+<pre><code class="hljs language-bash">$ docker inspect windex123/config-tester:v1 -f <span class="hljs-string">&#x27;{{.RootFS.Layers}}&#x27;</span>
+
+[
+    sha256:613e5fc506b927aeaaa9c9c3dc26c0971686e566ce4cab4c4c3181f868061c60
+    sha256:f2fb314de264f2aa452d84053af3e2a6b086d464d9e12fc6490bbea3818079d3
+    sha256:6bca1b5b845e3e363047510182121b7f44083bcbef560052bdc46daa2bcee03e
+    sha256:d9e1433d65ee39dc945c396aff64d8771a770e9bf5c98845676109c60d2ac975
+]
+</code></pre>
+<p>This will give us all of the layers of the image identified by their <code>SHA256</code> hashes. We can save the contents of each of the layers by doing:</p>
+<pre><code class="hljs language-bash">$ docker save windex123/config-tester:v1 -o out.tar
+$ tar -xf out.tar
+</code></pre>
+<p>This will give us multiple files about the image as well as a folder called <code>blobs/</code>. Inside of this folder there are files corresponding to the layers of the image. Each of these files is itself a <code>.tar</code> archive:</p>
+<pre><code class="hljs language-bash">$ file 613e5fc506b927aeaaa9c9c3dc26c0971686e566ce4cab4c4c3181f868061c60 
+
+613e5fc506b927aeaaa9c9c3dc26c0971686e566ce4cab4c4c3181f868061c60: POSIX tar archive (GNU)
+</code></pre>
+<p>That means we can inspect their contents by doing:</p>
+<pre><code class="hljs language-bash">$ tar tvf 613e5fc506b927aeaaa9c9c3dc26c0971686e566ce4cab4c4c3181f868061c60
+
+drwxr-xr-x  0 0      0           0 Sep 26 18:31 ./
+drwxr-xr-x  0 0      0           0 Sep 26 18:31 bin/
+-rwxr-xr-x  0 0      0     1119784 Sep 26 18:31 bin/[
+hrwxr-xr-x  0 0      0           0 Sep 26 18:31 bin/[[ <span class="hljs-built_in">link</span> to bin/[
+hrwxr-xr-x  0 0      0           0 Sep 26 18:31 bin/acpid <span class="hljs-built_in">link</span> to bin/[
+hrwxr-xr-x  0 0      0           0 Sep 26 18:31 bin/add-shell <span class="hljs-built_in">link</span> to bin/[
+hrwxr-xr-x  0 0      0           0 Sep 26 18:31 bin/addgroup <span class="hljs-built_in">link</span> to bin/[
+hrwxr-xr-x  0 0      0           0 Sep 26 18:31 bin/adduser <span class="hljs-built_in">link</span> to bin/[
+hrwxr-xr-x  0 0      0           0 Sep 26 18:31 bin/adjtimex <span class="hljs-built_in">link</span> to bin/[
+[...]
+</code></pre>
+<p>While the first layer (<code>613e5...</code>) is going to have a lot of files, if we look at the second layer (<code>f2fb314...</code>) we will see the following:</p>
+<pre><code class="hljs">drwxrwxrwt <span class="hljs-number"> 0 </span>0     <span class="hljs-number"> 0 </span>         <span class="hljs-number"> 0 </span>Dec<span class="hljs-number"> 28 </span>13:11 tmp/
+-rw-r--r-- <span class="hljs-number"> 0 </span>0     <span class="hljs-number"> 0 </span>      <span class="hljs-number"> 2394 </span>Dec<span class="hljs-number"> 28 </span>13:10 tmp/config.json
+-rw-r--r-- <span class="hljs-number"> 0 </span>0     <span class="hljs-number"> 0 </span>        <span class="hljs-number"> 15 </span>Dec<span class="hljs-number"> 28 </span>13:08 tmp/config.txt
+</code></pre>
+<p>This looks promising. If we extract the contents of this archive we will get the two files:</p>
+<pre><code class="hljs language-bash">$ tar xf f2fb314...
+$ <span class="hljs-built_in">cd</span> tmp/
+$ <span class="hljs-built_in">cat</span> config.txt
+
+hi im a config!
+
+$ <span class="hljs-built_in">cat</span> config.json
+
+{
+  <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;service_account&quot;</span>,
+  <span class="hljs-string">&quot;project_id&quot;</span>: <span class="hljs-string">&quot;uoftctf-2025-docker-chal&quot;</span>,
+  <span class="hljs-string">&quot;private_key_id&quot;</span>: <span class="hljs-string">&quot;&lt;PRIVATE KEY ID&gt;&quot;</span>,
+  <span class="hljs-string">&quot;private_key&quot;</span>: <span class="hljs-string">&quot;&lt;PRIVATE KEY HERE&gt;&quot;</span>,
+  <span class="hljs-string">&quot;client_email&quot;</span>: <span class="hljs-string">&quot;docker-builder@uoftctf-2025-docker-chal.iam.gserviceaccount.com&quot;</span>,
+  [...]
+}
+</code></pre>
+<p>As we can see, while the <code>.txt</code> file doesn't give us much, the <code>.json</code> file contains a JSON object representing a service account for a project named <code>uoftctf-2025-docker-chal</code>. More specifically, this is a config file for connecting to Google Cloud.</p>
+<p>We can connect to this account using the <code>gcloud</code> CLI tool:</p>
+<pre><code class="hljs language-bash">$ gcloud auth activate-service-account docker-builder@uoftctf-2025-docker-chal.iam.gserviceaccount.com --key-file=config.json
+</code></pre>
+<p>Now we have access to an entire Google Cloud project. In order to reduce the surface area, we should list the IAM permissions this service account has for the current project:</p>
+<pre><code class="hljs language-bash">$ gcloud projects get-iam-policy uoftctf-2025-docker-chal
+</code></pre>
+<p>We will see that this service account has permission to list its IAM policies (like we just did), read artifacts, and read <code>Cloud Builds</code>. We can list the cloud builds for this account using:</p>
+<pre><code class="hljs language-bash">$ gcloud builds list
+</code></pre>
+<p>We will see that there are a few of these listed. We can pick one of them and list its logs by doing:</p>
+<pre><code class="hljs language-bash">$ gcloud builds <span class="hljs-built_in">log</span> <span class="hljs-variable">${BUILD-ID}</span>
+</code></pre>
+<p>In one of the builds, with ID <code>4a4bbc46-5a8b-4d36-a23f-39366ab2eac7</code>, we will find logs that refer to cloning a repository at the address <a href="https://github.com/OverjoyedValidity/countdown-timer.git" target="_blank" rel="noopener noreferrer"><code>https://github.com/OverjoyedValidity/countdown-timer.git</code></a>. In it, there is a single file containing the flag:</p>
+<pre><code class="hljs">uoftctf{<span class="hljs-keyword">out</span>-<span class="hljs-keyword">of</span>-the-bucket3}
+</code></pre>
+</div></section><section data-astro-cid-jo6i4kqk><p data-astro-cid-jo6i4kqk>Last Updated in 2026<br data-astro-cid-jo6i4kqk>Halifax, NS<br data-astro-cid-jo6i4kqk>Canada</p></section></body></html>
