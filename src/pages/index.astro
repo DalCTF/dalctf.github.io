@@ -1,11 +1,14 @@
 ---
 import Banner from "../components/Banner.astro";
 import Hero from "../components/Hero.astro";
+import ImageCarousel from "../components/ImageCarousel.astro";
 import LatestCompetitions from "../components/LatestCompetitions.astro";
 import LatestWriteups from "../components/LatestWriteups.astro";
 import Spacer from "../components/Spacer.astro";
 import Layout from "../layouts/Layout.astro";
 import { WeeklyProblems } from "../loaders/WeeklyProblem";
+import atHack2026 from "../images/athack2026.jpg";
+import cyberSci2026 from "../images/cybersci2026.jpg";
 
 // Populate weekly problems cache during server-side render.
 // This is necessary even if weekly problems are not presented, 
@@ -20,6 +23,25 @@ try {
 <Layout title="Status 418" description="">
 	<!-- Hero -->
 	<Hero title="Status 418 is Dalhousie University's CTF team" />
+
+	<!-- Featured images -->
+	<ImageCarousel
+		label="Status 418 highlights"
+		interval={5000}
+		slides={[
+			{
+				src: cyberSci2026,
+				alt: "DalCTF at CyberSci 2026, Canada's National Cybersecurity Competition",
+				caption: "DalCTF at CyberSci 2026, Canada's National Cybersecurity Competition in Ottawa",
+			},
+			{
+				src: atHack2026,
+				alt: "DalCTF at athack2026 in Montréal",
+				caption: "DalCTF at @hack2026 in Montréal",
+			},
+		]}
+	/>
+	<Spacer />
 
 	<!-- Banner -->
 	<Banner

@@ -1,0 +1,367 @@
+---
+import type { ImageMetadata } from "astro";
+
+export interface CarouselSlide {
+  src: ImageMetadata | string;
+  alt: string;
+  caption?: string;
+}
+
+interface Props {
+  slides: CarouselSlide[];
+  label?: string;
+  interval?: number;
+}
+
+const {
+  slides,
+  label = "Featured images",
+  interval = 5000,
+} = Astro.props;
+
+const imageSource = (src: ImageMetadata | string) =>
+  typeof src === "string" ? src : src.src;
+
+const renderedSlides = slides.length > 1
+  ? [
+      { slide: slides[slides.length - 1], originalIndex: slides.length - 1, clone: true },
+      ...slides.map((slide, originalIndex) => ({ slide, originalIndex, clone: false })),
+      { slide: slides[0], originalIndex: 0, clone: true },
+    ]
+  : slides.map((slide, originalIndex) => ({ slide, originalIndex, clone: false }));
+---
+
+{
+  slides.length > 0 && (
+    <section
+      class="carousel"
+      aria-roledescription="carousel"
+      aria-label={label}
+      data-carousel
+      data-interval={Math.max(interval, 1000)}
+    >
+      <div class="carousel__viewport">
+        <div
+          class="carousel__slides"
+          data-slides
+          style={`transform: translateX(-${slides.length > 1 ? 100 : 0}%)`}
+        >
+          {renderedSlides.map(({ slide, originalIndex, clone }) => (
+            <figure
+              class="carousel__slide"
+              aria-roledescription="slide"
+              aria-label={!clone ? `${originalIndex + 1} of ${slides.length}` : undefined}
+              aria-hidden={clone || originalIndex !== 0 ? "true" : undefined}
+              data-slide={!clone ? "" : undefined}
+              data-clone={clone ? "" : undefined}
+            >
+              <img
+                src={imageSource(slide.src)}
+                alt={clone ? "" : slide.alt}
+                width={typeof slide.src === "string" ? undefined : slide.src.width}
+                height={typeof slide.src === "string" ? undefined : slide.src.height}
+                loading={!clone && originalIndex === 0 ? "eager" : "lazy"}
+              />
+              {slide.caption && <figcaption>{slide.caption}</figcaption>}
+            </figure>
+          ))}
+        </div>
+
+        {slides.length > 1 && (
+          <div class="carousel__navigation">
+            <button class="carousel__arrow" type="button" data-previous aria-label="Previous image">
+              <span aria-hidden="true">&#8592;</span>
+            </button>
+            <button class="carousel__arrow" type="button" data-next aria-label="Next image">
+              <span aria-hidden="true">&#8594;</span>
+            </button>
+          </div>
+        )}
+      </div>
+
+      {slides.length > 1 && (
+        <div class="carousel__footer">
+          <div class="carousel__dots" aria-label="Choose an image">
+            {slides.map((_, index) => (
+              <button
+                class="carousel__dot"
+                type="button"
+                aria-label={`Show image ${index + 1}`}
+                aria-current={index === 0 ? "true" : undefined}
+                data-dot
+              />
+            ))}
+          </div>
+          <p class="carousel__status" aria-live="polite" aria-atomic="true" data-status>
+            1 / {slides.length}
+          </p>
+        </div>
+      )}
+    </section>
+  )
+}
+
+<script>
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  document.querySelectorAll<HTMLElement>("[data-carousel]").forEach((carousel) => {
+    if (carousel.dataset.carouselInitialized === "infinite-track-v1") return;
+    carousel.dataset.carouselInitialized = "infinite-track-v1";
+
+    const track = carousel.querySelector<HTMLElement>("[data-slides]");
+    const slides = Array.from(carousel.querySelectorAll<HTMLElement>("[data-slide]"));
+    const dots = Array.from(carousel.querySelectorAll<HTMLButtonElement>("[data-dot]"));
+    const previous = carousel.querySelector<HTMLButtonElement>("[data-previous]");
+    const next = carousel.querySelector<HTMLButtonElement>("[data-next]");
+    const status = carousel.querySelector<HTMLElement>("[data-status]");
+    const interval = Number(carousel.dataset.interval) || 5000;
+    let current = 0;
+    let trackPosition = slides.length > 1 ? 1 : 0;
+    let transitioning = false;
+    let autoplay: number | undefined;
+
+    const updateState = (announce = true) => {
+      carousel.dataset.activeSlide = String(current);
+
+      slides.forEach((slide, index) => {
+        const active = index === current;
+        slide.toggleAttribute("aria-hidden", !active);
+      });
+
+      dots.forEach((dot, index) => {
+        if (index === current) dot.setAttribute("aria-current", "true");
+        else dot.removeAttribute("aria-current");
+      });
+
+      if (status) {
+        status.textContent = `${current + 1} / ${slides.length}`;
+        status.setAttribute("aria-live", announce ? "polite" : "off");
+      }
+    };
+
+    const setTrackPosition = (animate: boolean) => {
+      if (!track) return;
+      track.style.transition = animate ? "transform 350ms ease" : "none";
+      track.style.transform = `translateX(-${trackPosition * 100}%)`;
+    };
+
+    const stopAutoplay = () => {
+      if (autoplay !== undefined) window.clearInterval(autoplay);
+      autoplay = undefined;
+    };
+
+    const startAutoplay = () => {
+      stopAutoplay();
+      if (slides.length < 2 || reduceMotion.matches || document.hidden) return;
+      autoplay = window.setInterval(() => navigate(1, false), interval);
+    };
+
+    const navigate = (direction: -1 | 1, announce = true) => {
+      if (transitioning) return;
+      stopAutoplay();
+      current = ((current + direction) % slides.length + slides.length) % slides.length;
+      trackPosition += direction;
+      transitioning = !reduceMotion.matches;
+      updateState(announce);
+      setTrackPosition(transitioning);
+
+      if (!transitioning) {
+        trackPosition = current + 1;
+        setTrackPosition(false);
+      }
+
+      if (!carousel.matches(":hover") && !carousel.contains(document.activeElement)) {
+        startAutoplay();
+      }
+    };
+
+    track?.addEventListener("transitionend", (event) => {
+      if (event.propertyName !== "transform") return;
+      transitioning = false;
+
+      if (trackPosition === 0) trackPosition = slides.length;
+      if (trackPosition === slides.length + 1) trackPosition = 1;
+      setTrackPosition(false);
+    });
+
+    previous?.addEventListener("click", () => {
+      navigate(-1);
+    });
+    next?.addEventListener("click", () => {
+      navigate(1);
+    });
+    dots.forEach((dot, index) => dot.addEventListener("click", () => {
+      if (index === current || transitioning) return;
+      stopAutoplay();
+      current = index;
+      trackPosition = index + 1;
+      transitioning = !reduceMotion.matches;
+      updateState();
+      setTrackPosition(transitioning);
+      startAutoplay();
+    }));
+
+    carousel.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowLeft") previous?.click();
+      if (event.key === "ArrowRight") next?.click();
+    });
+    carousel.addEventListener("mouseenter", stopAutoplay);
+    carousel.addEventListener("mouseleave", startAutoplay);
+    carousel.addEventListener("focusin", stopAutoplay);
+    carousel.addEventListener("focusout", (event) => {
+      if (!carousel.contains(event.relatedTarget as Node | null)) startAutoplay();
+    });
+    document.addEventListener("visibilitychange", startAutoplay);
+    reduceMotion.addEventListener("change", startAutoplay);
+
+    startAutoplay();
+  });
+</script>
+
+<style lang="scss">
+  @use "../styles/variables" as *;
+
+  .carousel {
+    margin-top: 24px;
+  }
+
+  .carousel__viewport {
+    position: relative;
+    overflow: hidden;
+    border: 3px solid $accent-color-dark;
+    border-radius: $radius;
+    background: $background-secondary-color;
+  }
+
+  .carousel__slides {
+    display: flex;
+    aspect-ratio: 4 / 3;
+    transition: transform 350ms ease;
+    will-change: transform;
+  }
+
+  .carousel__slide {
+    position: relative;
+    flex: 0 0 100%;
+    margin: 0;
+  }
+
+  .carousel__slide[aria-hidden="true"] {
+    pointer-events: none;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: clamp(4px, 1vw, 10px);
+    box-sizing: border-box;
+  }
+
+  figcaption {
+    position: absolute;
+    bottom: 16px;
+    left: 50%;
+    width: fit-content;
+    max-width: calc(100% - 32px);
+    padding: 10px 14px;
+    border-radius: $radius;
+    background: rgba(23, 28, 34, 0.9);
+    color: $foreground-color;
+    line-height: 1.4;
+    text-align: center;
+    transform: translateX(-50%);
+  }
+
+  .carousel__navigation {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    pointer-events: none;
+  }
+
+  .carousel__arrow,
+  .carousel__dot {
+    border: 0;
+    cursor: pointer;
+  }
+
+  .carousel__arrow {
+    display: grid;
+    width: 44px;
+    height: 44px;
+    place-items: center;
+    border-radius: 50%;
+    background: rgba(23, 28, 34, 0.88);
+    color: $foreground-color;
+    font-size: 1.35rem;
+    transition: background 150ms ease, transform 150ms ease;
+    pointer-events: auto;
+  }
+
+  .carousel__arrow:hover {
+    background: $accent-color-light;
+    transform: scale(1.06);
+  }
+
+  .carousel__arrow:focus-visible,
+  .carousel__dot:focus-visible {
+    outline: 3px solid $foreground-color;
+    outline-offset: 3px;
+  }
+
+  .carousel__footer {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    margin-top: 12px;
+  }
+
+  .carousel__dots {
+    grid-column: 2;
+    display: flex;
+    gap: 10px;
+  }
+
+  .carousel__dot {
+    width: 10px;
+    height: 10px;
+    padding: 0;
+    border-radius: 50%;
+    background: $foreground-secondary-color;
+  }
+
+  .carousel__dot[aria-current="true"] {
+    background: $accent-color-light;
+    transform: scale(1.35);
+  }
+
+  .carousel__status {
+    grid-column: 3;
+    justify-self: end;
+    color: $foreground-secondary-color;
+    font-family: $code-font;
+    font-size: 0.875rem;
+  }
+
+  @media (max-width: $breakpoint-phone) {
+    .carousel__navigation {
+      padding: 10px;
+    }
+
+    .carousel__arrow {
+      width: 40px;
+      height: 40px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .carousel__slides,
+    .carousel__arrow {
+      transition: none;
+    }
+  }
+</style>
