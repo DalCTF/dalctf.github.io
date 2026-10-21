@@ -14,7 +14,7 @@
     "@astrojs/check": "^0.9.10",
     "astro": "^7.3.1",
     "astro-icon": "^1.2.0",
-    "markdown-it": "^15.0.1",
+    "markdown-it": "^15.0.3",
     "markdown-it-highlightjs": "^4.3.0",
     "node-html-parser": "^9.0.3",
     "octokit": "^5.0.5",
